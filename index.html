@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costa Rica Animal Rescue Center</title>
+<meta name="description" content="El Costa Rica Animal Rescue Center es una organización sin fines de lucro que le da a la vida silvestre una segunda oportunidad: rescate, rehabilitación y liberación.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<script>
+/* ============================================================
+   VIDEO — pegá aquí la URL del .mp4 del sitio original.
+   Cómo sacarla: F12 → Network → filtro "Media" → recargar →
+   clic derecho sobre el .mp4 → Copy URL.
+   Mientras esté vacío (""), el hero usa la imagen de respaldo.
+   ============================================================ */
+const VIDEO = {
+  /* Opción A (la del sitio original): video de YouTube.
+     Pegá SOLO el ID (los ~11 caracteres después de youtube.com/embed/
+     o de youtube.com/watch?v=). Ej: youtube: "dQw4w9WgXcQ" */
+  youtube: "",
+
+  /* Opción B: un .mp4 directo (si algún día lo tienen alojado aparte) */
+  hero: ""
+};
+
+/* ============================================================
+   IMAGES — cambiá las URLs por las fotos reales del centro.
+   (Clic derecho sobre la foto → "Copiar dirección de imagen".)
+   - hero:  respaldo del video (y póster mientras carga)
+   - quote: la foto del mono ("Rescate, rehabilitación, liberación")
+   ============================================================ */
+const IMAGES = {
+  logo:    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/90736c36-22ac-4cdb-b52f-da504f413702/GreenCRARC_2020-Logofinal.png",
+  /* Foto real del centro (respaldo del video y póster mientras carga) */
+  hero:    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/0b09773f-8cdd-47a3-a2c3-6864eb2782ec/20220904_075900.jpg",
+  /* Fondo de la sección del lema — la foto del mono del sitio original
+     no salió en la extracción; cuando tengás su URL, pegala aquí */
+  quote:   "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1598633922604-9LBZE9ICCJYEYQVPY9FA/img-06.jpg",
+  /* Galería real del centro (mismo orden que en su página principal) */
+  gallery: [
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615142307702-APJ87BNVD9E5FO9LO7R5/img-01.jpg",
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615001490721-SHJEFRWXN4S51LOOFZAN/img-05.jpg",
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615001755380-YQE0K8HOXEBNIM1J4AR3/img-08.jpg",
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1598633922604-9LBZE9ICCJYEYQVPY9FA/img-06.jpg",
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1598633978077-NZ9LUXBENH7F8W8AS3YP/img-03.jpg",
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1592430685614-82UHSNFQUVH82V3LZ6XE/img-04.jpg",
+    "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1592418509910-163GRHIHN5APGAHD2ZVY/img-02.jpg"
+  ],
+  fallback: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/0b09773f-8cdd-47a3-a2c3-6864eb2782ec/20220904_075900.jpg"
+};
+
+/* Datos del gráfico "Animales salvados por año" — editá los valores reales */
+const RESCUE_DATA = [
+  { year: 2005, count: 4 },  { year: 2007, count: 9 },
+  { year: 2009, count: 14 }, { year: 2011, count: 22 },
+  { year: 2013, count: 31 }, { year: 2015, count: 42 },
+  { year: 2017, count: 55 }, { year: 2019, count: 68 },
+  { year: 2021, count: 80 }, { year: 2023, count: 92 },
+  { year: 2025, count: 104 }
+];
+
+/* ============================================================
+   PADRINOS — editá los animales reales del centro:
+   nombre (queda igual en todos los idiomas), foto y montos.
+   Las descripciones se traducen en el bloque I18N (sponA1..A3).
+   ============================================================ */
+const DONATE_URL = "#pay";
+/* WhatsApp del centro: código de país + número, sin +, espacios ni guiones */
+const WHATSAPP_NUMBER = "50685228125";
+
+/* URL /exec del Apps Script (la MISMA de conocenos.html).
+   Con esto los padrinos se administran desde la pestaña "Padrinos"
+   de la hoja de cálculo, sin tocar código: animales, fotos, montos,
+   y si el botón va a PayPal o a WhatsApp. Si está vacío o falla,
+   se usan los animales de SPONSORS de aquí abajo. */
+const CONFIG_ENDPOINT = "";
+
+/* ============================================================
+   MÉTODOS DE DONACIÓN — editá aquí si cambian cuentas o números
+   ============================================================ */
+const PAYMENT = {
+  sinpe: { number: "8305-0069", holder: "María de los Ángeles Morice" },
+  crc: {
+    holder: "COSTA RICA CEBADILLA SLOTHS SO",
+    bac: "954141966",
+    iban: "CR28010200009541419665"
+  },
+  usd: {
+    holder: "COSTA RICA CEBADILLA SLOTHS SO",
+    bac: "954141958",
+    iban: "CR38010200009541419582"
+  }
+};
+const SPONSORS = [
+  { id: "a1", name: "Coco",  img: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615001755380-YQE0K8HOXEBNIM1J4AR3/img-08.jpg", amounts: [10, 25, 50] },
+  { id: "a2", name: "Luna",  img: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615142307702-APJ87BNVD9E5FO9LO7R5/img-01.jpg", amounts: [10, 25, 50] },
+  { id: "a3", name: "Kiara", img: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1598633978077-NZ9LUXBENH7F8W8AS3YP/img-03.jpg", amounts: [10, 25, 50] }
+];
+
+/* ============================================================
+   I18N — diccionario de traducciones (es / en / fr / it)
+   ============================================================ */
+const I18N = {
+  es: {
+    _name: "Español", _flag: "🇨🇷",
+    navHow: "Cómo trabajamos", navImpact: "Nuestro impacto", navGrowth: "Crecimiento",
+    navGallery: "Galería", navVolunteer: "Voluntariado", navContact: "Contacto", navDonate: "Donar",
+    heroKicker: "Santuario sin fines de lucro en Turrúcares, Costa Rica",
+    heroTitle: "Más de 17 años de experiencia <em>ayudando a la vida silvestre</em>",
+    heroLead: "Le damos a perezosos, monos, aves y otra fauna costarricense una segunda oportunidad de vida: rescatamos, rehabilitamos y los liberamos de nuevo en su hábitat natural.",
+    heroCtaVol: "Ser voluntario", heroCtaDon: "Donar", scroll: "Bajar",
+    howKicker: "Cómo trabajamos",
+    howTitle: "Rescate, cuidado y una comunidad que mantiene todo en marcha",
+    how1h: "Rescate y rehabilitación",
+    how1p1: "A veces los animales son traídos por personas locales, turistas o incluso voluntarios, que los encuentran heridos o abandonados en las calles y en la naturaleza. Estos animales rescatados suelen ser pequeños, jóvenes o crías que perdieron a su madre y no tendrían ninguna posibilidad de sobrevivir por sí solos.",
+    how1p2: "En el centro buscamos rehabilitar a los animales y darles las mejores condiciones posibles para recuperarse de sus lesiones físicas y, a veces, también mentales. Cuando llegan animales nuevos, son examinados por veterinarios que determinan qué acciones se necesitan para cada situación individual. El cuidado, los tratamientos y el reentrenamiento son responsabilidad del personal permanente, y los voluntarios a menudo asumen partes de estas tareas según sus calificaciones.",
+    how2h: "Equipo",
+    how2p1: "Nuestro equipo de trabajo está formado por voluntarios y nuestro veterinario en sitio, quienes cumplen un papel importante para mantener el centro funcionando.",
+    how2p2: "Para manejar todas las tareas y deberes que requiere nuestro centro dependemos de la ayuda de voluntarios motivados y responsables. Las tareas generales incluyen preparación de comida, limpieza y mantenimiento de recintos, construcción de juguetes de actividad y enriquecimiento para los animales. Además de las tareas diarias, también necesitamos ayuda con cualquier proyecto adicional que surja durante el día.",
+    how3h: "Ubicación",
+    how3p1: "Por suerte, a poca distancia por la carretera, en Cebadilla, encontramos un sitio fantástico con pequeños ríos, praderas, colinas y grandes árboles frutales. Se adapta perfectamente a nuestros animales y voluntarios, y comenzamos la mudanza en junio de 2016, con muchos voluntarios ayudando en el proceso, a quienes estamos eternamente agradecidos.",
+    how3p2: "Seguimos trabajando todos los días para mejorar el lugar y los recintos, pero hasta ahora construimos un hospital de animales, un enorme aviario, dos jardines de perezosos y varias jaulas grandes para monos, equipadas con muchos elementos de enriquecimiento para mantener a nuestros rescatados activos, física y cognitivamente.",
+    quoteText: "“Rescate, rehabilitación, liberación.”",
+    quoteCaption: "Nuestro lema — desde 2005",
+    stat1: "Años de experiencia", stat2: "Animales rescatados", stat3: "Entrevistas", stat4: "Seguidores",
+    growthTitle: "Crecimiento año a año",
+    growthP1: "Cada año nos esforzamos por mejorar nuestras instalaciones y recursos para poder salvar más animales. Tus donaciones nos ayudan a conseguir los fondos necesarios para contratar más profesionales, aumentar el tamaño de nuestras instalaciones y obtener mejor equipo.",
+    growthP2: "Trabajamos con un modelo de crecimiento año a año: cuando ampliamos algo, necesitamos adaptarnos rápida y suavemente para asegurar que los animales sean trasladados de forma segura y sin estrés.",
+    chartTitle: "Animales salvados por año",
+    galleryKicker: "La vida en el santuario", galleryTitle: "Galería",
+    galleryAlt: "Fauna rescatada en el santuario",
+    joinReady: "¿Listo para ayudar?", joinVol: "Voluntariado", joinVolBtn: "Únete hoy",
+    joinEvery: "Cada colón cuenta", joinDon: "Donar", joinDonBtn: "Dona hoy",
+    wishlist: "<strong>Lista de deseos de Amazon:</strong> ¡comprá un artículo de nuestra lista! Tu donación nos ayuda a continuar nuestra misión de rescatar y rehabilitar la vida silvestre en Costa Rica.",
+    wishlistBtn: "Abrir la lista",
+    navSponsor: "Padrinos",
+    navKnow: "Conócenos",
+    sponKicker: "Apadriná un animal",
+    sponTitle: "Sé el padrino de un rescatado",
+    sponIntro: "Con un aporte mensual ayudás directamente a un animal del centro: su comida, atención veterinaria y enriquecimiento. Elegí a quién querés apadrinar y el monto con el que querés colaborar.",
+    sponPerMonth: "al mes",
+    sponT1: "Comida semanal",
+    sponT2: "Comida del mes",
+    sponT3: "Cuidado completo",
+    sponBtn: "Apadrinar",
+    sponWa: "Hola, quiero apadrinar a {name} con ${amount} al mes 🐾",
+    sponNote: "El 100% de tu aporte se destina al cuidado de los animales. Al donar, indicá el nombre del animal que querés apadrinar.",
+    sponA1sp: "Mono aullador",
+    sponA1d: "Llegó al centro siendo una cría huérfana. Hoy está en rehabilitación y come frutas y hojas frescas todos los días.",
+    sponA2sp: "Perezosa de dos dedos",
+    sponA2d: "Rescatada tras un accidente con cables eléctricos. Se recupera en uno de nuestros jardines de perezosos.",
+    sponA3sp: "Lapa roja",
+    sponA3d: "Vivía como mascota ilegal. En nuestro aviario está reaprendiendo a volar y a socializar con otras lapas.",
+    payTitle: "Formas de donar",
+    payIntro: "Podés donar o pagar tu apadrinamiento por SINPE Móvil o transferencia bancaria:",
+    paySinpe: "SINPE Móvil",
+    payCrc: "Cuenta en colones",
+    payUsd: "Cuenta en dólares",
+    payHolder: "Cliente",
+    payBac: "Cuenta BAC",
+    payCopy: "Copiar",
+    payCopied: "¡Copiado!",
+    footAddr: "Costa Rica Animal Rescue Center<br>Turrúcares, Costa Rica",
+    footHours: "Horario", footMonFri: "Lun – Vie", footSat: "Sábado", footSun: "Domingo",
+    footExplore: "Explorar", footTours: "Tours", footAbout: "Sobre nosotros", footFounders: "Fundadores",
+    footFaq: "Preguntas frecuentes", footInternships: "Pasantías", footVolunteer: "Voluntariado", footContact: "Contacto",
+    footFollow: "Seguinos",
+    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footMotto: "Rescate · Rehabilitación · Liberación"
+  },
+
+  en: {
+    _name: "English", _flag: "🇺🇸",
+    navHow: "How we work", navImpact: "Our impact", navGrowth: "Growth",
+    navGallery: "Gallery", navVolunteer: "Volunteer", navContact: "Contact", navDonate: "Donate",
+    heroKicker: "A non-profit sanctuary in Turrúcares, Costa Rica",
+    heroTitle: "Over 17 years of experience <em>helping the wildlife</em>",
+    heroLead: "We give sloths, monkeys, birds, and other Costa Rican wildlife a second chance at life — rescuing, rehabilitating, and re-releasing them into their natural habitat.",
+    heroCtaVol: "Become a volunteer", heroCtaDon: "Donate", scroll: "Scroll",
+    howKicker: "How we work",
+    howTitle: "Rescue, care, and a community that keeps it all running",
+    how1h: "Rescue & Rehabilitation",
+    how1p1: "Sometimes animals are brought in by local people, tourists, or even volunteers, who have found them injured or abandoned in the streets and the wilderness. These rescued animals are often smaller or younger animals or infants that have lost their mother and would have no chance of survival on their own.",
+    how1p2: "At the center, we aim to rehabilitate animals and give them the best possible conditions to recover from their physical and sometimes also mental injuries. When new animals come in, they are examined by vets who determine what actions need to be done for each individual situation. Care, treatments, and retraining are within the responsibility of permanent staff, and volunteers often get a chance to take over parts of tasks depending on each volunteer's qualifications.",
+    how2h: "Team",
+    how2p1: "Our team of workers consists of volunteers and our on-site veterinarian who all take up an important part in keeping the center running.",
+    how2p2: "In order to manage all the tasks and duties that our center requires we depend on the help of motivated and responsible volunteers. Volunteer general tasks involve food preparation, cleaning and maintaining enclosures, building activity toys, and providing enrichment for animals. Apart from daily tasks, we also need help with any additional projects that may come up in the course of the day.",
+    how3h: "Location",
+    how3p1: "Luckily just a short drive down the road, in Cebadilla, we found a fantastic site with little rivers, meadows, hills, and big beautiful fruit trees! It suits our animals and volunteers perfectly and we began the move here in June 2016 — with lots of volunteers helping in the process, who we are eternally grateful for.",
+    how3p2: "We are still working every day on improving the place and enclosures, but so far we built an animal hospital, a huge aviary, two sloth gardens, and various big monkey cages, equipped with many enrichment items to keep our rescued ones active — physically and cognitively.",
+    quoteText: "“Rescue, Rehabilitate, Release.”",
+    quoteCaption: "Our motto — since 2005",
+    stat1: "Years of experience", stat2: "Animals rescued", stat3: "Interviews", stat4: "Followers",
+    growthTitle: "Year by year growth",
+    growthP1: "Every year we strive to improve our facilities and resources to be able to save more animals each year. Your donations help us get the funds needed to hire more professionals and increase the size of our facilities, as well as get better equipment.",
+    growthP2: "We work on a year-by-year growth model: when we expand something, we need to adapt quickly and smoothly to ensure the animals are transferred safely and stress-free.",
+    chartTitle: "Animals saved every year",
+    galleryKicker: "Life at the sanctuary", galleryTitle: "Gallery",
+    galleryAlt: "Rescued wildlife at the sanctuary",
+    joinReady: "Ready to help?", joinVol: "Volunteer", joinVolBtn: "Join today",
+    joinEvery: "Every colón counts", joinDon: "Donate", joinDonBtn: "Donate today",
+    wishlist: "<strong>Amazon wishlist:</strong> purchase an item from our wishlist! Your donation will help us continue our mission of rescuing and rehabilitating wildlife in Costa Rica.",
+    wishlistBtn: "Open the wishlist",
+    navSponsor: "Sponsor",
+    navKnow: "About us",
+    sponKicker: "Sponsor an animal",
+    sponTitle: "Become a rescued animal's sponsor",
+    sponIntro: "With a monthly contribution you directly help one animal at the center: their food, veterinary care, and enrichment. Choose who you'd like to sponsor and the amount you'd like to give.",
+    sponPerMonth: "per month",
+    sponT1: "A week of food",
+    sponT2: "A month of food",
+    sponT3: "Full care",
+    sponBtn: "Sponsor",
+    sponWa: "Hi! I'd like to sponsor {name} with ${amount} per month 🐾",
+    sponNote: "100% of your contribution goes to animal care. When donating, mention the name of the animal you'd like to sponsor.",
+    sponA1sp: "Howler monkey",
+    sponA1d: "Arrived at the center as an orphaned infant. Today he's in rehabilitation and eats fresh fruit and leaves every day.",
+    sponA2sp: "Two-toed sloth",
+    sponA2d: "Rescued after an accident with power lines. She's recovering in one of our sloth gardens.",
+    sponA3sp: "Scarlet macaw",
+    sponA3d: "She lived as an illegal pet. In our aviary she's relearning to fly and to socialize with other macaws.",
+    payTitle: "Ways to donate",
+    payIntro: "You can donate or pay your sponsorship via SINPE Móvil or bank transfer:",
+    paySinpe: "SINPE Móvil",
+    payCrc: "Colones account",
+    payUsd: "US dollar account",
+    payHolder: "Account holder",
+    payBac: "BAC account",
+    payCopy: "Copy",
+    payCopied: "Copied!",
+    footAddr: "Costa Rica Animal Rescue Center<br>Turrúcares, Costa Rica",
+    footHours: "Hours", footMonFri: "Mon – Fri", footSat: "Saturday", footSun: "Sunday",
+    footExplore: "Explore", footTours: "Tours", footAbout: "About us", footFounders: "Founders",
+    footFaq: "FAQ", footInternships: "Internships", footVolunteer: "Volunteer", footContact: "Contact us",
+    footFollow: "Follow us",
+    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footMotto: "Rescue · Rehabilitate · Release"
+  },
+
+  fr: {
+    _name: "Français", _flag: "🇫🇷",
+    navHow: "Notre travail", navImpact: "Notre impact", navGrowth: "Croissance",
+    navGallery: "Galerie", navVolunteer: "Bénévolat", navContact: "Contact", navDonate: "Faire un don",
+    heroKicker: "Un sanctuaire à but non lucratif à Turrúcares, Costa Rica",
+    heroTitle: "Plus de 17 ans d'expérience <em>au service de la faune sauvage</em>",
+    heroLead: "Nous offrons aux paresseux, singes, oiseaux et autres animaux sauvages du Costa Rica une seconde chance : nous les secourons, les réhabilitons et les relâchons dans leur habitat naturel.",
+    heroCtaVol: "Devenir bénévole", heroCtaDon: "Faire un don", scroll: "Défiler",
+    howKicker: "Notre travail",
+    howTitle: "Sauvetage, soins et une communauté qui fait tourner le centre",
+    how1h: "Sauvetage et réhabilitation",
+    how1p1: "Parfois, les animaux sont amenés par des habitants, des touristes ou même des bénévoles qui les ont trouvés blessés ou abandonnés dans les rues ou en pleine nature. Ces animaux secourus sont souvent petits, jeunes ou des bébés ayant perdu leur mère, sans aucune chance de survie par eux-mêmes.",
+    how1p2: "Au centre, nous cherchons à réhabiliter les animaux et à leur offrir les meilleures conditions possibles pour se remettre de leurs blessures physiques, et parfois aussi mentales. À l'arrivée de nouveaux animaux, des vétérinaires les examinent et déterminent les actions nécessaires pour chaque situation. Les soins, traitements et réentraînements relèvent du personnel permanent, et les bénévoles prennent souvent en charge certaines tâches selon leurs qualifications.",
+    how2h: "Équipe",
+    how2p1: "Notre équipe est composée de bénévoles et de notre vétérinaire sur place, qui jouent tous un rôle important dans le fonctionnement du centre.",
+    how2p2: "Pour gérer toutes les tâches que notre centre exige, nous dépendons de l'aide de bénévoles motivés et responsables. Les tâches générales comprennent la préparation de la nourriture, le nettoyage et l'entretien des enclos, la fabrication de jouets d'activité et l'enrichissement pour les animaux. En plus des tâches quotidiennes, nous avons aussi besoin d'aide pour les projets supplémentaires qui peuvent surgir au cours de la journée.",
+    how3h: "Emplacement",
+    how3p1: "Heureusement, à quelques minutes de route, à Cebadilla, nous avons trouvé un site fantastique avec de petites rivières, des prairies, des collines et de grands arbres fruitiers ! Il convient parfaitement à nos animaux et bénévoles, et nous avons commencé le déménagement en juin 2016 — avec l'aide de nombreux bénévoles, envers qui nous sommes éternellement reconnaissants.",
+    how3p2: "Nous travaillons encore chaque jour à améliorer le lieu et les enclos, mais nous avons déjà construit un hôpital pour animaux, une immense volière, deux jardins à paresseux et plusieurs grandes cages à singes, équipées de nombreux éléments d'enrichissement pour garder nos protégés actifs — physiquement et cognitivement.",
+    quoteText: "« Secourir, réhabiliter, relâcher. »",
+    quoteCaption: "Notre devise — depuis 2005",
+    stat1: "Années d'expérience", stat2: "Animaux secourus", stat3: "Interviews", stat4: "Abonnés",
+    growthTitle: "Une croissance année après année",
+    growthP1: "Chaque année, nous nous efforçons d'améliorer nos installations et nos ressources pour sauver toujours plus d'animaux. Vos dons nous aident à obtenir les fonds nécessaires pour embaucher plus de professionnels, agrandir nos installations et acquérir un meilleur équipement.",
+    growthP2: "Nous fonctionnons sur un modèle de croissance annuelle : lorsque nous agrandissons quelque chose, nous devons nous adapter rapidement et en douceur pour garantir que les animaux soient transférés en toute sécurité et sans stress.",
+    chartTitle: "Animaux sauvés chaque année",
+    galleryKicker: "La vie au sanctuaire", galleryTitle: "Galerie",
+    galleryAlt: "Faune secourue au sanctuaire",
+    joinReady: "Prêt à aider ?", joinVol: "Bénévolat", joinVolBtn: "Rejoignez-nous",
+    joinEvery: "Chaque colón compte", joinDon: "Faire un don", joinDonBtn: "Donner aujourd'hui",
+    wishlist: "<strong>Liste de souhaits Amazon :</strong> achetez un article de notre liste ! Votre don nous aide à poursuivre notre mission de sauvetage et de réhabilitation de la faune au Costa Rica.",
+    wishlistBtn: "Ouvrir la liste",
+    navSponsor: "Parrainage",
+    navKnow: "À propos",
+    sponKicker: "Parrainez un animal",
+    sponTitle: "Devenez le parrain d'un animal secouru",
+    sponIntro: "Avec une contribution mensuelle, vous aidez directement un animal du centre : sa nourriture, ses soins vétérinaires et son enrichissement. Choisissez qui vous souhaitez parrainer et le montant de votre soutien.",
+    sponPerMonth: "par mois",
+    sponT1: "Une semaine de nourriture",
+    sponT2: "Un mois de nourriture",
+    sponT3: "Soins complets",
+    sponBtn: "Parrainer",
+    sponWa: "Bonjour ! Je souhaite parrainer {name} avec {amount} $ par mois 🐾",
+    sponNote: "100 % de votre contribution est consacrée aux soins des animaux. Lors de votre don, indiquez le nom de l'animal que vous souhaitez parrainer.",
+    sponA1sp: "Singe hurleur",
+    sponA1d: "Arrivé au centre bébé et orphelin. Aujourd'hui en réhabilitation, il mange des fruits et des feuilles fraîches chaque jour.",
+    sponA2sp: "Paresseux à deux doigts",
+    sponA2d: "Secourue après un accident avec des lignes électriques. Elle se rétablit dans l'un de nos jardins à paresseux.",
+    sponA3sp: "Ara rouge",
+    sponA3d: "Elle vivait comme animal de compagnie illégal. Dans notre volière, elle réapprend à voler et à côtoyer d'autres aras.",
+    payTitle: "Comment faire un don",
+    payIntro: "Vous pouvez faire un don ou régler votre parrainage par SINPE Móvil ou virement bancaire :",
+    paySinpe: "SINPE Móvil",
+    payCrc: "Compte en colones",
+    payUsd: "Compte en dollars",
+    payHolder: "Titulaire",
+    payBac: "Compte BAC",
+    payCopy: "Copier",
+    payCopied: "Copié !",
+    footAddr: "Costa Rica Animal Rescue Center<br>Turrúcares, Costa Rica",
+    footHours: "Horaires", footMonFri: "Lun – Ven", footSat: "Samedi", footSun: "Dimanche",
+    footExplore: "Explorer", footTours: "Visites", footAbout: "À propos", footFounders: "Fondateurs",
+    footFaq: "FAQ", footInternships: "Stages", footVolunteer: "Bénévolat", footContact: "Contact",
+    footFollow: "Suivez-nous",
+    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footMotto: "Secourir · Réhabiliter · Relâcher"
+  },
+
+  it: {
+    _name: "Italiano", _flag: "🇮🇹",
+    navHow: "Come lavoriamo", navImpact: "Il nostro impatto", navGrowth: "Crescita",
+    navGallery: "Galleria", navVolunteer: "Volontariato", navContact: "Contatti", navDonate: "Dona",
+    heroKicker: "Un santuario senza scopo di lucro a Turrúcares, Costa Rica",
+    heroTitle: "Oltre 17 anni di esperienza <em>ad aiutare la fauna selvatica</em>",
+    heroLead: "Diamo a bradipi, scimmie, uccelli e altra fauna costaricana una seconda possibilità di vita: li salviamo, li riabilitiamo e li liberiamo di nuovo nel loro habitat naturale.",
+    heroCtaVol: "Diventa volontario", heroCtaDon: "Dona", scroll: "Scorri",
+    howKicker: "Come lavoriamo",
+    howTitle: "Salvataggio, cura e una comunità che manda avanti tutto",
+    how1h: "Salvataggio e riabilitazione",
+    how1p1: "A volte gli animali vengono portati da persone del posto, turisti o persino volontari, che li hanno trovati feriti o abbandonati per strada o nella natura. Questi animali salvati sono spesso piccoli, giovani o cuccioli che hanno perso la madre e non avrebbero alcuna possibilità di sopravvivere da soli.",
+    how1p2: "Al centro puntiamo a riabilitare gli animali e a dare loro le migliori condizioni possibili per riprendersi dalle ferite fisiche e, a volte, anche mentali. Quando arrivano nuovi animali, vengono esaminati dai veterinari che stabiliscono le azioni necessarie per ogni singola situazione. Cure, trattamenti e riaddestramento sono responsabilità del personale permanente, e i volontari spesso si occupano di parti di questi compiti in base alle loro qualifiche.",
+    how2h: "Squadra",
+    how2p1: "La nostra squadra è composta da volontari e dal nostro veterinario in loco, che svolgono tutti un ruolo importante nel mantenere il centro in funzione.",
+    how2p2: "Per gestire tutti i compiti che il nostro centro richiede dipendiamo dall'aiuto di volontari motivati e responsabili. I compiti generali includono la preparazione del cibo, la pulizia e la manutenzione dei recinti, la costruzione di giochi di attività e l'arricchimento per gli animali. Oltre ai compiti quotidiani, abbiamo bisogno di aiuto anche per i progetti aggiuntivi che possono presentarsi durante la giornata.",
+    how3h: "Posizione",
+    how3p1: "Per fortuna, a pochi minuti di strada, a Cebadilla, abbiamo trovato un sito fantastico con piccoli fiumi, prati, colline e grandi alberi da frutto! È perfetto per i nostri animali e volontari, e abbiamo iniziato il trasloco a giugno 2016 — con l'aiuto di tanti volontari, ai quali siamo eternamente grati.",
+    how3p2: "Lavoriamo ancora ogni giorno per migliorare il luogo e i recinti, ma finora abbiamo costruito un ospedale per animali, un'enorme voliera, due giardini per bradipi e diverse grandi gabbie per scimmie, dotate di molti elementi di arricchimento per mantenere i nostri salvati attivi — fisicamente e cognitivamente.",
+    quoteText: "“Salvare, riabilitare, liberare.”",
+    quoteCaption: "Il nostro motto — dal 2005",
+    stat1: "Anni di esperienza", stat2: "Animali salvati", stat3: "Interviste", stat4: "Follower",
+    growthTitle: "Crescita anno dopo anno",
+    growthP1: "Ogni anno ci impegniamo a migliorare le nostre strutture e risorse per poter salvare sempre più animali. Le tue donazioni ci aiutano a ottenere i fondi necessari per assumere più professionisti, ampliare le nostre strutture e procurarci attrezzature migliori.",
+    growthP2: "Lavoriamo con un modello di crescita anno per anno: quando ampliamo qualcosa, dobbiamo adattarci in modo rapido e fluido per garantire che gli animali vengano trasferiti in sicurezza e senza stress.",
+    chartTitle: "Animali salvati ogni anno",
+    galleryKicker: "La vita al santuario", galleryTitle: "Galleria",
+    galleryAlt: "Fauna salvata al santuario",
+    joinReady: "Pronto ad aiutare?", joinVol: "Volontariato", joinVolBtn: "Unisciti oggi",
+    joinEvery: "Ogni colón conta", joinDon: "Dona", joinDonBtn: "Dona oggi",
+    wishlist: "<strong>Lista dei desideri Amazon:</strong> acquista un articolo dalla nostra lista! La tua donazione ci aiuta a continuare la nostra missione di salvataggio e riabilitazione della fauna selvatica in Costa Rica.",
+    wishlistBtn: "Apri la lista",
+    navSponsor: "Padrini",
+    navKnow: "Chi siamo",
+    sponKicker: "Adotta a distanza",
+    sponTitle: "Diventa il padrino di un animale salvato",
+    sponIntro: "Con un contributo mensile aiuti direttamente un animale del centro: il suo cibo, le cure veterinarie e l'arricchimento. Scegli chi vuoi sostenere e l'importo con cui vuoi contribuire.",
+    sponPerMonth: "al mese",
+    sponT1: "Cibo per una settimana",
+    sponT2: "Cibo per un mese",
+    sponT3: "Cura completa",
+    sponBtn: "Adotta",
+    sponWa: "Ciao! Vorrei adottare a distanza {name} con {amount} $ al mese 🐾",
+    sponNote: "Il 100% del tuo contributo è destinato alla cura degli animali. Al momento della donazione, indica il nome dell'animale che vuoi sostenere.",
+    sponA1sp: "Scimmia urlatrice",
+    sponA1d: "È arrivato al centro da cucciolo orfano. Oggi è in riabilitazione e mangia frutta e foglie fresche ogni giorno.",
+    sponA2sp: "Bradipo didattilo",
+    sponA2d: "Salvata dopo un incidente con i cavi elettrici. Si sta riprendendo in uno dei nostri giardini per bradipi.",
+    sponA3sp: "Ara scarlatta",
+    sponA3d: "Viveva come animale domestico illegale. Nella nostra voliera sta imparando di nuovo a volare e a socializzare con altre are.",
+    payTitle: "Come donare",
+    payIntro: "Puoi donare o pagare la tua adozione a distanza tramite SINPE Móvil o bonifico bancario:",
+    paySinpe: "SINPE Móvil",
+    payCrc: "Conto in colones",
+    payUsd: "Conto in dollari",
+    payHolder: "Intestatario",
+    payBac: "Conto BAC",
+    payCopy: "Copia",
+    payCopied: "Copiato!",
+    footAddr: "Costa Rica Animal Rescue Center<br>Turrúcares, Costa Rica",
+    footHours: "Orari", footMonFri: "Lun – Ven", footSat: "Sabato", footSun: "Domenica",
+    footExplore: "Esplora", footTours: "Tour", footAbout: "Chi siamo", footFounders: "Fondatori",
+    footFaq: "FAQ", footInternships: "Tirocini", footVolunteer: "Volontariato", footContact: "Contatti",
+    footFollow: "Seguici",
+    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footMotto: "Salvare · Riabilitare · Liberare"
+  }
+};
+</script>
+
+<style>
+:root{
+  --ink:        #17251B;
+  --canopy:     #2E5339;
+  --canopy-dk:  #22402C;
+  --leaf:       #7FA96B;
+  --mist:       #F2F5EF;
+  --paper:      #FBFCF9;
+  --sun:        #E9B44C;
+  --sun-dk:     #C9962F;
+  --line:       #D8E0D2;
+
+  --serif: "Fraunces", Georgia, serif;
+  --sans:  "Karla", "Segoe UI", sans-serif;
+
+  --wrap: 1140px;
+  --radius: 14px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.65;
+  font-size:1.0625rem;
+}
+
+img{max-width:100%;display:block}
+a{color:inherit}
+
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+
+h1,h2,h3{font-family:var(--serif);line-height:1.12;font-weight:600}
+
+.kicker{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:1.15rem;
+  color:var(--canopy);
+  display:flex;align-items:center;gap:.6rem;
+  margin-bottom:.9rem;
+}
+.kicker::before{
+  content:"";
+  width:34px;height:2px;background:var(--leaf);
+  border-radius:2px;flex:none;
+}
+
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:4px}
+
+/* ---------- Header ---------- */
+header{
+  position:fixed;inset:0 0 auto 0;z-index:50;
+  transition:background .3s ease, box-shadow .3s ease;
+}
+header.solid{
+  background:rgba(251,252,249,.96);
+  box-shadow:0 1px 0 var(--line);
+  backdrop-filter:blur(8px);
+}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-block:14px;gap:14px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
+.brand img{height:52px;width:auto;background:#fff;border-radius:10px;padding:5px}
+.brand span{
+  font-family:var(--serif);font-weight:700;font-size:1.05rem;line-height:1.15;
+  color:#fff;max-width:180px;transition:color .3s;
+}
+header.solid .brand span{color:var(--canopy-dk)}
+
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-links a{
+  text-decoration:none;font-weight:500;font-size:.98rem;color:#fff;
+  transition:color .3s;white-space:nowrap;
+}
+header.solid .nav-links a{color:var(--ink)}
+.nav-links a:hover{color:var(--sun)}
+header.solid .nav-links a:hover{color:var(--canopy)}
+
+/* Selector de idioma */
+.lang{
+  position:relative;
+}
+.lang select{
+  appearance:none;-webkit-appearance:none;
+  background:rgba(255,255,255,.14);
+  border:1.5px solid rgba(255,255,255,.6);
+  color:#fff;
+  font-family:var(--sans);font-weight:700;font-size:.92rem;
+  border-radius:999px;
+  padding:.45em 2em .45em 1em;
+  cursor:pointer;
+  transition:background .3s, color .3s, border-color .3s;
+}
+.lang::after{
+  content:"▾";
+  position:absolute;right:.8em;top:50%;transform:translateY(-50%);
+  color:#fff;pointer-events:none;font-size:.8rem;
+  transition:color .3s;
+}
+header.solid .lang select{
+  background:var(--mist);border-color:var(--line);color:var(--ink);
+}
+header.solid .lang::after{color:var(--ink)}
+.lang select option{color:var(--ink);background:#fff}
+
+.btn{
+  display:inline-block;text-decoration:none;font-weight:700;
+  border-radius:999px;padding:.72em 1.5em;font-size:1rem;
+  border:2px solid transparent;cursor:pointer;
+  transition:transform .15s ease, background .2s ease, color .2s ease;
+}
+.btn:active{transform:scale(.97)}
+.btn-sun{background:var(--sun);color:var(--ink)}
+.btn-sun:hover{background:var(--sun-dk)}
+.btn-ghost{border-color:#fff;color:#fff}
+.btn-ghost:hover{background:#fff;color:var(--canopy-dk)}
+
+.nav .btn{padding:.55em 1.3em}
+
+.menu-toggle{
+  display:none;background:none;border:0;cursor:pointer;
+  width:44px;height:44px;position:relative;z-index:60;
+}
+.menu-toggle span{
+  display:block;width:26px;height:3px;background:#fff;border-radius:3px;
+  margin:5px auto;transition:transform .3s, opacity .3s, background .3s;
+}
+header.solid .menu-toggle span{background:var(--ink)}
+.menu-open .menu-toggle span{background:var(--ink)}
+.menu-open .menu-toggle span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.menu-open .menu-toggle span:nth-child(2){opacity:0}
+.menu-open .menu-toggle span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+/* ---------- Hero ---------- */
+.hero{
+  min-height:100svh;
+  display:flex;align-items:flex-end;
+  position:relative;
+  isolation:isolate;
+  color:#fff;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-2;
+  background-size:cover;background-position:center;
+}
+.hero-video{
+  position:absolute;inset:0;z-index:-2;
+  width:100%;height:100%;object-fit:cover;
+  display:none;
+}
+.hero-video.on{display:block}
+/* YouTube de fondo: iframe centrado y sobredimensionado para simular "cover" */
+.hero-yt{
+  position:absolute;inset:0;z-index:-2;overflow:hidden;
+  display:none;pointer-events:none;
+}
+.hero-yt.on{display:block}
+.hero-yt iframe{
+  position:absolute;top:50%;left:50%;
+  width:max(100vw, 177.78vh);
+  height:max(100vh, 56.25vw);
+  transform:translate(-50%,-50%);
+  border:0;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg, rgba(23,37,27,.45) 0%, rgba(23,37,27,.15) 40%, rgba(23,37,27,.82) 100%);
+}
+.hero-content{padding-top:160px;padding-bottom:120px;max-width:780px}
+.hero .kicker{color:var(--sun)}
+.hero .kicker::before{background:var(--sun)}
+.hero h1{
+  font-size:clamp(2.4rem, 6vw, 4.4rem);
+  font-weight:700;
+  text-wrap:balance;
+}
+.hero h1 em{font-style:italic;color:#CFE3B8;font-weight:600}
+.hero p{
+  margin-top:1.1rem;font-size:clamp(1.05rem,2vw,1.25rem);
+  max-width:560px;color:#E9EFE4;
+}
+.hero-cta{margin-top:1.8rem;display:flex;gap:14px;flex-wrap:wrap}
+
+.hero-content > *{opacity:0;transform:translateY(18px);animation:rise .8s ease forwards}
+.hero-content > *:nth-child(2){animation-delay:.12s}
+.hero-content > *:nth-child(3){animation-delay:.24s}
+.hero-content > *:nth-child(4){animation-delay:.36s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+.scroll-hint{
+  position:absolute;left:50%;bottom:26px;transform:translateX(-50%);
+  color:#fff;text-decoration:none;font-size:.9rem;letter-spacing:.06em;
+  opacity:.85;text-align:center;
+}
+.scroll-hint::after{
+  content:"";display:block;width:1px;height:34px;background:#fff;
+  margin:8px auto 0;opacity:.7;
+}
+
+/* ---------- Organic wave dividers ---------- */
+.wave{display:block;width:100%;height:70px;margin-bottom:-1px}
+
+/* ---------- Sections ---------- */
+section{padding-block:90px}
+.section-head{max-width:640px;margin-bottom:56px}
+.section-head h2{font-size:clamp(1.9rem,4vw,2.7rem)}
+
+/* How we work */
+.how{background:var(--mist)}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+.how-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:34px 30px;
+  position:relative;
+}
+.how-card::before{
+  content:"";
+  position:absolute;top:0;left:30px;
+  width:56px;height:5px;border-radius:0 0 6px 6px;
+  background:var(--leaf);
+}
+.how-card:nth-child(2)::before{background:var(--sun)}
+.how-card:nth-child(3)::before{background:var(--canopy)}
+.how-card h3{font-size:1.45rem;margin-bottom:.8rem;color:var(--canopy-dk)}
+.how-card p{font-size:.99rem;color:#33422F}
+.how-card p + p{margin-top:.85rem}
+
+/* Quote */
+.quote{
+  position:relative;isolation:isolate;color:#fff;
+  padding-block:150px;text-align:center;
+  background-size:cover;background-position:center;
+  background-attachment:fixed;
+}
+.quote::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:rgba(23,37,27,.62);
+}
+.quote blockquote{
+  font-family:var(--serif);font-style:italic;font-weight:600;
+  font-size:clamp(1.9rem,5vw,3.3rem);
+  max-width:820px;margin-inline:auto;
+  text-wrap:balance;
+}
+.quote figcaption{
+  margin-top:1.2rem;font-family:var(--sans);font-size:1rem;
+  color:#D9E3D2;letter-spacing:.04em;
+}
+
+/* Stats */
+.stats{background:var(--canopy-dk);color:#fff;padding-block:78px}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center;
+}
+.stat b{
+  display:block;font-family:var(--serif);font-weight:700;
+  font-size:clamp(2.4rem,5vw,3.6rem);color:var(--sun);
+  font-variant-numeric:tabular-nums;
+}
+.stat span{color:#CBDCC6;font-size:1rem}
+
+/* Growth */
+.growth .cols{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:center;
+}
+.growth h2{font-size:clamp(1.9rem,4vw,2.6rem)}
+.growth .years{
+  font-family:var(--serif);font-style:italic;color:var(--leaf);
+  font-size:1.2rem;margin-bottom:.4rem;display:block;
+}
+.growth p{margin-top:1rem;color:#3E4F43}
+
+.chart{
+  background:var(--mist);border:1px solid var(--line);
+  border-radius:var(--radius);padding:30px 26px 18px;
+}
+.chart h3{font-size:1.15rem;color:var(--canopy-dk);margin-bottom:22px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:220px}
+.bar{
+  flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;gap:8px;height:100%;
+}
+.bar i{
+  width:100%;max-width:34px;
+  background:linear-gradient(180deg,var(--leaf),var(--canopy));
+  border-radius:7px 7px 3px 3px;
+  height:calc(var(--h) * 1%);
+  min-height:6px;
+  transform-origin:bottom;
+  transform:scaleY(0);
+  transition:transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.chart.on .bar i{transform:scaleY(1)}
+.bar b{
+  font-size:.72rem;font-weight:700;color:var(--canopy-dk);
+  font-variant-numeric:tabular-nums;
+}
+.bar span{font-size:.72rem;color:#5C6B5C}
+
+/* Gallery */
+.gallery{background:var(--mist)}
+.masonry{columns:3;column-gap:16px}
+.masonry figure{
+  break-inside:avoid;margin-bottom:16px;
+  border-radius:var(--radius);overflow:hidden;
+  background:var(--line);
+}
+.masonry img{width:100%;height:auto;display:block;transition:transform .5s ease}
+.masonry figure:hover img{transform:scale(1.04)}
+
+/* Padrinos */
+.sponsor .intro{max-width:640px;margin-bottom:56px}
+.sponsor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.spon-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.spon-card > img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;
+}
+.spon-body{padding:26px 26px 28px;display:flex;flex-direction:column;flex:1}
+.spon-body h3{
+  font-size:1.6rem;color:var(--canopy-dk);
+}
+.spon-body .species{
+  font-family:var(--serif);font-style:italic;color:var(--leaf);
+  margin-bottom:.7rem;
+}
+.spon-body .desc{font-size:.97rem;color:#33422F;margin-bottom:1.2rem}
+.spon-tiers{
+  display:flex;flex-direction:column;gap:8px;margin-bottom:1.3rem;
+}
+.spon-tier{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:1.5px solid var(--line);
+  background:var(--mist);
+  border-radius:10px;
+  padding:.55em .9em;
+  font-family:var(--sans);font-size:.93rem;color:var(--ink);
+  cursor:pointer;text-align:left;
+  transition:border-color .2s, background .2s;
+}
+.spon-tier b{
+  font-family:var(--serif);font-size:1.05rem;color:var(--canopy-dk);
+  white-space:nowrap;
+}
+.spon-tier small{color:#5C6B5C;white-space:nowrap}
+.spon-tier.sel{
+  border-color:var(--canopy);
+  background:#E4EEDF;
+}
+.spon-tier.sel b{color:var(--canopy)}
+.spon-card .btn{margin-top:auto;text-align:center}
+.spon-note{
+  margin-top:34px;color:#5C6B5C;font-size:.95rem;max-width:640px;
+}
+
+/* Join CTA */
+.join{background:var(--canopy);color:#fff;position:relative;overflow:hidden}
+.join .leafmark{
+  position:absolute;right:-60px;top:-40px;width:340px;opacity:.10;pointer-events:none;
+}
+.join-grid{display:grid;grid-template-columns:1fr 1fr;text-align:center}
+.join-col{padding:30px 40px}
+.join-col + .join-col{border-left:1px solid rgba(255,255,255,.22)}
+.join-col small{
+  font-family:var(--serif);font-style:italic;font-size:1.1rem;color:#CFE3B8;
+}
+.join-col h2{font-size:clamp(2rem,4.5vw,3rem);margin:.3rem 0 1.3rem}
+
+.wishlist{
+  margin-top:64px;
+  background:rgba(255,255,255,.09);
+  border:1px dashed rgba(255,255,255,.4);
+  border-radius:var(--radius);
+  padding:30px 34px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:26px;flex-wrap:wrap;
+}
+.wishlist p{max-width:560px;color:#E9EFE4}
+.wishlist p strong{color:#fff}
+
+/* Formas de donar */
+.paybox{margin-top:40px}
+.paybox h3{font-size:1.5rem;color:#fff;margin-bottom:.4rem}
+.paybox > p{color:#E9EFE4;margin-bottom:22px;max-width:560px}
+.pay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pay-card{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:var(--radius);
+  padding:22px 22px 20px;
+}
+.pay-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.12rem;
+  color:var(--sun);margin-bottom:12px;
+}
+.pay-row{margin-bottom:10px;font-size:.94rem}
+.pay-row small{display:block;color:#BBCDB6;margin-bottom:2px}
+.pay-val{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.pay-val span{
+  color:#fff;font-weight:700;
+  font-variant-numeric:tabular-nums;letter-spacing:.03em;
+  word-break:break-all;
+}
+.copy-btn{
+  background:none;border:1.5px solid rgba(255,255,255,.5);color:#fff;
+  border-radius:8px;padding:.2em .7em;font-family:var(--sans);
+  font-size:.8rem;font-weight:700;cursor:pointer;flex:none;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.copy-btn:hover{background:#fff;color:var(--canopy-dk)}
+.copy-btn.ok{background:var(--sun);border-color:var(--sun);color:var(--ink)}
+
+/* Footer */
+footer{background:var(--ink);color:#C6D2C4;padding:70px 0 34px;font-size:.97rem}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:44px}
+footer h4{
+  font-family:var(--serif);color:#fff;font-size:1.15rem;
+  margin-bottom:1rem;font-weight:600;
+}
+footer ul{list-style:none}
+footer li{margin-bottom:.55rem}
+footer a{text-decoration:none;color:#C6D2C4}
+footer a:hover{color:var(--sun)}
+.foot-brand img{height:60px;background:#fff;border-radius:10px;padding:6px;margin-bottom:14px}
+.hours li{display:flex;justify-content:space-between;gap:16px;max-width:220px}
+.copyright{
+  margin-top:52px;padding-top:22px;border-top:1px solid #2B3A2E;
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  color:#8FA08D;font-size:.9rem;
+}
+
+/* ---------- Responsive ---------- */
+/* Nav compacto en pantallas medianas: solo logo, enlaces sin salto */
+@media (max-width: 1280px){
+  .brand span{display:none}
+  .nav-links{gap:16px}
+  .nav-links a{font-size:.93rem}
+  .nav .btn{padding:.5em 1.1em}
+}
+
+@media (max-width: 960px){
+  .how-grid{grid-template-columns:1fr}
+  .sponsor-grid{grid-template-columns:1fr}
+  .growth .cols{grid-template-columns:1fr;gap:44px}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:38px}
+  .masonry{columns:2}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .quote{background-attachment:scroll}
+  .bar:nth-child(even) span{display:none}
+  .nav-links{
+    position:fixed;inset:0;
+    background:var(--paper);
+    flex-direction:column;justify-content:center;
+    gap:26px;
+    transform:translateX(100%);
+    transition:transform .35s ease;
+    z-index:55;
+  }
+  .nav-links a{font-size:1.2rem;color:var(--ink)}
+  .menu-open .nav-links{transform:none}
+  .menu-open .lang select{background:var(--mist);border-color:var(--line);color:var(--ink)}
+  .menu-open .lang::after{color:var(--ink)}
+  .menu-toggle{display:block}
+}
+
+@media (max-width: 680px){
+  section{padding-block:64px}
+  .hero-content{padding-bottom:96px}
+  .join-grid{grid-template-columns:1fr}
+  .pay-grid{grid-template-columns:1fr}
+  .join-col + .join-col{border-left:0;border-top:1px solid rgba(255,255,255,.22)}
+  .masonry{columns:1}
+  .foot-grid{grid-template-columns:1fr}
+  .bars{height:170px;gap:5px}
+  .bar b{font-size:.62rem}
+  .bar span{font-size:.62rem}
+}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Costa Rica Animal Rescue Center">
+      <img id="logo" src="" alt="Logo Costa Rica Animal Rescue Center">
+      <span>Costa Rica Animal Rescue Center</span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#how" data-i18n="navHow"></a></li>
+      <li><a href="#impact" data-i18n="navImpact"></a></li>
+      <li><a href="#growth" data-i18n="navGrowth"></a></li>
+      <li><a href="#sponsor" data-i18n="navSponsor"></a></li>
+      <li><a href="conocenos.html" data-i18n="navKnow"></a></li>
+      <li><a href="#gallery" data-i18n="navGallery"></a></li>
+      <li><a href="https://www.costaricaanimalrescuecenter.org/volunteer" data-i18n="navVolunteer"></a></li>
+      <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="navContact"></a></li>
+      <li class="lang">
+        <select id="langSelect" aria-label="Idioma / Language"></select>
+      </li>
+      <li><a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="navDonate"></a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===================== HERO (video o imagen) ===================== -->
+  <section class="hero" style="padding:0">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-yt" id="heroYt" aria-hidden="true"></div>
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata"></video>
+    <div class="wrap hero-content">
+      <p class="kicker" data-i18n="heroKicker"></p>
+      <h1 data-i18n-html="heroTitle"></h1>
+      <p data-i18n="heroLead"></p>
+      <div class="hero-cta">
+        <a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/volunteer" data-i18n="heroCtaVol"></a>
+        <a class="btn btn-ghost" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="heroCtaDon"></a>
+      </div>
+    </div>
+    <a class="scroll-hint" href="#how" data-i18n="scroll"></a>
+  </section>
+
+  <!-- ===================== HOW WE WORK ===================== -->
+  <section class="how" id="how" style="padding-top:0">
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C240,90 480,-10 720,30 C960,70 1200,10 1440,45 L1440,70 L0,70 Z" fill="#F2F5EF"/>
+    </svg>
+    <div class="wrap" style="padding-top:60px">
+      <div class="section-head">
+        <p class="kicker" data-i18n="howKicker"></p>
+        <h2 data-i18n="howTitle"></h2>
+      </div>
+
+      <div class="how-grid">
+        <article class="how-card">
+          <h3 data-i18n="how1h"></h3>
+          <p data-i18n="how1p1"></p>
+          <p data-i18n="how1p2"></p>
+        </article>
+        <article class="how-card">
+          <h3 data-i18n="how2h"></h3>
+          <p data-i18n="how2p1"></p>
+          <p data-i18n="how2p2"></p>
+        </article>
+        <article class="how-card">
+          <h3 data-i18n="how3h"></h3>
+          <p data-i18n="how3p1"></p>
+          <p data-i18n="how3p2"></p>
+        </article>
+      </div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true" style="transform:scaleY(-1) scaleX(-1);margin-top:-1px">
+      <path d="M0,40 C240,90 480,-10 720,30 C960,70 1200,10 1440,45 L1440,70 L0,70 Z" fill="#F2F5EF"/>
+    </svg>
+  </section>
+
+  <!-- ===================== QUOTE ===================== -->
+  <figure class="quote" id="quoteBg">
+    <blockquote data-i18n="quoteText"></blockquote>
+    <figcaption data-i18n="quoteCaption"></figcaption>
+  </figure>
+
+  <!-- ===================== STATS ===================== -->
+  <section class="stats" id="impact">
+    <div class="wrap stats-grid" id="statsGrid">
+      <div class="stat"><b data-count="17">0</b><span data-i18n="stat1"></span></div>
+      <div class="stat"><b data-count="100" data-suffix="+">0</b><span data-i18n="stat2"></span></div>
+      <div class="stat"><b data-count="20" data-suffix="+">0</b><span data-i18n="stat3"></span></div>
+      <div class="stat"><b data-count="96500" data-format="thousands">0</b><span data-i18n="stat4"></span></div>
+    </div>
+  </section>
+
+  <!-- ===================== GROWTH ===================== -->
+  <section class="growth" id="growth">
+    <div class="wrap cols">
+      <div>
+        <span class="years">2005 – 2025</span>
+        <h2 data-i18n="growthTitle"></h2>
+        <p data-i18n="growthP1"></p>
+        <p data-i18n="growthP2"></p>
+      </div>
+      <div class="chart" id="chart">
+        <h3 data-i18n="chartTitle"></h3>
+        <div class="bars" id="bars"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PADRINOS ===================== -->
+  <section class="sponsor" id="sponsor">
+    <div class="wrap">
+      <div class="intro">
+        <p class="kicker" data-i18n="sponKicker"></p>
+        <h2 data-i18n="sponTitle"></h2>
+        <p style="margin-top:.8rem;color:#3E4F43" data-i18n="sponIntro"></p>
+      </div>
+      <div class="sponsor-grid" id="sponsorGrid"></div>
+      <p class="spon-note" data-i18n="sponNote"></p>
+    </div>
+  </section>
+
+  <!-- ===================== GALLERY ===================== -->
+  <section class="gallery" id="gallery" style="padding-top:0">
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,30 C260,70 500,0 740,35 C980,70 1220,15 1440,40 L1440,70 L0,70 Z" fill="#F2F5EF"/>
+    </svg>
+    <div class="wrap" style="padding-top:60px">
+      <div class="section-head">
+        <p class="kicker" data-i18n="galleryKicker"></p>
+        <h2 data-i18n="galleryTitle"></h2>
+      </div>
+      <div class="masonry" id="masonry"></div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true" style="transform:scaleY(-1) scaleX(-1);margin-top:-1px">
+      <path d="M0,30 C260,70 500,0 740,35 C980,70 1220,15 1440,40 L1440,70 L0,70 Z" fill="#F2F5EF"/>
+    </svg>
+  </section>
+
+  <!-- ===================== JOIN / DONATE ===================== -->
+  <section class="join">
+    <svg class="leafmark" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M50 5 C 20 30, 15 65, 50 95 C 85 65, 80 30, 50 5 Z M50 15 L50 85" fill="none" stroke="#fff" stroke-width="3"/>
+    </svg>
+    <div class="wrap">
+      <div class="join-grid">
+        <div class="join-col">
+          <small data-i18n="joinReady"></small>
+          <h2 data-i18n="joinVol"></h2>
+          <a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/volunteer" data-i18n="joinVolBtn"></a>
+        </div>
+        <div class="join-col">
+          <small data-i18n="joinEvery"></small>
+          <h2 data-i18n="joinDon"></h2>
+          <a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="joinDonBtn"></a>
+        </div>
+      </div>
+
+      <div class="paybox" id="pay">
+        <h3 data-i18n="payTitle"></h3>
+        <p data-i18n="payIntro"></p>
+        <div class="pay-grid" id="payGrid"></div>
+      </div>
+
+      <div class="wishlist">
+        <p data-i18n-html="wishlist"></p>
+        <a class="btn btn-ghost" href="https://www.amazon.com/hz/wishlist/dl/invite/3pFuUDF?ref_=wl_share" data-i18n="wishlistBtn"></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <img id="logoFoot" src="" alt="Logo Costa Rica Animal Rescue Center">
+      <p data-i18n-html="footAddr"></p>
+      <ul style="margin-top:14px">
+        <li><a href="tel:+50688926771">(506) 8892-6771</a></li>
+        <li><a href="mailto:tourscrarc@gmail.com">tourscrarc@gmail.com</a></li>
+        <li><a href="mailto:belcocr@gmail.com">belcocr@gmail.com</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 data-i18n="footHours"></h4>
+      <ul class="hours">
+        <li><span data-i18n="footMonFri"></span><span>8am – 5pm</span></li>
+        <li><span data-i18n="footSat"></span><span>8am – 5pm</span></li>
+        <li><span data-i18n="footSun"></span><span>8am – 5pm</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 data-i18n="footExplore"></h4>
+      <ul>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/tours" data-i18n="footTours"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/about-us" data-i18n="footAbout"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/founders" data-i18n="footFounders"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/faq-" data-i18n="footFaq"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/internships" data-i18n="footInternships"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/volunteer" data-i18n="footVolunteer"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="footContact"></a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 data-i18n="footFollow"></h4>
+      <ul>
+        <li><a href="https://instagram.com/costaricaanimalrescuecenter_?igshid=1n3zkhhkk0ti1">Instagram</a></li>
+        <li><a href="https://www.facebook.com/costaricaanimalrescuecenter/">Facebook</a></li>
+        <li><a href="https://www.youtube.com/channel/UC2UcGU7RY4sq6CV7BagnKIA?view_as=subscriber">YouTube</a></li>
+        <li><a href="https://www.tripadvisor.com/Attraction_Review-g12673135-d15640027-Reviews-Costa_Rica_Animal_Rescue_Center-Turrucares_Province_of_Alajuela.html">Tripadvisor</a></li>
+        <li><a href="https://www.google.com/maps/place/Costa+Rica+Animal+Rescue+Center/@9.9411525,-84.3469467,17z/">Google Maps</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap copyright">
+    <span data-i18n="footCopy"></span>
+    <span data-i18n="footMotto"></span>
+  </div>
+</footer>
+
+<script>
+/* ---------- Imágenes y video desde la configuración ---------- */
+function withFallback(img){
+  img.addEventListener("error", () => {
+    if (img.src !== IMAGES.fallback) img.src = IMAGES.fallback;
+  }, { once:true });
+}
+
+document.getElementById("logo").src = IMAGES.logo;
+document.getElementById("logoFoot").src = IMAGES.logo;
+document.getElementById("heroBg").style.backgroundImage = `url("${IMAGES.hero}")`;
+document.getElementById("quoteBg").style.backgroundImage = `url("${IMAGES.quote}")`;
+
+/* Video del hero: prioridad YouTube → mp4 → imagen de respaldo */
+const heroVideo = document.getElementById("heroVideo");
+const heroYt = document.getElementById("heroYt");
+const noMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (VIDEO.youtube && !noMotion) {
+  const id = VIDEO.youtube.trim();
+  const iframe = document.createElement("iframe");
+  iframe.src = `https://www.youtube-nocookie.com/embed/${id}`
+    + `?autoplay=1&mute=1&loop=1&playlist=${id}`
+    + `&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3`;
+  iframe.allow = "autoplay; encrypted-media";
+  iframe.title = "Video del centro de rescate";
+  heroYt.appendChild(iframe);
+  heroYt.classList.add("on");
+} else if (VIDEO.hero && !noMotion) {
+  heroVideo.src = VIDEO.hero;
+  heroVideo.poster = IMAGES.hero;
+  heroVideo.classList.add("on");
+  heroVideo.addEventListener("error", () => heroVideo.classList.remove("on"), { once:true });
+}
+/* Si no hay video (o reduced motion), queda la imagen del hero */
+
+const masonry = document.getElementById("masonry");
+IMAGES.gallery.forEach(url => {
+  const fig = document.createElement("figure");
+  const img = document.createElement("img");
+  img.src = url;
+  img.loading = "lazy";
+  img.className = "g-img";
+  withFallback(img);
+  fig.appendChild(img);
+  masonry.appendChild(fig);
+});
+
+/* ---------- I18N ---------- */
+const langSelect = document.getElementById("langSelect");
+Object.keys(I18N).forEach(code => {
+  const opt = document.createElement("option");
+  opt.value = code;
+  opt.textContent = `${I18N[code]._flag} ${I18N[code]._name}`;
+  langSelect.appendChild(opt);
+});
+
+/* ---------- Padrinos ---------- */
+/* Estado actual de los padrinos: arranca con los de SPONSORS y se
+   reemplaza con lo que diga la hoja "Padrinos" si hay CONFIG_ENDPOINT. */
+let SPONSOR_DATA = SPONSORS.map((s, i) => ({
+  id: s.id, name: s.name, img: s.img, amounts: s.amounts,
+  boton: "whatsapp", paypal: "", i18nIndex: i + 1
+}));
+
+function paypalUrl(animal, amount){
+  const p = animal.paypal.replace(/\/+$/, "");
+  if (/^https?:\/\//i.test(p)) {
+    /* Enlace completo: a paypal.me se le agrega el monto; otros (donación,
+       suscripción, hosted button) se abren tal cual */
+    return p.includes("paypal.me") ? `${p}/${amount}USD` : p;
+  }
+  /* Solo el usuario de paypal.me */
+  return `https://paypal.me/${p}/${amount}USD`;
+}
+
+function buildSponsors(dict){
+  const grid = document.getElementById("sponsorGrid");
+  grid.innerHTML = "";
+  SPONSOR_DATA.forEach(animal => {
+    const n = animal.i18nIndex;
+    /* Los 3 animales base (a1-a3) usan las traducciones de I18N;
+       animales nuevos agregados en la hoja usan su texto tal cual */
+    const especie = n ? dict["sponA"+n+"sp"] : (animal.especie || "");
+    const historia = n ? dict["sponA"+n+"d"] : (animal.historia || "");
+
+    const card = document.createElement("article");
+    card.className = "spon-card";
+
+    const img = document.createElement("img");
+    img.src = animal.img || IMAGES.fallback;
+    img.loading = "lazy";
+    img.alt = `${animal.name} — ${especie}`;
+    withFallback(img);
+    card.appendChild(img);
+
+    const body = document.createElement("div");
+    body.className = "spon-body";
+    body.innerHTML = `
+      <h3>${animal.name}</h3>
+      <p class="species">${especie}</p>
+      <p class="desc">${historia}</p>
+    `;
+
+    const tiers = document.createElement("div");
+    tiers.className = "spon-tiers";
+    animal.amounts.forEach((amount, ti) => {
+      const tier = document.createElement("button");
+      tier.type = "button";
+      tier.className = "spon-tier" + (ti === 0 ? " sel" : "");
+      const label = dict["sponT"+(ti+1)] || "";
+      tier.innerHTML = `<b>$${amount}</b><span>${label}</span><small>${dict.sponPerMonth}</small>`;
+      tier.addEventListener("click", () => {
+        tiers.querySelectorAll(".spon-tier").forEach(t => t.classList.remove("sel"));
+        tier.classList.add("sel");
+      });
+      tiers.appendChild(tier);
+    });
+    body.appendChild(tiers);
+
+    const cta = document.createElement("a");
+    cta.className = "btn btn-green";
+    cta.href = "#";
+    cta.textContent = `${dict.sponBtn} ${animal.name}`;
+    cta.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const selTier = tiers.querySelector(".spon-tier.sel b");
+      const amount = selTier ? selTier.textContent.replace("$", "") : animal.amounts[0];
+      if (animal.boton === "paypal" && animal.paypal) {
+        window.open(paypalUrl(animal, amount), "_blank");
+      } else {
+        const msg = dict.sponWa.replace("{name}", animal.name).replace("{amount}", amount);
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+      }
+    });
+    body.appendChild(cta);
+
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+}
+
+/* Cargar la configuración de padrinos desde la hoja de cálculo */
+function cargarPadrinosRemotos(){
+  if (!CONFIG_ENDPOINT) return;
+  const porDefecto = Object.fromEntries(SPONSORS.map(s => [s.id, s]));
+  const indices = { a1: 1, a2: 2, a3: 3 };
+  fetch(`${CONFIG_ENDPOINT}?config=1`)
+    .then(r => r.json())
+    .then(cfg => {
+      if (!cfg.ok || !Array.isArray(cfg.padrinos) || !cfg.padrinos.length) return;
+      SPONSOR_DATA = cfg.padrinos.map(p => ({
+        id: p.id,
+        name: p.nombre || (porDefecto[p.id] || {}).name || p.id,
+        img: p.foto || (porDefecto[p.id] || {}).img || "",
+        amounts: (p.montos && p.montos.length) ? p.montos : ((porDefecto[p.id] || {}).amounts || [10, 25, 50]),
+        boton: p.boton === "paypal" ? "paypal" : "whatsapp",
+        paypal: p.paypal || "",
+        i18nIndex: indices[p.id] || 0,
+        especie: p.especie || "",
+        historia: p.historia || ""
+      }));
+      const dict = I18N[document.documentElement.lang] || I18N.es;
+      buildSponsors(dict);
+    })
+    .catch(() => { /* sin conexión o sin config: quedan los de por defecto */ });
+}
+
+/* ---------- Formas de donar ---------- */
+function payRow(label, value, copiable, dict){
+  const copy = copiable
+    ? `<button type="button" class="copy-btn" data-copy="${value}">${dict.payCopy}</button>`
+    : "";
+  return `<div class="pay-row"><small>${label}</small><div class="pay-val"><span>${value}</span>${copy}</div></div>`;
+}
+
+function buildPayments(dict){
+  const grid = document.getElementById("payGrid");
+  grid.innerHTML = `
+    <div class="pay-card">
+      <h4>${dict.paySinpe}</h4>
+      ${payRow(dict.payHolder, PAYMENT.sinpe.holder, false, dict)}
+      ${payRow(dict.paySinpe, PAYMENT.sinpe.number, true, dict)}
+    </div>
+    <div class="pay-card">
+      <h4>${dict.payCrc} — CRC ₡</h4>
+      ${payRow(dict.payHolder, PAYMENT.crc.holder, false, dict)}
+      ${payRow(dict.payBac, PAYMENT.crc.bac, true, dict)}
+      ${payRow("IBAN", PAYMENT.crc.iban, true, dict)}
+    </div>
+    <div class="pay-card">
+      <h4>${dict.payUsd} — USD $</h4>
+      ${payRow(dict.payHolder, PAYMENT.usd.holder, false, dict)}
+      ${payRow(dict.payBac, PAYMENT.usd.bac, true, dict)}
+      ${payRow("IBAN", PAYMENT.usd.iban, true, dict)}
+    </div>
+  `;
+  grid.querySelectorAll(".copy-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.copy.replace(/-/g, "");
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; }
+      catch(e){
+        /* Fallback para navegadores viejos o contextos sin clipboard API */
+        const ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); ok = document.execCommand("copy");
+        ta.remove();
+      }
+      if (ok){
+        const dict = I18N[document.documentElement.lang] || I18N.es;
+        btn.textContent = dict.payCopied;
+        btn.classList.add("ok");
+        setTimeout(() => { btn.textContent = dict.payCopy; btn.classList.remove("ok"); }, 1600);
+      }
+    });
+  });
+}
+
+function applyLang(code){
+  const dict = I18N[code] || I18N.es;
+  document.documentElement.lang = code;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.dataset.i18n;
+    if (dict[k] != null) el.textContent = dict[k];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const k = el.dataset.i18nHtml;
+    if (dict[k] != null) el.innerHTML = dict[k];
+  });
+  document.querySelectorAll(".g-img").forEach(img => img.alt = dict.galleryAlt);
+  buildSponsors(dict);
+  buildPayments(dict);
+  langSelect.value = code;
+  try { localStorage.setItem("crarc-lang", code); } catch(e){ /* sin storage, no pasa nada */ }
+}
+
+let savedLang = "es";
+try { savedLang = localStorage.getItem("crarc-lang") || "es"; } catch(e){}
+applyLang(I18N[savedLang] ? savedLang : "es");
+
+langSelect.addEventListener("change", () => applyLang(langSelect.value));
+cargarPadrinosRemotos();
+
+/* ---------- Header sólido al hacer scroll ---------- */
+const header = document.getElementById("header");
+const onScroll = () => header.classList.toggle("solid", window.scrollY > 40);
+window.addEventListener("scroll", onScroll, { passive:true });
+onScroll();
+
+/* ---------- Menú móvil ---------- */
+const toggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+toggle.addEventListener("click", () => {
+  const open = document.body.classList.toggle("menu-open");
+  toggle.setAttribute("aria-expanded", open);
+});
+navLinks.querySelectorAll("a").forEach(a =>
+  a.addEventListener("click", () => {
+    document.body.classList.remove("menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+  })
+);
+
+/* ---------- Gráfico de barras ---------- */
+const barsEl = document.getElementById("bars");
+const maxCount = Math.max(...RESCUE_DATA.map(d => d.count));
+RESCUE_DATA.forEach(d => {
+  const bar = document.createElement("div");
+  bar.className = "bar";
+  bar.innerHTML = `<b>${d.count}</b><i style="--h:${Math.round(d.count / maxCount * 100)}"></i><span>${d.year}</span>`;
+  barsEl.appendChild(bar);
+});
+
+/* ---------- Animaciones al entrar en viewport ---------- */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const chart = document.getElementById("chart");
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){ chart.classList.add("on"); chartObs.disconnect(); }
+  });
+}, { threshold:.35 });
+chartObs.observe(chart);
+
+function animateCount(el){
+  const target = +el.dataset.count;
+  const suffix = el.dataset.suffix || "";
+  const fmt = el.dataset.format === "thousands"
+    ? n => n.toLocaleString()
+    : n => n;
+  if (reduceMotion){ el.textContent = fmt(target) + suffix; return; }
+  const dur = 1400, start = performance.now();
+  function tick(now){
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = fmt(Math.round(target * eased)) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const statsObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){
+      e.target.querySelectorAll("b[data-count]").forEach(animateCount);
+      statsObs.disconnect();
+    }
+  });
+}, { threshold:.4 });
+statsObs.observe(document.getElementById("statsGrid"));
+</script>
+</body>
+</html>

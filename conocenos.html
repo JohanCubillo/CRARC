@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conócenos — Costa Rica Animal Rescue Center</title>
+<meta name="description" content="Quiénes somos, animales rescatados, voluntariado, hospital veterinario, visitas y giras educativas del Costa Rica Animal Rescue Center.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<script>
+/* ============================================================
+   IMÁGENES — locales, en la carpeta images/ del repo.
+   ============================================================ */
+const BASE = ".";
+const IMG = {
+  logo:  "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/90736c36-22ac-4cdb-b52f-da504f413702/GreenCRARC_2020-Logofinal.png",
+  hero:  BASE + "/images/hero/perez-hero.png",
+  quienes: BASE + "/images/quienes.jpeg",
+  familia: BASE + "/images/familia.jpeg",
+  voluntariados: BASE + "/images/voluntariados.jpeg",
+  hospital: BASE + "/images/hospital/hospital.jpeg",
+  visitanos: BASE + "/images/galeria/perezoso-principal.jpeg",
+  giras: BASE + "/images/galeria/volcan.jpeg"
+};
+const CONTACT_EMAIL = "volunteering@costaricaanimalrescuecenter.org";
+/* WhatsApp del centro: código de país + número, sin +, espacios ni guiones */
+const WHATSAPP_NUMBER = "50685228125";
+/* URL del Web App de Google Apps Script (ver INSTRUCCIONES.md, parte A).
+   Mientras esté vacío, el botón "Enviar" abre el correo (mailto) como respaldo. */
+const SHEETS_ENDPOINT = "";
+const ANIMALS = [{"id": "grumpy", "img": "./images/animals/grumpybebe.jpeg", "status": "rehabilitating"}, {"id": "sharleen", "img": "./images/animals/eyes.jpeg", "status": "ready-to-release"}, {"id": "lola", "img": "./images/animals/lola.jpeg", "status": "permanent-resident"}, {"id": "gandy", "img": "./images/animals/ghandy.jpeg", "status": "rehabilitating"}, {"id": "diniel", "img": "./images/animals/daniel.jpeg", "status": "ready-to-release"}, {"id": "toro", "img": "./images/animals/toro.jpeg", "status": "permanent-resident"}];
+const I18N = {"es": {"heroTitle": "Costa Rica Animal Rescue Center", "heroSub": "Ayúdanos a rescatar, proteger y conservar la vida silvestre.", "quienesTitle": "Quiénes somos", "quienesP1": "Somos un centro de rescate de vida silvestre y un santuario de animales rescatados del tráfico ilegal de especies, de accidentes causados por el ser humano y de quienes han sido víctimas de abuso.", "quienesP2": "Contamos con una clínica veterinaria equipada para recibir a los animales en peligro, con heridas graves o con riesgo de muerte.", "quienesP3": "Además, un santuario donde viven los animales que no pudieron ser reintegrados a la naturaleza, dado a que fueron sacados de su hábitat natural con apenas semanas de vida, porque requieren de un chequeo veterinario continuo, o sus heridas ya no permiten que sobreviva en la naturaleza.", "quienesEsp1": "En el rescate viven especies como el perezoso de dos dedos <i>(Choloepus hoffmanni)</i>, siendo una de las especies más rescatadas dado al tráfico ilegal y los accidentes en tendidos eléctricos.", "quienesEsp2": "Conocerás también al mono cariblanco <i>(Cebus capucinus)</i>, mono araña centroamericano <i>(Ateles geoffroyi)</i>, mono congo <i>(Alouatta palliata)</i>, guatusas (Dasyprocta punctata), mapaches <i>(Procyon lotor)</i>, kinkajú <i>(Potos flavus)</i>, saínos <i>(Pecari tajacu)</i>, venados coliblanco <i>(Odocoileus virginianus)</i>.", "quienesEsp3": "Diversidad de aves como la lapa roja <i>(Ara macao)</i>, lapa azul <i>(Ara ararauna)</i>, perico verde <i>(Aratinga holochlora)</i>, periquitos <i>(Melopsittacus undulatus)</i>, búho oropopo <i>(Pulsatrix perspicillata)</i>, entre muchas otras especies.", "histTitle": "Nuestra historia", "histP1": "En 2009, el centro de rescate fue fundado en la costa caribeña de Costa Rica, en Moín. Su primer rescate fue Buda, un animal salvado del tráfico ilegal de fauna silvestre justo antes de ser vendido como mascota.", "histP2": "El centro, ubicado en Moín, también se dedicaba a patrullar las playas para proteger los nidos de una especie en peligro de extinción: la tortuga baula <i>(Dermochelys coriacea)</i>.", "histP3": "Sin embargo, los recolectores ilegales de huevos no eran el único desafío. La construcción de un importante puerto en Moín amenazaba las actividades de rescate y conservación. Como acto de intimidación, el activista ambiental Jairo Mora Sandoval fue asesinado mientras defendía los nidos de las tortugas marinas.", "histP4": "Debido a la creciente presión y a la pérdida de acceso a la propiedad original, el centro se vio obligado a trasladarse a San Miguel de Turrúcares. Allí, se les prestó generosamente una propiedad temporal para que los animales pudieran ser alojados mientras se buscaba una solución permanente.", "histP5": "La propiedad original en Moín fue ocupada y, en 2016, después de vender dos propiedades personales, la propietaria del centro de rescate pudo adquirir el terreno donde actualmente funciona el centro, una propiedad que todavía se está pagando por lo que buscamos personas voluntarias como vos, para que formés parte del cuidado y protección de nuestra vida silvestre.", "aniTitle": "Animales rescatados", "aniSub": "Pasa el cursor sobre cada tarjeta para conocer su historia.", "stRehab": "En rehabilitación", "stReady": "Lista para liberar", "stPerm": "Residente permanente", "volTitle": "Voluntariados", "volP1": "Nuestras personas voluntarias son personas que han decidido donar parte importante de su tiempo y dedicación a nuestra causa, por lo que hemos creado un espacio seguro, divertido y que asegura la convivencia e intercambio de cultura.", "volP2": "Nuestros voluntariados son experiencias inmersivas, por lo que requieren que te alojes en el centro por lo tanto todos los programas incluyen alimentación y hospedaje. Contamos con la infraestructura necesaria para que elijas lo mejor para tu bienestar y comodidad, la cual también garantiza que podás tener espacio para practicar las actividades que más te gustan, como yoga, lectura, explorar la naturaleza. ¿Qué más te imaginás haciendo?", "volP3": "La experiencia incluye conocer el pueblo y la posibilidad de participar en las actividades que tenemos planeadas para vos mientras te esperamos: fogatas, karaoke, paseos y mucho más.", "hospTitle": "Hospital", "hospP1": "Para rehabilitar la vida silvestre, nuestras personas voluntarias son cruciales. Curan heridas, atienden las emergencias del hospital, se encargan de la exigente alimentación de los animales bebés, participan en cirugías y otras intervenciones médicas.", "hospP2": "Nuestro principal propósito es rehabilitar especies, muchas en peligro de extinción y regresarlas a la naturaleza, es ahí donde reside nuestro principal propósito.", "hospP3": "Si sos estudiante de medicina o enfermería veterinaria, o estás descubriendo tu vocación este es el lugar ideal para vos.", "habC_t": "Habitación compartida", "habC_p": "50$ / noche", "habC_h": "Comparte una habitación con personas de tus mismos intereses y hacé conexiones.", "habC_d": "Disfrutá de alojamiento compartido con tres comidas al día, limpieza diaria de la habitación y actividades inolvidables.", "habP_t": "Habitación privada", "habP_p": "70$ / noche", "habP_h": "Mantené tu privacidad en una habitación con baño.", "habP_d": "Disfrutá del alojamiento privado con tres comidas al día, limpieza diaria de la habitación y actividades inolvidables.", "habF_t": "Habitación hotel", "habF_p": "160$ / noche", "habF_h": "Alojate en el hotel del pueblo.", "habF_d": "Disfrutá del alojamiento en el pueblo, nos encargamos del transporte de ida y vuelta al centro de rescate.", "habCta": "Comenzar", "visTitle": "Visítanos", "visP1": "Ven a conocer el santuario y a los animales rescatados que son residentes permanentes del centro. Podés venir con toda la familia; nuestros horarios de atención son de lunes a domingo de 8:00 am a 4:00 pm.", "visP2": "Nos encontramos en Cebadilla de Turrúcares, en la provincia de Alajuela. El recorrido tiene una duración de alrededor de una hora y siempre tendrás una guía capacitada dentro del rescate.", "girTitle": "Giras educativas", "girP1": "Recorridos diseñados para escuelas, colegios y grupos. Aprendé sobre la conservación de la vida silvestre y el trabajo del centro de rescate.", "girP2": "Una experiencia que combina educación ambiental, contacto con la naturaleza y momentos que quedan para siempre.", "formTitle": "Hacé voluntariado o vení a la gira educativa", "formSub": "Contanos qué te interesa y te contactamos.", "formSubject": "Nuevo contacto desde la web CRARC", "fNombre": "Nombre", "fEmail": "Email", "fWhats": "Número de WhatsApp con código de país", "fVisitar": "Quiero visitar", "fVol": "Quiero ser voluntario", "fDonar": "Quiero donar", "fDieta": "Dieta", "fDR": "Dieta regular", "fDV": "Dieta vegetariana", "fDVe": "Dieta vegana", "fDG": "Dieta libre de gluten", "fAlergias": "Alergias", "fPersonas": "Cuántas personas son", "fEnviar": "Enviar", "faqTitle": "Preguntas frecuentes", "faqQ1": "¿Cuáles son los horarios de visita?", "faqA1": "Abrimos todos los días de 8:00 a 16:00, incluyendo feriados.", "faqQ2": "¿Cómo llegamos al centro?", "faqA2": "Podés encontrarnos como Costa Rica Animal Rescue Center, en Cebadilla de Turrúcares.", "faqQ3": "¿Cuánto cuesta la entrada?", "faqA3": "Nacionales: adultos ₡6000, niñeces ₡4000. Extranjeros: adultos $20, niñeces $10.", "faqQ4": "¿Es apto para infancias?", "faqA4": "Sí, tenemos recorridos guiados pensados para familias y grupos escolares.", "footOrg": "Costa Rica Animal Rescue Center · Cebadilla, Turrúcares", "footHorario": "Lun–Dom · 8:00 - 16:00", "ani_grumpy_n": "Grumpy", "ani_grumpy_s": "Perezoso", "ani_grumpy_st": "Grumpy vino con la placenta aún enrollada en su cuerpo, vos podés ayudarnos a rehabilitarlo en el hospital.", "ani_sharleen_n": "Sharleen", "ani_sharleen_s": "Mono congo", "ani_sharleen_st": "Sharleen fue rescatada de la trata ilegal de animales.", "ani_lola_n": "Lola", "ani_lola_s": "Mono cariblanco", "ani_lola_st": "Lola sufrió maltrato físico y en el centro curamos sus heridas", "ani_gandy_n": "Gandy", "ani_gandy_s": "Mono araña", "ani_gandy_st": "Gandy estaba amarrado en un bar para entretener a los visitantes", "ani_diniel_n": "Daniel", "ani_diniel_s": "Kinkajú", "ani_diniel_st": "Huérfano tras destrucción de su hábitat, rescatado desde bebé.", "ani_toro_n": "Bamboo", "ani_toro_s": "Venado", "ani_toro_st": "Decomisado por las autoridades después de que lo habían sacado de la naturaleza.", "_name": "Español", "_flag": "🇨🇷", "navHome": "Inicio", "navQuienes": "Quiénes somos", "navAnimales": "Animales", "navVol": "Voluntariado", "navVisit": "Visítanos", "navFaq": "FAQ", "navDonate": "Donar", "kickHero": "Conocé el centro por dentro", "kickQuienes": "Nuestro propósito", "kickHist": "De Moín a Turrúcares", "kickAni": "Con nombre e historia", "kickVol": "Viví la experiencia", "kickHab": "Alojamiento para voluntarios", "kickHosp": "Medicina para la vida silvestre", "kickVis": "Puertas abiertas", "kickGiras": "Para escuelas y grupos", "perNight": "por noche", "habNote": "Todos los programas incluyen alimentación (3 comidas al día) y hospedaje.", "visHours": "Horario", "visHoursVal": "Lunes a domingo · 8:00 am – 4:00 pm", "visFees": "Entradas", "visFeesNat": "Nacionales: adultos ₡6.000 · niñeces ₡4.000", "visFeesExt": "Extranjeros: adultos $20 · niñeces $10", "formHint": "WhatsApp abre el chat con tu mensaje listo; «Enviar» registra tu solicitud y le avisa al centro por correo.", "backHome": "Volver al inicio", "fEnviarWa": "Enviar por WhatsApp", "sendSending": "Enviando…", "sendOk": "¡Recibido! Te contactaremos pronto.", "sendErr": "No se pudo enviar. Probá el botón de WhatsApp o escribinos al correo."}, "en": {"heroTitle": "Costa Rica Animal Rescue Center", "heroSub": "Help us rescue, protect and conserve wildlife.", "quienesTitle": "About us", "quienesP1": "We are a wildlife rescue center and a sanctuary for animals rescued from the illegal species trade, from accidents caused by humans, and from abuse victims.", "quienesP2": "We have a fully equipped veterinary clinic to receive animals in danger, with serious injuries or at risk of death.", "quienesP3": "We also have a sanctuary where animals that could not be returned to the wild live, either because they were taken from their natural habitat just weeks after birth, because they require ongoing veterinary care, or because their injuries no longer allow them to survive in the wild.", "quienesEsp1": "At the rescue you will find species such as the two-toed sloth <i>(Choloepus hoffmanni)</i>, being one of the most rescued species due to illegal trafficking and accidents on power lines.", "quienesEsp2": "You will also meet the white-faced capuchin monkey <i>(Cebus capucinus)</i>, Central American spider monkey <i>(Ateles geoffroyi)</i>, mantled howler monkey <i>(Alouatta palliata)</i>, agoutis (Dasyprocta punctata), raccoons <i>(Procyon lotor)</i>, kinkajou <i>(Potos flavus)</i>, collared peccaries <i>(Pecari tajacu)</i>, white-tailed deer <i>(Odocoileus virginianus)</i>.", "quienesEsp3": "A diversity of birds such as the scarlet macaw <i>(Ara macao)</i>, blue-and-yellow macaw <i>(Ara ararauna)</i>, green conure <i>(Aratinga holochlora)</i>, budgerigars <i>(Melopsittacus undulatus)</i>, spectacled owl <i>(Pulsatrix perspicillata)</i>, among many other species.", "histTitle": "Our story", "histP1": "In 2009, the rescue center was founded on the Caribbean coast of Costa Rica, in Moín. Its first rescue was Buda, an animal saved from the illegal wildlife trade just before being sold as a pet.", "histP2": "The center, located in Moín, also patrolled the beaches to protect the nests of an endangered species: the leatherback sea turtle <i>(Dermochelys coriacea)</i>.", "histP3": "However, illegal egg collectors were not the only challenge. The construction of a major port in Moín threatened the rescue and conservation activities. As an act of intimidation, environmental activist Jairo Mora Sandoval was murdered while defending the sea turtle nests.", "histP4": "Due to growing pressure and the loss of access to the original property, the center was forced to relocate to San Miguel de Turrúcares. There, a temporary property was generously lent so the animals could be housed while a permanent solution was sought.", "histP5": "The original property in Moín was occupied and, in 2016, after selling two personal properties, the rescue center's owner was able to acquire the land where the center now operates, a property that is still being paid for, which is why we look for volunteers like you to be part of the care and protection of our wildlife.", "aniTitle": "Rescued animals", "aniSub": "Hover over each card to learn its story.", "stRehab": "In rehabilitation", "stReady": "Ready to release", "stPerm": "Permanent resident", "volTitle": "Volunteering", "volP1": "Our volunteers are people who have decided to donate an important part of their time and dedication to our cause, which is why we have created a safe, fun space that ensures coexistence and cultural exchange.", "volP2": "Our volunteering programs are immersive experiences, so they require you to stay at the center, which is why all programs include meals and lodging. We have the necessary infrastructure for you to choose what is best for your well-being and comfort, which also guarantees you have space to practice the activities you enjoy most, such as yoga, reading, and exploring nature. What else can you imagine doing?", "volP3": "The experience includes getting to know the town and the chance to take part in the activities we have planned for you while we wait for you: bonfires, karaoke, tours and much more.", "hospTitle": "Hospital", "hospP1": "To rehabilitate wildlife, our volunteers are crucial. They heal wounds, handle hospital emergencies, take care of the demanding feeding of baby animals, and participate in surgeries and other medical interventions.", "hospP2": "Our main purpose is to rehabilitate species, many of them endangered, and return them to the wild — that is where our true purpose lies.", "hospP3": "If you are a veterinary medicine or nursing student, or you are discovering your calling, this is the ideal place for you.", "habC_t": "Shared room", "habC_p": "$50 / night", "habC_h": "Share a room with people of similar interests and make connections.", "habC_d": "Enjoy shared lodging with three meals a day, daily room cleaning and unforgettable activities.", "habP_t": "Private room", "habP_p": "$70 / night", "habP_h": "Keep your privacy in a room with a private bathroom.", "habP_d": "Enjoy private lodging with three meals a day, daily room cleaning and unforgettable activities.", "habF_t": "Hotel room", "habF_p": "$160 / night", "habF_h": "Stay at the village hotel.", "habF_d": "Enjoy accommodation in the village; we take care of round-trip transportation to the rescue center.", "habCta": "Start", "visTitle": "Visit us", "visP1": "Come see the sanctuary and the rescued animals that are permanent residents of the center. You can come with the whole family; our opening hours are Monday to Sunday from 8:00 am to 4:00 pm.", "visP2": "We are located in Cebadilla de Turrúcares, in the province of Alajuela. The tour lasts about an hour and you will always have a trained guide at the rescue.", "girTitle": "Educational tours", "girP1": "Tours designed for schools, colleges and groups. Learn about wildlife conservation and the work of the rescue center.", "girP2": "An experience that combines environmental education, contact with nature and moments that last forever.", "formTitle": "Volunteer or come to the educational tour", "formSub": "Tell us what interests you and we will contact you.", "formSubject": "New contact from the CRARC website", "fNombre": "Name", "fEmail": "Email", "fWhats": "WhatsApp number with country code", "fVisitar": "I want to visit", "fVol": "I want to volunteer", "fDonar": "I want to donate", "fDieta": "Diet", "fDR": "Regular diet", "fDV": "Vegetarian diet", "fDVe": "Vegan diet", "fDG": "Gluten-free diet", "fAlergias": "Allergies", "fPersonas": "How many people are you?", "fEnviar": "Send", "faqTitle": "Frequently asked questions", "faqQ1": "What are the visiting hours?", "faqA1": "We are open every day from 8:00 am to 4:00 pm, including holidays.", "faqQ2": "How do we get to the center?", "faqA2": "Search for Costa Rica Animal Rescue Center, in Cebadilla de Turrúcares.", "faqQ3": "How much is the entrance fee?", "faqA3": "Nationals: adults ₡6000, children ₡4000. Foreigners: adults $20, children $10.", "faqQ4": "Is it suitable for children?", "faqA4": "Yes, we have guided tours designed for families and school groups.", "footOrg": "Costa Rica Animal Rescue Center · Cebadilla, Turrúcares", "footHorario": "Mon–Sun · 8:00 - 16:00", "ani_grumpy_n": "Grumpy", "ani_grumpy_s": "Sloth", "ani_grumpy_st": "Grumpy arrived with the placenta still wrapped around his body; you can help us rehabilitate him at the hospital.", "ani_sharleen_n": "Sharleen", "ani_sharleen_s": "Howler monkey", "ani_sharleen_st": "Sharleen was rescued from the illegal animal trade.", "ani_lola_n": "Lola", "ani_lola_s": "White-faced capuchin", "ani_lola_st": "Lola suffered physical abuse and at the center we healed her wounds", "ani_gandy_n": "Gandy", "ani_gandy_s": "Spider monkey", "ani_gandy_st": "Gandy was tied up in a bar to entertain the visitors", "ani_diniel_n": "Daniel", "ani_diniel_s": "Kinkajou", "ani_diniel_st": "Orphaned after the destruction of his habitat, rescued as a baby.", "ani_toro_n": "Bamboo", "ani_toro_s": "Deer", "ani_toro_st": "Confiscated by the authorities after being taken from the wild.", "_name": "English", "_flag": "🇺🇸", "navHome": "Home", "navQuienes": "About us", "navAnimales": "Animals", "navVol": "Volunteering", "navVisit": "Visit us", "navFaq": "FAQ", "navDonate": "Donate", "kickHero": "Get to know the center", "kickQuienes": "Our purpose", "kickHist": "From Moín to Turrúcares", "kickAni": "Each with a name and a story", "kickVol": "Live the experience", "kickHab": "Volunteer accommodation", "kickHosp": "Medicine for wildlife", "kickVis": "Open doors", "kickGiras": "For schools and groups", "perNight": "per night", "habNote": "All programs include meals (3 per day) and accommodation.", "visHours": "Hours", "visHoursVal": "Monday to Sunday · 8:00 am – 4:00 pm", "visFees": "Admission", "visFeesNat": "Nationals: adults ₡6,000 · children ₡4,000", "visFeesExt": "Foreigners: adults $20 · children $10", "formHint": "WhatsApp opens the chat with your message ready; “Send” records your request and notifies the center by email.", "backHome": "Back to home", "fEnviarWa": "Send via WhatsApp", "sendSending": "Sending…", "sendOk": "Got it! We'll contact you soon.", "sendErr": "It couldn't be sent. Try the WhatsApp button or email us."}, "fr": {"_name": "Français", "_flag": "🇫🇷", "navHome": "Accueil", "navQuienes": "Qui sommes-nous", "navAnimales": "Animaux", "navVol": "Bénévolat", "navVisit": "Visitez-nous", "navFaq": "FAQ", "navDonate": "Faire un don", "kickHero": "Découvrez le centre de l'intérieur", "kickQuienes": "Notre mission", "kickHist": "De Moín à Turrúcares", "kickAni": "Chacun avec un nom et une histoire", "kickVol": "Vivez l'expérience", "kickHab": "Hébergement des bénévoles", "kickHosp": "La médecine au service de la faune", "kickVis": "Portes ouvertes", "kickGiras": "Pour écoles et groupes", "perNight": "par nuit", "habNote": "Tous les programmes incluent les repas (3 par jour) et l'hébergement.", "visHours": "Horaires", "visHoursVal": "Du lundi au dimanche · 8h00 – 16h00", "visFees": "Tarifs d'entrée", "visFeesNat": "Nationaux : adultes ₡6 000 · enfants ₡4 000", "visFeesExt": "Étrangers : adultes 20 $ · enfants 10 $", "formHint": "WhatsApp ouvre la discussion avec votre message prêt ; « Envoyer » enregistre votre demande et prévient le centre par email.", "backHome": "Retour à l'accueil", "heroTitle": "Costa Rica Animal Rescue Center", "heroSub": "Aidez-nous à secourir, protéger et préserver la faune sauvage.", "quienesTitle": "Qui sommes-nous", "quienesP1": "Nous sommes un centre de secours pour la faune sauvage et un sanctuaire pour les animaux sauvés du trafic illégal d'espèces, des accidents causés par l'être humain et des situations de maltraitance.", "quienesP2": "Nous disposons d'une clinique vétérinaire équipée pour accueillir les animaux en danger, gravement blessés ou en risque de mort.", "quienesP3": "Nous avons aussi un sanctuaire où vivent les animaux qui n'ont pas pu être réintégrés dans la nature : parce qu'ils ont été retirés de leur habitat à quelques semaines de vie, qu'ils nécessitent un suivi vétérinaire continu, ou que leurs blessures ne leur permettent plus de survivre à l'état sauvage.", "quienesEsp1": "Au refuge vivent des espèces comme le paresseux à deux doigts <i>(Choloepus hoffmanni)</i>, l'une des espèces les plus secourues en raison du trafic illégal et des accidents sur les lignes électriques.", "quienesEsp2": "Vous rencontrerez aussi le capucin à face blanche <i>(Cebus capucinus)</i>, le singe-araignée d'Amérique centrale <i>(Ateles geoffroyi)</i>, le singe hurleur <i>(Alouatta palliata)</i>, des agoutis <i>(Dasyprocta punctata)</i>, des ratons laveurs <i>(Procyon lotor)</i>, le kinkajou <i>(Potos flavus)</i>, des pécaris <i>(Pecari tajacu)</i> et des cerfs de Virginie <i>(Odocoileus virginianus)</i>.", "quienesEsp3": "Une grande diversité d'oiseaux comme l'ara rouge <i>(Ara macao)</i>, l'ara bleu <i>(Ara ararauna)</i>, la conure verte <i>(Aratinga holochlora)</i>, des perruches <i>(Melopsittacus undulatus)</i> et la chouette à lunettes <i>(Pulsatrix perspicillata)</i>, parmi bien d'autres espèces.", "histTitle": "Notre histoire", "histP1": "En 2009, le centre de secours a été fondé sur la côte caraïbe du Costa Rica, à Moín. Son premier sauvetage fut Buda, un animal sauvé du trafic illégal de faune sauvage juste avant d'être vendu comme animal de compagnie.", "histP2": "Le centre, situé à Moín, patrouillait aussi les plages pour protéger les nids d'une espèce en danger d'extinction : la tortue luth <i>(Dermochelys coriacea)</i>.", "histP3": "Mais les ramasseurs d'œufs illégaux n'étaient pas le seul défi. La construction d'un grand port à Moín menaçait les activités de secours et de conservation. En acte d'intimidation, le militant écologiste Jairo Mora Sandoval a été assassiné alors qu'il défendait les nids de tortues marines.", "histP4": "Face à la pression croissante et à la perte d'accès à la propriété d'origine, le centre a dû déménager à San Miguel de Turrúcares. Là, une propriété temporaire lui a été généreusement prêtée pour héberger les animaux en attendant une solution permanente.", "histP5": "La propriété d'origine à Moín a été occupée et, en 2016, après avoir vendu deux propriétés personnelles, la propriétaire du centre a pu acquérir le terrain où il fonctionne aujourd'hui — une propriété encore en cours de paiement. C'est pourquoi nous cherchons des bénévoles comme vous, pour prendre part au soin et à la protection de notre faune sauvage.", "aniTitle": "Animaux secourus", "aniSub": "Passez le curseur sur chaque carte pour découvrir son histoire.", "stRehab": "En réhabilitation", "stReady": "Prêt pour la liberté", "stPerm": "Résident permanent", "ani_grumpy_n": "Grumpy", "ani_grumpy_s": "Paresseux", "ani_grumpy_st": "Grumpy est arrivé avec le placenta encore enroulé autour de son corps ; vous pouvez nous aider à le réhabiliter à l'hôpital.", "ani_sharleen_n": "Sharleen", "ani_sharleen_s": "Singe hurleur", "ani_sharleen_st": "Sharleen a été secourue du trafic illégal d'animaux.", "ani_lola_n": "Lola", "ani_lola_s": "Capucin à face blanche", "ani_lola_st": "Lola a subi des maltraitances physiques ; au centre, nous avons soigné ses blessures.", "ani_gandy_n": "Gandy", "ani_gandy_s": "Singe-araignée", "ani_gandy_st": "Gandy était attaché dans un bar pour divertir les clients.", "ani_diniel_n": "Daniel", "ani_diniel_s": "Kinkajou", "ani_diniel_st": "Orphelin après la destruction de son habitat, secouru dès son plus jeune âge.", "ani_toro_n": "Bamboo", "ani_toro_s": "Cerf", "ani_toro_st": "Confisqué par les autorités après avoir été retiré de la nature.", "volTitle": "Bénévolat", "volP1": "Nos bénévoles sont des personnes qui ont décidé de donner une partie importante de leur temps et de leur dévouement à notre cause ; nous avons donc créé un espace sûr, convivial, qui favorise le vivre-ensemble et l'échange culturel.", "volP2": "Nos programmes de bénévolat sont des expériences immersives : ils demandent de loger au centre, et incluent donc tous l'hébergement et les repas. Nous disposons de l'infrastructure nécessaire pour que vous choisissiez ce qui convient le mieux à votre bien-être et à votre confort, avec de l'espace pour pratiquer vos activités préférées : yoga, lecture, exploration de la nature. Qu'imaginez-vous d'autre ?", "volP3": "L'expérience inclut la découverte du village et la possibilité de participer aux activités que nous préparons pour vous : feux de camp, karaoké, balades et bien plus.", "hospTitle": "Hôpital", "hospP1": "Pour réhabiliter la faune sauvage, nos bénévoles sont essentiels. Ils soignent les blessures, gèrent les urgences de l'hôpital, s'occupent de l'alimentation exigeante des bébés animaux et participent aux chirurgies et autres interventions médicales.", "hospP2": "Notre but premier est de réhabiliter des espèces, dont beaucoup sont en danger d'extinction, et de les rendre à la nature : c'est là que réside notre mission.", "hospP3": "Si vous êtes étudiant·e en médecine ou en soins vétérinaires, ou si vous découvrez votre vocation, c'est l'endroit idéal pour vous.", "habC_t": "Chambre partagée", "habC_p": "50 $ / nuit", "habC_h": "Partagez une chambre avec des personnes qui ont vos centres d'intérêt et créez des liens.", "habC_d": "Profitez d'un hébergement partagé avec trois repas par jour, ménage quotidien et des activités inoubliables.", "habP_t": "Chambre privée", "habP_p": "70 $ / nuit", "habP_h": "Préservez votre intimité dans une chambre avec salle de bain.", "habP_d": "Profitez d'un hébergement privé avec trois repas par jour, ménage quotidien et des activités inoubliables.", "habF_t": "Chambre d'hôtel", "habF_p": "160 $ / nuit", "habF_h": "Logez à l'hôtel du village.", "habF_d": "Profitez d'un hébergement au village ; nous nous chargeons du transport aller-retour jusqu'au centre.", "habCta": "Commencer", "visTitle": "Visitez-nous", "visP1": "Venez découvrir le sanctuaire et les animaux secourus qui résident au centre de façon permanente. Vous pouvez venir en famille ; nous sommes ouverts du lundi au dimanche, de 8h00 à 16h00.", "visP2": "Nous nous trouvons à Cebadilla de Turrúcares, dans la province d'Alajuela. La visite dure environ une heure, toujours accompagnée d'un guide qualifié au sein du refuge.", "girTitle": "Sorties éducatives", "girP1": "Des parcours conçus pour les écoles, collèges et groupes. Apprenez la conservation de la faune sauvage et le travail du centre de secours.", "girP2": "Une expérience qui allie éducation environnementale, contact avec la nature et souvenirs pour toujours.", "formTitle": "Devenez bénévole ou participez à une sortie éducative", "formSub": "Dites-nous ce qui vous intéresse et nous vous contacterons.", "formSubject": "Nuevo contacto desde la web CRARC", "fNombre": "Nom", "fEmail": "Email", "fWhats": "Numéro WhatsApp avec indicatif du pays", "fVisitar": "Je veux visiter", "fVol": "Je veux être bénévole", "fDonar": "Je veux faire un don", "fDieta": "Régime alimentaire", "fDR": "Régime classique", "fDV": "Végétarien", "fDVe": "Végan", "fDG": "Sans gluten", "fAlergias": "Allergies", "fPersonas": "Nombre de personnes", "fEnviar": "Envoyer", "faqTitle": "Questions fréquentes", "faqQ1": "Quels sont les horaires de visite ?", "faqA1": "Nous ouvrons tous les jours de 8h00 à 16h00, jours fériés compris.", "faqQ2": "Comment arriver au centre ?", "faqA2": "Cherchez Costa Rica Animal Rescue Center, à Cebadilla de Turrúcares.", "faqQ3": "Combien coûte l'entrée ?", "faqA3": "Nationaux : adultes ₡6 000, enfants ₡4 000. Étrangers : adultes 20 $, enfants 10 $.", "faqQ4": "Convient-il aux enfants ?", "faqA4": "Oui, nous proposons des visites guidées pensées pour les familles et les groupes scolaires.", "footOrg": "Costa Rica Animal Rescue Center · Cebadilla, Turrúcares", "footHorario": "Lun–Dim · 8:00 – 16:00", "fEnviarWa": "Envoyer par WhatsApp", "sendSending": "Envoi…", "sendOk": "Bien reçu ! Nous vous contacterons bientôt.", "sendErr": "L'envoi a échoué. Essayez le bouton WhatsApp ou écrivez-nous par email."}, "it": {"_name": "Italiano", "_flag": "🇮🇹", "navHome": "Home", "navQuienes": "Chi siamo", "navAnimales": "Animali", "navVol": "Volontariato", "navVisit": "Visitaci", "navFaq": "FAQ", "navDonate": "Dona", "kickHero": "Scopri il centro da dentro", "kickQuienes": "Il nostro scopo", "kickHist": "Da Moín a Turrúcares", "kickAni": "Ognuno con un nome e una storia", "kickVol": "Vivi l'esperienza", "kickHab": "Alloggio per volontari", "kickHosp": "Medicina per la fauna selvatica", "kickVis": "Porte aperte", "kickGiras": "Per scuole e gruppi", "perNight": "a notte", "habNote": "Tutti i programmi includono i pasti (3 al giorno) e l'alloggio.", "visHours": "Orari", "visHoursVal": "Da lunedì a domenica · 8:00 – 16:00", "visFees": "Biglietti d'ingresso", "visFeesNat": "Nazionali: adulti ₡6.000 · bambini ₡4.000", "visFeesExt": "Stranieri: adulti $20 · bambini $10", "formHint": "WhatsApp apre la chat con il messaggio pronto; «Invia» registra la tua richiesta e avvisa il centro via email.", "backHome": "Torna alla home", "heroTitle": "Costa Rica Animal Rescue Center", "heroSub": "Aiutaci a salvare, proteggere e conservare la fauna selvatica.", "quienesTitle": "Chi siamo", "quienesP1": "Siamo un centro di recupero della fauna selvatica e un santuario per animali salvati dal traffico illegale di specie, da incidenti causati dall'essere umano e da situazioni di maltrattamento.", "quienesP2": "Disponiamo di una clinica veterinaria attrezzata per accogliere animali in pericolo, con ferite gravi o in rischio di vita.", "quienesP3": "Abbiamo inoltre un santuario dove vivono gli animali che non hanno potuto essere reintegrati in natura: perché sottratti al loro habitat a poche settimane di vita, perché necessitano di controlli veterinari continui o perché le loro ferite non permettono più la sopravvivenza allo stato selvatico.", "quienesEsp1": "Nel rifugio vivono specie come il bradipo didattilo <i>(Choloepus hoffmanni)</i>, una delle specie più soccorse a causa del traffico illegale e degli incidenti con le linee elettriche.", "quienesEsp2": "Conoscerai anche il cebo cappuccino <i>(Cebus capucinus)</i>, la scimmia ragno centroamericana <i>(Ateles geoffroyi)</i>, la scimmia urlatrice <i>(Alouatta palliata)</i>, gli agutì <i>(Dasyprocta punctata)</i>, i procioni <i>(Procyon lotor)</i>, il cercoletto <i>(Potos flavus)</i>, i pecari <i>(Pecari tajacu)</i> e i cervi dalla coda bianca <i>(Odocoileus virginianus)</i>.", "quienesEsp3": "Una grande varietà di uccelli come l'ara scarlatta <i>(Ara macao)</i>, l'ara blu <i>(Ara ararauna)</i>, il parrocchetto verde <i>(Aratinga holochlora)</i>, i pappagallini <i>(Melopsittacus undulatus)</i> e il gufo dagli occhiali <i>(Pulsatrix perspicillata)</i>, tra molte altre specie.", "histTitle": "La nostra storia", "histP1": "Nel 2009 il centro di recupero è stato fondato sulla costa caraibica del Costa Rica, a Moín. Il suo primo salvataggio fu Buda, un animale sottratto al traffico illegale di fauna selvatica poco prima di essere venduto come animale domestico.", "histP2": "Il centro, situato a Moín, pattugliava anche le spiagge per proteggere i nidi di una specie in pericolo di estinzione: la tartaruga liuto <i>(Dermochelys coriacea)</i>.", "histP3": "Ma i raccoglitori illegali di uova non erano l'unica sfida. La costruzione di un importante porto a Moín minacciava le attività di soccorso e conservazione. Come atto di intimidazione, l'attivista ambientale Jairo Mora Sandoval fu assassinato mentre difendeva i nidi delle tartarughe marine.", "histP4": "A causa della pressione crescente e della perdita di accesso alla proprietà originale, il centro fu costretto a trasferirsi a San Miguel de Turrúcares. Lì venne generosamente prestata una proprietà temporanea per ospitare gli animali in attesa di una soluzione permanente.", "histP5": "La proprietà originale di Moín venne occupata e, nel 2016, dopo aver venduto due proprietà personali, la proprietaria del centro poté acquistare il terreno dove il centro opera oggi — una proprietà ancora in fase di pagamento. Per questo cerchiamo persone volontarie come te, perché tu faccia parte della cura e della protezione della nostra fauna selvatica.", "aniTitle": "Animali salvati", "aniSub": "Passa il cursore su ogni scheda per conoscere la sua storia.", "stRehab": "In riabilitazione", "stReady": "Pronto per la libertà", "stPerm": "Residente permanente", "ani_grumpy_n": "Grumpy", "ani_grumpy_s": "Bradipo", "ani_grumpy_st": "Grumpy è arrivato con la placenta ancora avvolta al corpo; puoi aiutarci a riabilitarlo in ospedale.", "ani_sharleen_n": "Sharleen", "ani_sharleen_s": "Scimmia urlatrice", "ani_sharleen_st": "Sharleen è stata salvata dal traffico illegale di animali.", "ani_lola_n": "Lola", "ani_lola_s": "Cebo cappuccino", "ani_lola_st": "Lola ha subito maltrattamenti fisici; al centro abbiamo curato le sue ferite.", "ani_gandy_n": "Gandy", "ani_gandy_s": "Scimmia ragno", "ani_gandy_st": "Gandy era legato in un bar per intrattenere i clienti.", "ani_diniel_n": "Daniel", "ani_diniel_s": "Cercoletto", "ani_diniel_st": "Rimasto orfano dopo la distruzione del suo habitat, salvato da cucciolo.", "ani_toro_n": "Bamboo", "ani_toro_s": "Cervo", "ani_toro_st": "Confiscato dalle autorità dopo essere stato sottratto alla natura.", "volTitle": "Volontariato", "volP1": "I nostri volontari sono persone che hanno deciso di donare una parte importante del loro tempo e della loro dedizione alla nostra causa; per questo abbiamo creato uno spazio sicuro, divertente, che garantisce convivenza e scambio culturale.", "volP2": "I nostri volontariati sono esperienze immersive: richiedono di alloggiare al centro, quindi tutti i programmi includono vitto e alloggio. Disponiamo dell'infrastruttura necessaria perché tu scelga il meglio per il tuo benessere e comfort, con spazio per praticare le attività che più ti piacciono: yoga, lettura, esplorare la natura. Cos'altro ti immagini di fare?", "volP3": "L'esperienza include la scoperta del paese e la possibilità di partecipare alle attività che organizziamo per te: falò, karaoke, passeggiate e molto altro.", "hospTitle": "Ospedale", "hospP1": "Per riabilitare la fauna selvatica, i nostri volontari sono fondamentali. Curano le ferite, gestiscono le emergenze dell'ospedale, si occupano dell'esigente alimentazione dei cuccioli e partecipano a interventi chirurgici e altre procedure mediche.", "hospP2": "Il nostro scopo principale è riabilitare le specie, molte in pericolo di estinzione, e restituirle alla natura: è lì che risiede la nostra missione.", "hospP3": "Se studi medicina o infermieristica veterinaria, o stai scoprendo la tua vocazione, questo è il posto ideale per te.", "habC_t": "Camera condivisa", "habC_p": "50 $ / notte", "habC_h": "Condividi la camera con persone con i tuoi stessi interessi e crea legami.", "habC_d": "Goditi l'alloggio condiviso con tre pasti al giorno, pulizia quotidiana della camera e attività indimenticabili.", "habP_t": "Camera privata", "habP_p": "70 $ / notte", "habP_h": "Mantieni la tua privacy in una camera con bagno.", "habP_d": "Goditi l'alloggio privato con tre pasti al giorno, pulizia quotidiana della camera e attività indimenticabili.", "habF_t": "Camera in hotel", "habF_p": "160 $ / notte", "habF_h": "Alloggia nell'hotel del paese.", "habF_d": "Goditi l'alloggio in paese; ci occupiamo noi del trasporto di andata e ritorno al centro.", "habCta": "Inizia", "visTitle": "Visitaci", "visP1": "Vieni a conoscere il santuario e gli animali salvati che risiedono in modo permanente al centro. Puoi venire con tutta la famiglia; siamo aperti da lunedì a domenica, dalle 8:00 alle 16:00.", "visP2": "Ci troviamo a Cebadilla de Turrúcares, nella provincia di Alajuela. Il percorso dura circa un'ora, sempre con una guida qualificata all'interno del rifugio.", "girTitle": "Gite educative", "girP1": "Percorsi pensati per scuole e gruppi. Impara la conservazione della fauna selvatica e il lavoro del centro di recupero.", "girP2": "Un'esperienza che unisce educazione ambientale, contatto con la natura e momenti che restano per sempre.", "formTitle": "Fai volontariato o partecipa a una gita educativa", "formSub": "Raccontaci cosa ti interessa e ti contatteremo.", "formSubject": "Nuevo contacto desde la web CRARC", "fNombre": "Nome", "fEmail": "Email", "fWhats": "Numero WhatsApp con prefisso internazionale", "fVisitar": "Voglio visitare", "fVol": "Voglio fare volontariato", "fDonar": "Voglio donare", "fDieta": "Dieta", "fDR": "Dieta regolare", "fDV": "Vegetariana", "fDVe": "Vegana", "fDG": "Senza glutine", "fAlergias": "Allergie", "fPersonas": "Quante persone siete", "fEnviar": "Invia", "faqTitle": "Domande frequenti", "faqQ1": "Quali sono gli orari di visita?", "faqA1": "Siamo aperti tutti i giorni dalle 8:00 alle 16:00, festivi inclusi.", "faqQ2": "Come si arriva al centro?", "faqA2": "Cercaci come Costa Rica Animal Rescue Center, a Cebadilla de Turrúcares.", "faqQ3": "Quanto costa l'ingresso?", "faqA3": "Nazionali: adulti ₡6.000, bambini ₡4.000. Stranieri: adulti $20, bambini $10.", "faqQ4": "È adatto ai bambini?", "faqA4": "Sì, offriamo visite guidate pensate per famiglie e gruppi scolastici.", "footOrg": "Costa Rica Animal Rescue Center · Cebadilla, Turrúcares", "footHorario": "Lun–Dom · 8:00 – 16:00", "fEnviarWa": "Invia su WhatsApp", "sendSending": "Invio…", "sendOk": "Ricevuto! Ti contatteremo presto.", "sendErr": "Invio non riuscito. Prova il pulsante WhatsApp o scrivici via email."}};
+</script>
+
+<style>
+:root{
+  --ink:#17251B; --canopy:#2E5339; --canopy-dk:#22402C; --leaf:#7FA96B;
+  --mist:#F2F5EF; --paper:#FBFCF9; --sun:#E9B44C; --sun-dk:#C9962F; --line:#D8E0D2;
+  --serif:"Fraunces",Georgia,serif; --sans:"Karla","Segoe UI",sans-serif;
+  --wrap:1140px; --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.65;font-size:1.0625rem}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+h1,h2,h3{font-family:var(--serif);line-height:1.12;font-weight:600}
+.kicker{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--canopy);display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem}
+.kicker::before{content:"";width:34px;height:2px;background:var(--leaf);border-radius:2px;flex:none}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:4px}
+
+/* Header */
+header{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,box-shadow .3s}
+header.solid{background:rgba(251,252,249,.96);box-shadow:0 1px 0 var(--line);backdrop-filter:blur(8px)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding-block:14px;gap:14px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
+.brand img{height:52px;width:auto;background:#fff;border-radius:10px;padding:5px}
+.brand span{font-family:var(--serif);font-weight:700;font-size:1.05rem;line-height:1.15;color:#fff;max-width:180px;transition:color .3s}
+header.solid .brand span{color:var(--canopy-dk)}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none}
+.nav-links a{text-decoration:none;font-weight:500;font-size:.98rem;color:#fff;transition:color .3s;white-space:nowrap}
+header.solid .nav-links a{color:var(--ink)}
+.nav-links a:hover{color:var(--sun)}
+header.solid .nav-links a:hover{color:var(--canopy)}
+.lang{position:relative}
+.lang select{appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.6);color:#fff;font-family:var(--sans);font-weight:700;font-size:.92rem;border-radius:999px;padding:.45em 2em .45em 1em;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.lang::after{content:"▾";position:absolute;right:.8em;top:50%;transform:translateY(-50%);color:#fff;pointer-events:none;font-size:.8rem;transition:color .3s}
+header.solid .lang select{background:var(--mist);border-color:var(--line);color:var(--ink)}
+header.solid .lang::after{color:var(--ink)}
+.lang select option{color:var(--ink);background:#fff}
+.btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:999px;padding:.72em 1.5em;font-size:1rem;border:2px solid transparent;cursor:pointer;transition:transform .15s,background .2s,color .2s;font-family:var(--sans)}
+.btn:active{transform:scale(.97)}
+.btn-sun{background:var(--sun);color:var(--ink)}
+.btn-sun:hover{background:var(--sun-dk)}
+.btn-green{background:var(--canopy);color:#fff}
+.btn-green:hover{background:var(--canopy-dk)}
+.btn-ghost{border-color:#fff;color:#fff}
+.btn-ghost:hover{background:#fff;color:var(--canopy-dk)}
+.nav .btn{padding:.55em 1.3em}
+.menu-toggle{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;position:relative;z-index:60}
+.menu-toggle span{display:block;width:26px;height:3px;background:#fff;border-radius:3px;margin:5px auto;transition:transform .3s,opacity .3s,background .3s}
+header.solid .menu-toggle span{background:var(--ink)}
+.menu-open .menu-toggle span{background:var(--ink)}
+.menu-open .menu-toggle span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.menu-open .menu-toggle span:nth-child(2){opacity:0}
+.menu-open .menu-toggle span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+/* Hero compacto */
+.hero{min-height:72svh;display:flex;align-items:flex-end;position:relative;isolation:isolate;color:#fff}
+.hero-bg{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(23,37,27,.5) 0%,rgba(23,37,27,.2) 45%,rgba(23,37,27,.85) 100%)}
+.hero-content{padding-top:160px;padding-bottom:90px;max-width:760px}
+.hero .kicker{color:var(--sun)}
+.hero .kicker::before{background:var(--sun)}
+.hero h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:700;text-wrap:balance}
+.hero p{margin-top:1rem;font-size:clamp(1.05rem,2vw,1.25rem);max-width:560px;color:#E9EFE4}
+.hero-content > *{opacity:0;transform:translateY(18px);animation:rise .8s ease forwards}
+.hero-content > *:nth-child(2){animation-delay:.12s}
+.hero-content > *:nth-child(3){animation-delay:.24s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+.wave{display:block;width:100%;height:70px;margin-bottom:-1px}
+section{padding-block:88px}
+.section-head{max-width:680px;margin-bottom:52px}
+.section-head h2{font-size:clamp(1.9rem,4vw,2.7rem)}
+.section-head p{margin-top:.8rem;color:#3E4F43}
+
+/* Quiénes somos */
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.split.rev{grid-template-columns:1fr 1.1fr}
+.split .pic{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.split .pic img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.split h2{font-size:clamp(1.9rem,4vw,2.6rem);margin-bottom:1rem}
+.split p{color:#33422F;margin-top:.85rem}
+.split p i{color:var(--canopy)}
+
+/* Historia */
+.historia{background:var(--mist)}
+.hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.hist-grid .pic{position:sticky;top:110px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.hist-grid .pic img{width:100%;object-fit:cover;aspect-ratio:4/5}
+.hist-steps{display:flex;flex-direction:column;gap:26px}
+.hist-step{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;position:relative}
+.hist-step::before{content:"";position:absolute;top:0;left:26px;width:44px;height:5px;border-radius:0 0 6px 6px;background:var(--leaf)}
+.hist-step p{color:#33422F}
+.hist-step p i{color:var(--canopy)}
+
+/* Animales */
+.ani-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.ani-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--paper)}
+.ani-media{position:relative;overflow:hidden}
+.ani-media img{width:100%;aspect-ratio:1/1;object-fit:cover;transition:transform .5s ease}
+.ani-card:hover .ani-media img{transform:scale(1.05)}
+.ani-story{position:absolute;inset:auto 0 0 0;background:linear-gradient(180deg,transparent,rgba(23,37,27,.92) 38%);color:#F2F5EF;padding:56px 20px 18px;font-size:.95rem;opacity:0;transform:translateY(12px);transition:opacity .35s,transform .35s}
+.ani-card:hover .ani-story,.ani-card:focus-within .ani-story{opacity:1;transform:none}
+@media (hover:none){.ani-story{position:static;opacity:1;transform:none;background:var(--canopy-dk);padding:16px 20px}}
+.ani-body{padding:18px 22px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ani-body h3{font-size:1.35rem;color:var(--canopy-dk)}
+.ani-body .sp{font-family:var(--serif);font-style:italic;color:var(--leaf);font-size:.98rem}
+.badge{font-size:.75rem;font-weight:700;border-radius:999px;padding:.3em .85em;white-space:nowrap}
+.badge.rehabilitating{background:#FBEED2;color:#8A6410}
+.badge.ready-to-release{background:#E4EEDF;color:var(--canopy)}
+.badge.permanent-resident{background:#E3E9E4;color:#3E5247}
+
+/* Voluntariado + habitaciones */
+.vol{background:var(--mist)}
+.hab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px}
+.hab-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;display:flex;flex-direction:column}
+.hab-card h3{font-size:1.35rem;color:var(--canopy-dk)}
+.hab-price{font-family:var(--serif);font-weight:700;font-size:2rem;color:var(--canopy);margin:.4rem 0 .7rem}
+.hab-price small{font-family:var(--sans);font-weight:400;font-size:.9rem;color:#5C6B5C}
+.hab-card .hl{font-family:var(--serif);font-style:italic;color:var(--canopy);margin-bottom:.6rem}
+.hab-card .desc{font-size:.96rem;color:#33422F;margin-bottom:1.4rem}
+.hab-card .btn{margin-top:auto;text-align:center}
+.hab-note{margin-top:30px;color:#5C6B5C;font-size:.95rem}
+
+/* Visítanos */
+.info-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:1.4rem}
+.info-card{background:var(--mist);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.info-card h4{font-family:var(--serif);color:var(--canopy-dk);font-size:1.05rem;margin-bottom:.35rem}
+.info-card p{font-size:.94rem;color:#33422F;margin:0}
+
+/* Formulario */
+.contact{background:var(--canopy);color:#fff}
+.contact .section-head{margin-bottom:38px}
+.contact .kicker{color:var(--sun)}
+.contact .kicker::before{background:var(--sun)}
+.contact .section-head p{color:#D9E3D2}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:820px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.9rem;font-weight:700;color:#CFE3B8}
+.field input,.field select,.field textarea{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.35);border-radius:10px;color:#fff;font-family:var(--sans);font-size:1rem;padding:.65em .9em}
+.field input::placeholder{color:#A9BCA4}
+.field select option{color:var(--ink);background:#fff}
+.field input:focus,.field select:focus{outline:3px solid var(--sun);outline-offset:2px}
+.form-hint{margin-top:14px;color:#CFE3B8;font-size:.9rem;max-width:560px}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.form-status{margin-top:12px;font-weight:700;color:var(--sun);min-height:1.4em}
+
+/* FAQ */
+.faq-list{max-width:820px}
+.faq-item{border:1px solid var(--line);border-radius:12px;background:var(--paper);margin-bottom:14px;overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;font-family:var(--serif);font-weight:600;font-size:1.12rem;color:var(--canopy-dk)}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"+";font-size:1.5rem;color:var(--leaf);transition:transform .25s;flex:none}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item .a{padding:0 22px 20px;color:#33422F}
+
+/* Footer */
+footer{background:var(--ink);color:#C6D2C4;padding:60px 0 30px;font-size:.97rem}
+.foot{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.foot img{height:56px;background:#fff;border-radius:10px;padding:6px;margin-bottom:12px}
+footer a{color:#C6D2C4;text-decoration:none}
+footer a:hover{color:var(--sun)}
+.copyright{margin-top:44px;padding-top:20px;border-top:1px solid #2B3A2E;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#8FA08D;font-size:.9rem}
+
+/* Nav compacto en pantallas medianas: solo logo, enlaces sin salto */
+@media (max-width:1280px){
+  .brand span{display:none}
+  .nav-links{gap:16px}
+  .nav-links a{font-size:.93rem}
+  .nav .btn{padding:.5em 1.1em}
+}
+
+@media (max-width:960px){
+  .split,.split.rev,.hist-grid{grid-template-columns:1fr;gap:36px}
+  .hist-grid .pic{position:static}
+  .ani-grid{grid-template-columns:1fr 1fr}
+  .hab-grid{grid-template-columns:1fr}
+  .info-cards{grid-template-columns:1fr}
+  .nav-links{position:fixed;inset:0;background:var(--paper);flex-direction:column;justify-content:center;gap:24px;transform:translateX(100%);transition:transform .35s;z-index:55}
+  .nav-links a{font-size:1.2rem;color:var(--ink)}
+  .menu-open .nav-links{transform:none}
+  .menu-open .lang select{background:var(--mist);border-color:var(--line);color:var(--ink)}
+  .menu-open .lang::after{color:var(--ink)}
+  .menu-toggle{display:block}
+}
+@media (max-width:680px){
+  section{padding-block:60px}
+  .ani-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="Costa Rica Animal Rescue Center">
+      <img id="logo" src="" alt="Logo Costa Rica Animal Rescue Center">
+      <span>Costa Rica Animal Rescue Center</span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" data-i18n="navHome"></a></li>
+      <li><a href="#quienes" data-i18n="navQuienes"></a></li>
+      <li><a href="#animales" data-i18n="navAnimales"></a></li>
+      <li><a href="#voluntariado" data-i18n="navVol"></a></li>
+      <li><a href="#visitanos" data-i18n="navVisit"></a></li>
+      <li><a href="#faq" data-i18n="navFaq"></a></li>
+      <li class="lang"><select id="langSelect" aria-label="Idioma / Language"></select></li>
+      <li><a class="btn btn-sun" href="index.html#pay" data-i18n="navDonate"></a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" style="padding:0">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="wrap hero-content">
+      <p class="kicker" data-i18n="kickHero"></p>
+      <h1 data-i18n="heroTitle"></h1>
+      <p data-i18n="heroSub"></p>
+    </div>
+  </section>
+
+  <!-- QUIÉNES SOMOS -->
+  <section id="quienes" style="padding-top:0">
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,40 C240,90 480,-10 720,30 C960,70 1200,10 1440,45 L1440,70 L0,70 Z" fill="#FBFCF9"/>
+    </svg>
+    <div class="wrap split" style="padding-top:50px">
+      <div>
+        <p class="kicker" data-i18n="kickQuienes"></p>
+        <h2 data-i18n="quienesTitle"></h2>
+        <p data-i18n="quienesP1"></p>
+        <p data-i18n="quienesP2"></p>
+        <p data-i18n="quienesP3"></p>
+      </div>
+      <div class="pic"><img id="imgQuienes" src="" alt="" loading="lazy"></div>
+    </div>
+    <div class="wrap" style="margin-top:40px">
+      <p data-i18n-html="quienesEsp1" style="color:#33422F"></p>
+      <p data-i18n-html="quienesEsp2" style="color:#33422F;margin-top:.85rem"></p>
+      <p data-i18n-html="quienesEsp3" style="color:#33422F;margin-top:.85rem"></p>
+    </div>
+  </section>
+
+  <!-- HISTORIA -->
+  <section class="historia">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker" data-i18n="kickHist"></p>
+        <h2 data-i18n="histTitle"></h2>
+      </div>
+      <div class="hist-grid">
+        <div class="pic"><img id="imgHist" src="" alt="" loading="lazy"></div>
+        <div class="hist-steps">
+          <div class="hist-step"><p data-i18n="histP1"></p></div>
+          <div class="hist-step"><p data-i18n-html="histP2"></p></div>
+          <div class="hist-step"><p data-i18n="histP3"></p></div>
+          <div class="hist-step"><p data-i18n="histP4"></p></div>
+          <div class="hist-step"><p data-i18n="histP5"></p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANIMALES -->
+  <section id="animales">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker" data-i18n="kickAni"></p>
+        <h2 data-i18n="aniTitle"></h2>
+        <p data-i18n="aniSub"></p>
+      </div>
+      <div class="ani-grid" id="aniGrid"></div>
+    </div>
+  </section>
+
+  <!-- VOLUNTARIADO -->
+  <section class="vol" id="voluntariado" style="padding-top:0">
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,30 C260,70 500,0 740,35 C980,70 1220,15 1440,40 L1440,70 L0,70 Z" fill="#F2F5EF"/>
+    </svg>
+    <div class="wrap" style="padding-top:56px">
+      <div class="split rev">
+        <div class="pic"><img id="imgVol" src="" alt="" loading="lazy"></div>
+        <div>
+          <p class="kicker" data-i18n="kickVol"></p>
+          <h2 data-i18n="volTitle"></h2>
+          <p data-i18n="volP1"></p>
+          <p data-i18n="volP2"></p>
+          <p data-i18n="volP3"></p>
+        </div>
+      </div>
+
+      <div class="section-head" style="margin-top:70px;margin-bottom:0">
+        <p class="kicker" data-i18n="kickHab"></p>
+      </div>
+      <div class="hab-grid">
+        <article class="hab-card">
+          <h3 data-i18n="habC_t"></h3>
+          <div class="hab-price" data-i18n="habC_p"></div>
+          <p class="hl" data-i18n="habC_h"></p>
+          <p class="desc" data-i18n="habC_d"></p>
+          <a class="btn btn-green" href="#contacto" data-i18n="habCta"></a>
+        </article>
+        <article class="hab-card">
+          <h3 data-i18n="habP_t"></h3>
+          <div class="hab-price" data-i18n="habP_p"></div>
+          <p class="hl" data-i18n="habP_h"></p>
+          <p class="desc" data-i18n="habP_d"></p>
+          <a class="btn btn-green" href="#contacto" data-i18n="habCta"></a>
+        </article>
+        <article class="hab-card">
+          <h3 data-i18n="habF_t"></h3>
+          <div class="hab-price" data-i18n="habF_p"></div>
+          <p class="hl" data-i18n="habF_h"></p>
+          <p class="desc" data-i18n="habF_d"></p>
+          <a class="btn btn-green" href="#contacto" data-i18n="habCta"></a>
+        </article>
+      </div>
+      <p class="hab-note" data-i18n="habNote"></p>
+    </div>
+  </section>
+
+  <!-- HOSPITAL -->
+  <section id="hospital">
+    <div class="wrap split">
+      <div>
+        <p class="kicker" data-i18n="kickHosp"></p>
+        <h2 data-i18n="hospTitle"></h2>
+        <p data-i18n="hospP1"></p>
+        <p data-i18n="hospP2"></p>
+        <p data-i18n="hospP3"></p>
+      </div>
+      <div class="pic"><img id="imgHosp" src="" alt="" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- VISÍTANOS + GIRAS -->
+  <section class="historia" id="visitanos">
+    <div class="wrap split rev">
+      <div class="pic"><img id="imgVis" src="" alt="" loading="lazy"></div>
+      <div>
+        <p class="kicker" data-i18n="kickVis"></p>
+        <h2 data-i18n="visTitle"></h2>
+        <p data-i18n="visP1"></p>
+        <p data-i18n="visP2"></p>
+        <div class="info-cards">
+          <div class="info-card"><h4 data-i18n="visHours"></h4><p data-i18n="visHoursVal"></p></div>
+          <div class="info-card"><h4 data-i18n="visFees"></h4><p data-i18n="visFeesNat"></p><p data-i18n="visFeesExt"></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap split" style="margin-top:70px">
+      <div>
+        <p class="kicker" data-i18n="kickGiras"></p>
+        <h2 data-i18n="girTitle"></h2>
+        <p data-i18n="girP1"></p>
+        <p data-i18n="girP2"></p>
+      </div>
+      <div class="pic"><img id="imgGiras" src="" alt="" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- FORMULARIO -->
+  <section class="contact" id="contacto">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker" data-i18n="formTitle"></p>
+        <h2 data-i18n="formSub"></h2>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label for="fNombre" data-i18n="fNombre"></label><input id="fNombre" type="text" autocomplete="name"></div>
+        <div class="field"><label for="fEmail" data-i18n="fEmail"></label><input id="fEmail" type="email" autocomplete="email"></div>
+        <div class="field full"><label for="fWhats" data-i18n="fWhats"></label><input id="fWhats" type="tel" placeholder="+506 8888 8888"></div>
+        <div class="field"><label for="fInteres" data-i18n="formSub"></label>
+          <select id="fInteres">
+            <option value="visitar" data-i18n="fVisitar"></option>
+            <option value="voluntario" data-i18n="fVol"></option>
+            <option value="donar" data-i18n="fDonar"></option>
+          </select>
+        </div>
+        <div class="field"><label for="fPersonas" data-i18n="fPersonas"></label><input id="fPersonas" type="number" min="1" value="1"></div>
+        <div class="field"><label for="fDieta" data-i18n="fDieta"></label>
+          <select id="fDieta">
+            <option value="regular" data-i18n="fDR"></option>
+            <option value="vegetariana" data-i18n="fDV"></option>
+            <option value="vegana" data-i18n="fDVe"></option>
+            <option value="sin-gluten" data-i18n="fDG"></option>
+          </select>
+        </div>
+        <div class="field"><label for="fAlergias" data-i18n="fAlergias"></label><input id="fAlergias" type="text"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-sun" id="waBtn" type="button" data-i18n="fEnviarWa"></button>
+        <button class="btn btn-ghost" id="sendBtn" type="button" data-i18n="fEnviar"></button>
+      </div>
+      <p class="form-status" id="formStatus" role="status"></p>
+      <p class="form-hint" data-i18n="formHint"></p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head"><h2 data-i18n="faqTitle"></h2></div>
+      <div class="faq-list">
+        <details class="faq-item"><summary data-i18n="faqQ1"></summary><div class="a" data-i18n="faqA1"></div></details>
+        <details class="faq-item"><summary data-i18n="faqQ2"></summary><div class="a" data-i18n="faqA2"></div></details>
+        <details class="faq-item"><summary data-i18n="faqQ3"></summary><div class="a" data-i18n="faqA3"></div></details>
+        <details class="faq-item"><summary data-i18n="faqQ4"></summary><div class="a" data-i18n="faqA4"></div></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <img id="logoFoot" src="" alt="Logo Costa Rica Animal Rescue Center">
+      <p data-i18n="footOrg"></p>
+      <p data-i18n="footHorario"></p>
+    </div>
+    <div>
+      <p><a href="mailto:volunteering@costaricaanimalrescuecenter.org">volunteering@costaricaanimalrescuecenter.org</a></p>
+      <p><a href="tel:+50685228125">+506 8522-8125</a></p>
+      <p style="margin-top:10px">
+        <a href="https://instagram.com/costaricaanimalrescuecenter_?igshid=1n3zkhhkk0ti1">Instagram</a> ·
+        <a href="https://www.facebook.com/costaricaanimalrescuecenter/">Facebook</a>
+      </p>
+    </div>
+    <div>
+      <p><a href="index.html" data-i18n="backHome"></a></p>
+    </div>
+  </div>
+  <div class="wrap copyright">
+    <span>© 2026 Costa Rica Animal Rescue Center</span>
+    <span>Rescate · Rehabilitación · Liberación</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("logo").src = IMG.logo;
+document.getElementById("logoFoot").src = IMG.logo;
+document.getElementById("heroBg").style.backgroundImage = `url("${IMG.hero}")`;
+document.getElementById("imgQuienes").src = IMG.quienes;
+document.getElementById("imgHist").src = IMG.familia;
+document.getElementById("imgVol").src = IMG.voluntariados;
+document.getElementById("imgHosp").src = IMG.hospital;
+document.getElementById("imgVis").src = IMG.visitanos;
+document.getElementById("imgGiras").src = IMG.giras;
+
+/* ---------- Animales ---------- */
+function buildAnimals(dict){
+  const grid = document.getElementById("aniGrid");
+  grid.innerHTML = "";
+  ANIMALS.forEach(a => {
+    const n = dict[`ani_${a.id}_n`], sp = dict[`ani_${a.id}_s`], st = dict[`ani_${a.id}_st`];
+    const badge = {rehabilitating: dict.stRehab, "ready-to-release": dict.stReady, "permanent-resident": dict.stPerm}[a.status] || "";
+    const card = document.createElement("article");
+    card.className = "ani-card";
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <div class="ani-media">
+        <img src="${a.img}" alt="${n} — ${sp}" loading="lazy">
+        <p class="ani-story">${st}</p>
+      </div>
+      <div class="ani-body">
+        <div><h3>${n}</h3><p class="sp">${sp}</p></div>
+        <span class="badge ${a.status}">${badge}</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- I18N ---------- */
+const langSelect = document.getElementById("langSelect");
+Object.keys(I18N).forEach(code => {
+  const opt = document.createElement("option");
+  opt.value = code;
+  opt.textContent = `${I18N[code]._flag} ${I18N[code]._name}`;
+  langSelect.appendChild(opt);
+});
+
+function applyLang(code){
+  const dict = I18N[code] || I18N.es;
+  document.documentElement.lang = code;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.dataset.i18n;
+    if (dict[k] != null) el.textContent = dict[k];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const k = el.dataset.i18nHtml;
+    if (dict[k] != null) el.innerHTML = dict[k];
+  });
+  buildAnimals(dict);
+  langSelect.value = code;
+  try { localStorage.setItem("crarc-lang", code); } catch(e){}
+}
+
+let savedLang = "es";
+try { savedLang = localStorage.getItem("crarc-lang") || "es"; } catch(e){}
+applyLang(I18N[savedLang] ? savedLang : "es");
+langSelect.addEventListener("change", () => applyLang(langSelect.value));
+
+/* ---------- Header + menú móvil ---------- */
+const header = document.getElementById("header");
+const onScroll = () => header.classList.toggle("solid", window.scrollY > 40);
+window.addEventListener("scroll", onScroll, { passive:true });
+onScroll();
+
+const toggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+toggle.addEventListener("click", () => {
+  const open = document.body.classList.toggle("menu-open");
+  toggle.setAttribute("aria-expanded", open);
+});
+navLinks.querySelectorAll("a").forEach(a =>
+  a.addEventListener("click", () => {
+    document.body.classList.remove("menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+  })
+);
+
+/* ---------- Formulario: WhatsApp + Google Sheets ---------- */
+function collectForm(){
+  const dict = I18N[document.documentElement.lang] || I18N.es;
+  const v = id => document.getElementById(id).value.trim();
+  const sel = id => { const s = document.getElementById(id); return s.options[s.selectedIndex].textContent; };
+  const selVal = id => document.getElementById(id).value;
+  const data = {
+    nombre: v("fNombre"), email: v("fEmail"), whatsapp: v("fWhats"),
+    interes: selVal("fInteres"), personas: v("fPersonas"),
+    dieta: selVal("fDieta"), alergias: v("fAlergias") || "-",
+    idioma: document.documentElement.lang, pagina: location.pathname
+  };
+  const texto = [
+    `${dict.fNombre}: ${data.nombre}`,
+    `${dict.fEmail}: ${data.email}`,
+    `${dict.fWhats}: ${data.whatsapp}`,
+    `${sel("fInteres")}`,
+    `${dict.fPersonas}: ${data.personas}`,
+    `${dict.fDieta}: ${sel("fDieta")}`,
+    `${dict.fAlergias}: ${data.alergias}`
+  ].join("\n");
+  return { dict, data, texto };
+}
+
+document.getElementById("waBtn").addEventListener("click", () => {
+  const { texto } = collectForm();
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`, "_blank");
+});
+
+document.getElementById("sendBtn").addEventListener("click", async () => {
+  const { dict, data, texto } = collectForm();
+  const status = document.getElementById("formStatus");
+  const btn = document.getElementById("sendBtn");
+
+  /* Sin endpoint configurado: respaldo por correo */
+  if (!SHEETS_ENDPOINT){
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(dict.formSubject)}&body=${encodeURIComponent(texto)}`;
+    return;
+  }
+
+  btn.disabled = true;
+  status.textContent = dict.sendSending;
+  try {
+    /* Texto plano para evitar el preflight CORS de Apps Script */
+    const res = await fetch(SHEETS_ENDPOINT, { method: "POST", body: JSON.stringify(data) });
+    if (!res.ok) throw new Error(res.status);
+    status.textContent = dict.sendOk;
+  } catch(e){
+    status.textContent = dict.sendErr;
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
