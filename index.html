@@ -177,7 +177,7 @@ const I18N = {
     footExplore: "Explorar", footTours: "Tours", footAbout: "Sobre nosotros", footFounders: "Fundadores",
     footFaq: "Preguntas frecuentes", footInternships: "Pasantías", footVolunteer: "Voluntariado", footContact: "Contacto",
     footFollow: "Seguinos",
-    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footCopy: "© {year} Costa Rica Animal Rescue Center",
     footMotto: "Rescate · Rehabilitación · Liberación"
   },
 
@@ -251,7 +251,7 @@ const I18N = {
     footExplore: "Explore", footTours: "Tours", footAbout: "About us", footFounders: "Founders",
     footFaq: "FAQ", footInternships: "Internships", footVolunteer: "Volunteer", footContact: "Contact us",
     footFollow: "Follow us",
-    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footCopy: "© {year} Costa Rica Animal Rescue Center",
     footMotto: "Rescue · Rehabilitate · Release"
   },
 
@@ -325,7 +325,7 @@ const I18N = {
     footExplore: "Explorer", footTours: "Visites", footAbout: "À propos", footFounders: "Fondateurs",
     footFaq: "FAQ", footInternships: "Stages", footVolunteer: "Bénévolat", footContact: "Contact",
     footFollow: "Suivez-nous",
-    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footCopy: "© {year} Costa Rica Animal Rescue Center",
     footMotto: "Secourir · Réhabiliter · Relâcher"
   },
 
@@ -399,7 +399,7 @@ const I18N = {
     footExplore: "Esplora", footTours: "Tour", footAbout: "Chi siamo", footFounders: "Fondatori",
     footFaq: "FAQ", footInternships: "Tirocini", footVolunteer: "Volontariato", footContact: "Contatti",
     footFollow: "Seguici",
-    footCopy: "© 2022 by CRARC — Costa Rica Animal Rescue Center",
+    footCopy: "© {year} Costa Rica Animal Rescue Center",
     footMotto: "Salvare · Riabilitare · Liberare"
   }
 };
@@ -918,12 +918,8 @@ footer a:hover{color:var(--sun)}
     </button>
 
     <ul class="nav-links" id="navLinks">
-      <li><a href="#how" data-i18n="navHow"></a></li>
-      <li><a href="#impact" data-i18n="navImpact"></a></li>
-      <li><a href="#growth" data-i18n="navGrowth"></a></li>
       <li><a href="#sponsor" data-i18n="navSponsor"></a></li>
       <li><a href="conocenos.html" data-i18n="navKnow"></a></li>
-      <li><a href="#gallery" data-i18n="navGallery"></a></li>
       <li><a href="voluntariado.html" data-i18n="navVolunteer"></a></li>
       <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="navContact"></a></li>
       <li class="lang">
@@ -1131,7 +1127,7 @@ footer a:hover{color:var(--sun)}
   </div>
 
   <div class="wrap copyright">
-    <span data-i18n="footCopy"></span>
+    <span id="footCopy"></span>
     <span data-i18n="footMotto"></span>
   </div>
 </footer>
@@ -1369,6 +1365,8 @@ function applyLang(code){
   document.querySelectorAll(".g-img").forEach(img => img.alt = dict.galleryAlt);
   buildSponsors(dict);
   buildPayments(dict);
+  document.getElementById("footCopy").textContent =
+    (dict.footCopy || "").replace("{year}", new Date().getFullYear());
   langSelect.value = code;
   try { localStorage.setItem("crarc-lang", code); } catch(e){ /* sin storage, no pasa nada */ }
 }

@@ -476,7 +476,7 @@ footer a:hover{color:var(--sun)}
     </div>
   </div>
   <div class="wrap copyright">
-    <span>© 2026 Costa Rica Animal Rescue Center</span>
+    <span id="footYear"></span>
     <span>Rescate · Rehabilitación · Liberación</span>
   </div>
 </footer>
@@ -629,6 +629,9 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
     btn.disabled = false;
   }
 });
+
+document.getElementById("footYear").textContent =
+  "© " + new Date().getFullYear() + " Costa Rica Animal Rescue Center";
 </script>
 </body>
 </html>

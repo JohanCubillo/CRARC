@@ -383,7 +383,7 @@ footer a:hover{color:var(--sun)}
     <div><p><a href="index.html" data-i18n="backHome"></a></p></div>
   </div>
   <div class="wrap copyright">
-    <span>© 2026 Costa Rica Animal Rescue Center</span>
+    <span id="footYear"></span>
     <span>Rescate · Rehabilitación · Liberación</span>
   </div>
 </footer>
@@ -439,6 +439,9 @@ document.getElementById("waCta").addEventListener("click", (ev) => {
   const dict = I18N[document.documentElement.lang] || I18N.es;
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(dict.waMsg)}`, "_blank");
 });
+
+document.getElementById("footYear").textContent =
+  "© " + new Date().getFullYear() + " Costa Rica Animal Rescue Center";
 </script>
 </body>
 </html>
