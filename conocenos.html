@@ -586,8 +586,24 @@ function collectForm(){
   return { dict, data, texto };
 }
 
+/* Guarda en la hoja de Google (silencioso, no bloquea al usuario) */
+function guardarEnHoja(data){
+  if (!SHEETS_ENDPOINT) return Promise.resolve();
+  /* Content-Type text/plain evita el preflight CORS; Apps Script responde
+     con redirección, así que no intentamos leer el cuerpo de la respuesta:
+     si el fetch se resuelve, el POST llegó. */
+  return fetch(SHEETS_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(data),
+    redirect: "follow"
+  });
+}
+
 document.getElementById("waBtn").addEventListener("click", () => {
-  const { texto } = collectForm();
+  const { data, texto } = collectForm();
+  /* Se registra también cuando escriben por WhatsApp, para no perder el dato */
+  guardarEnHoja(data).catch(() => {});
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`, "_blank");
 });
 
@@ -605,15 +621,7 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
   btn.disabled = true;
   status.textContent = dict.sendSending;
   try {
-    /* no-cors: Apps Script redirige y el navegador bloquea la lectura de la
-       respuesta, pero el POST sí llega y la fila se guarda. Por eso no
-       inspeccionamos res: si fetch no lanzó, el envío salió. */
-    await fetch(SHEETS_ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(data)
-    });
+    await guardarEnHoja(data);
     status.textContent = dict.sendOk;
   } catch(e){
     status.textContent = dict.sendErr;
