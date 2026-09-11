@@ -72,7 +72,7 @@ header.solid .nav-links a:hover{color:var(--canopy)}
 header.solid .lang select{background:var(--mist);border-color:var(--line);color:var(--ink)}
 header.solid .lang::after{color:var(--ink)}
 .lang select option{color:var(--ink);background:#fff}
-.btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:999px;padding:.72em 1.5em;font-size:1rem;border:2px solid transparent;cursor:pointer;transition:transform .15s,background .2s,color .2s;font-family:var(--sans)}
+.btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:999px;padding:.72em 1.5em;font-size:1rem;border:2px solid transparent;cursor:pointer;background:transparent;transition:transform .15s,background .2s,color .2s;font-family:var(--sans)}
 .btn:active{transform:scale(.97)}
 .btn-sun{background:var(--sun);color:var(--ink)}
 .btn-sun:hover{background:var(--sun-dk)}
@@ -498,7 +498,6 @@ function buildAnimals(dict){
   grid.innerHTML = "";
   ANIMALS.forEach(a => {
     const n = dict[`ani_${a.id}_n`], sp = dict[`ani_${a.id}_s`], st = dict[`ani_${a.id}_st`];
-    const badge = {rehabilitating: dict.stRehab, "ready-to-release": dict.stReady, "permanent-resident": dict.stPerm}[a.status] || "";
     const card = document.createElement("article");
     card.className = "ani-card";
     card.tabIndex = 0;
@@ -509,7 +508,6 @@ function buildAnimals(dict){
       </div>
       <div class="ani-body">
         <div><h3>${n}</h3><p class="sp">${sp}</p></div>
-        <span class="badge ${a.status}">${badge}</span>
       </div>`;
     grid.appendChild(card);
   });

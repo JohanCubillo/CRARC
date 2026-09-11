@@ -95,9 +95,12 @@ const PAYMENT = {
   }
 };
 const SPONSORS = [
-  { id: "a1", name: "Coco",  img: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615001755380-YQE0K8HOXEBNIM1J4AR3/img-08.jpg", amounts: [10, 25, 50] },
-  { id: "a2", name: "Luna",  img: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1615142307702-APJ87BNVD9E5FO9LO7R5/img-01.jpg", amounts: [10, 25, 50] },
-  { id: "a3", name: "Kiara", img: "https://images.squarespace-cdn.com/content/v1/531d3bd6e4b0ddc80ccfca51/1598633978077-NZ9LUXBENH7F8W8AS3YP/img-03.jpg", amounts: [10, 25, 50] }
+  { id: "a1", name: "Grumpy",   img: "images/animals/grumpybebe.jpeg", amounts: [10, 25, 50] },
+  { id: "a2", name: "Sharleen", img: "images/animals/eyes.jpeg",       amounts: [10, 25, 50] },
+  { id: "a3", name: "Lola",     img: "images/animals/lola.jpeg",       amounts: [10, 25, 50] },
+  { id: "a4", name: "Gandy",    img: "images/animals/ghandy.jpeg",     amounts: [10, 25, 50] },
+  { id: "a5", name: "Daniel",   img: "images/animals/daniel.jpeg",     amounts: [10, 25, 50] },
+  { id: "a6", name: "Bamboo",   img: "images/animals/toro.jpeg",       amounts: [10, 25, 50] }
 ];
 
 /* ============================================================
@@ -148,12 +151,18 @@ const I18N = {
     sponBtn: "Apadrinar",
     sponWa: "Hola, quiero apadrinar a {name} con ${amount} al mes 🐾",
     sponNote: "El 100% de tu aporte se destina al cuidado de los animales. Al donar, indicá el nombre del animal que querés apadrinar.",
-    sponA1sp: "Mono aullador",
-    sponA1d: "Llegó al centro siendo una cría huérfana. Hoy está en rehabilitación y come frutas y hojas frescas todos los días.",
-    sponA2sp: "Perezosa de dos dedos",
-    sponA2d: "Rescatada tras un accidente con cables eléctricos. Se recupera en uno de nuestros jardines de perezosos.",
-    sponA3sp: "Lapa roja",
-    sponA3d: "Vivía como mascota ilegal. En nuestro aviario está reaprendiendo a volar y a socializar con otras lapas.",
+    sponA1sp: "Perezoso",
+    sponA1d: "Grumpy vino con la placenta aún enrollada en su cuerpo, vos podés ayudarnos a rehabilitarlo en el hospital.",
+    sponA2sp: "Mono congo",
+    sponA2d: "Sharleen fue rescatada de la trata ilegal de animales.",
+    sponA3sp: "Mono cariblanco",
+    sponA3d: "Lola sufrió maltrato físico y en el centro curamos sus heridas",
+    sponA4sp: "Mono araña",
+    sponA4d: "Gandy estaba amarrado en un bar para entretener a los visitantes",
+    sponA5sp: "Kinkajú",
+    sponA5d: "Huérfano tras destrucción de su hábitat, rescatado desde bebé.",
+    sponA6sp: "Venado",
+    sponA6d: "Decomisado por las autoridades después de que lo habían sacado de la naturaleza.",
     payTitle: "Formas de donar",
     payIntro: "Podés donar o pagar tu apadrinamiento por SINPE Móvil o transferencia bancaria:",
     paySinpe: "SINPE Móvil",
@@ -216,12 +225,18 @@ const I18N = {
     sponBtn: "Sponsor",
     sponWa: "Hi! I'd like to sponsor {name} with ${amount} per month 🐾",
     sponNote: "100% of your contribution goes to animal care. When donating, mention the name of the animal you'd like to sponsor.",
-    sponA1sp: "Howler monkey",
-    sponA1d: "Arrived at the center as an orphaned infant. Today he's in rehabilitation and eats fresh fruit and leaves every day.",
-    sponA2sp: "Two-toed sloth",
-    sponA2d: "Rescued after an accident with power lines. She's recovering in one of our sloth gardens.",
-    sponA3sp: "Scarlet macaw",
-    sponA3d: "She lived as an illegal pet. In our aviary she's relearning to fly and to socialize with other macaws.",
+    sponA1sp: "Sloth",
+    sponA1d: "Grumpy arrived with the placenta still wrapped around his body; you can help us rehabilitate him at the hospital.",
+    sponA2sp: "Howler monkey",
+    sponA2d: "Sharleen was rescued from the illegal animal trade.",
+    sponA3sp: "White-faced capuchin",
+    sponA3d: "Lola suffered physical abuse and at the center we healed her wounds",
+    sponA4sp: "Spider monkey",
+    sponA4d: "Gandy was tied up in a bar to entertain the visitors",
+    sponA5sp: "Kinkajou",
+    sponA5d: "Orphaned after the destruction of his habitat, rescued as a baby.",
+    sponA6sp: "Deer",
+    sponA6d: "Confiscated by the authorities after being taken from the wild.",
     payTitle: "Ways to donate",
     payIntro: "You can donate or pay your sponsorship via SINPE Móvil or bank transfer:",
     paySinpe: "SINPE Móvil",
@@ -284,12 +299,18 @@ const I18N = {
     sponBtn: "Parrainer",
     sponWa: "Bonjour ! Je souhaite parrainer {name} avec {amount} $ par mois 🐾",
     sponNote: "100 % de votre contribution est consacrée aux soins des animaux. Lors de votre don, indiquez le nom de l'animal que vous souhaitez parrainer.",
-    sponA1sp: "Singe hurleur",
-    sponA1d: "Arrivé au centre bébé et orphelin. Aujourd'hui en réhabilitation, il mange des fruits et des feuilles fraîches chaque jour.",
-    sponA2sp: "Paresseux à deux doigts",
-    sponA2d: "Secourue après un accident avec des lignes électriques. Elle se rétablit dans l'un de nos jardins à paresseux.",
-    sponA3sp: "Ara rouge",
-    sponA3d: "Elle vivait comme animal de compagnie illégal. Dans notre volière, elle réapprend à voler et à côtoyer d'autres aras.",
+    sponA1sp: "Paresseux",
+    sponA1d: "Grumpy est arrivé avec le placenta encore enroulé autour de son corps ; vous pouvez nous aider à le réhabiliter à l'hôpital.",
+    sponA2sp: "Singe hurleur",
+    sponA2d: "Sharleen a été secourue du trafic illégal d'animaux.",
+    sponA3sp: "Capucin à face blanche",
+    sponA3d: "Lola a subi des maltraitances physiques ; au centre, nous avons soigné ses blessures.",
+    sponA4sp: "Singe-araignée",
+    sponA4d: "Gandy était attaché dans un bar pour divertir les clients.",
+    sponA5sp: "Kinkajou",
+    sponA5d: "Orphelin après la destruction de son habitat, secouru dès son plus jeune âge.",
+    sponA6sp: "Cerf",
+    sponA6d: "Confisqué par les autorités après avoir été retiré de la nature.",
     payTitle: "Comment faire un don",
     payIntro: "Vous pouvez faire un don ou régler votre parrainage par SINPE Móvil ou virement bancaire :",
     paySinpe: "SINPE Móvil",
@@ -352,12 +373,18 @@ const I18N = {
     sponBtn: "Adotta",
     sponWa: "Ciao! Vorrei adottare a distanza {name} con {amount} $ al mese 🐾",
     sponNote: "Il 100% del tuo contributo è destinato alla cura degli animali. Al momento della donazione, indica il nome dell'animale che vuoi sostenere.",
-    sponA1sp: "Scimmia urlatrice",
-    sponA1d: "È arrivato al centro da cucciolo orfano. Oggi è in riabilitazione e mangia frutta e foglie fresche ogni giorno.",
-    sponA2sp: "Bradipo didattilo",
-    sponA2d: "Salvata dopo un incidente con i cavi elettrici. Si sta riprendendo in uno dei nostri giardini per bradipi.",
-    sponA3sp: "Ara scarlatta",
-    sponA3d: "Viveva come animale domestico illegale. Nella nostra voliera sta imparando di nuovo a volare e a socializzare con altre are.",
+    sponA1sp: "Bradipo",
+    sponA1d: "Grumpy è arrivato con la placenta ancora avvolta al corpo; puoi aiutarci a riabilitarlo in ospedale.",
+    sponA2sp: "Scimmia urlatrice",
+    sponA2d: "Sharleen è stata salvata dal traffico illegale di animali.",
+    sponA3sp: "Cebo cappuccino",
+    sponA3d: "Lola ha subito maltrattamenti fisici; al centro abbiamo curato le sue ferite.",
+    sponA4sp: "Scimmia ragno",
+    sponA4d: "Gandy era legato in un bar per intrattenere i clienti.",
+    sponA5sp: "Cercoletto",
+    sponA5d: "Rimasto orfano dopo la distruzione del suo habitat, salvato da cucciolo.",
+    sponA6sp: "Cervo",
+    sponA6d: "Confiscato dalle autorità dopo essere stato sottratto alla natura.",
     payTitle: "Come donare",
     payIntro: "Puoi donare o pagare la tua adozione a distanza tramite SINPE Móvil o bonifico bancario:",
     paySinpe: "SINPE Móvil",
@@ -496,7 +523,7 @@ header.solid .lang::after{color:var(--ink)}
 .btn{
   display:inline-block;text-decoration:none;font-weight:700;
   border-radius:999px;padding:.72em 1.5em;font-size:1rem;
-  border:2px solid transparent;cursor:pointer;
+  border:2px solid transparent;cursor:pointer;background:transparent;
   transition:transform .15s ease, background .2s ease, color .2s ease;
 }
 .btn:active{transform:scale(.97)}
@@ -1255,7 +1282,7 @@ function buildSponsors(dict){
 function cargarPadrinosRemotos(){
   if (!CONFIG_ENDPOINT) return;
   const porDefecto = Object.fromEntries(SPONSORS.map(s => [s.id, s]));
-  const indices = { a1: 1, a2: 2, a3: 3 };
+  const indices = { a1: 1, a2: 2, a3: 3, a4: 4, a5: 5, a6: 6 };
   fetch(`${CONFIG_ENDPOINT}?config=1`)
     .then(r => r.json())
     .then(cfg => {
