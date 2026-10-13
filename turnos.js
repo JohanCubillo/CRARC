@@ -28,20 +28,20 @@ async function refreshBoard() {
   el('boardDate').textContent=new Intl.DateTimeFormat('es-CR',{dateStyle:'full',timeZone:'UTC'}).format(new Date(`${day}T12:00:00Z`));
   try {
     // Lectura anónima de la copia pública, sin utilizar la sesión administrativa.
-    const data=await CRARC_DB.request(`tablero_publico?select=personas,actualizado_at&fecha=eq.${encodeURIComponent(day)}`);
+    const data=await CRARC_DB.request('rpc/tablero_del_dia',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify({p_fecha:day})});
     if(version!==requestVersion)return;
-    if(!data.length){clearBoard();note('Todavía no se ha publicado el tablero de esta fecha. La administración debe actualizarlo.');return;}
-    renderBoard(data[0].personas);
-    note('Última publicación: '+new Intl.DateTimeFormat('es-CR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(data[0].actualizado_at)));
+    renderBoard(data.personas);
+    note('Actualización automática: '+new Intl.DateTimeFormat('es-CR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(data.calculado_at)));
   }catch(e){if(version===requestVersion)note('No se pudo actualizar el tablero. Los datos visibles pueden estar desactualizados.');}
   finally{if(version===requestVersion){busy=false;el('boardRefresh').disabled=false;}}
 }
 function startBoard() {
-  el('boardDay').value=localDay();el('boardDay').onchange=refreshBoard;
-  el('boardToday').onclick=()=>{el('boardDay').value=localDay();refreshBoard();};
+  let followingToday=true;
+  el('boardDay').value=localDay();el('boardDay').onchange=()=>{followingToday=false;refreshBoard();};
+  el('boardToday').onclick=()=>{followingToday=true;el('boardDay').value=localDay();refreshBoard();};
   el('boardRefresh').onclick=refreshBoard;
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshBoard();});
-  setInterval(()=>{if(!document.hidden && !busy)refreshBoard();},60000);
+  setInterval(()=>{if(!document.hidden && !busy){if(followingToday)el('boardDay').value=localDay();refreshBoard();}},60000);
   refreshBoard();
 }
 startBoard();

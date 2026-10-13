@@ -58,24 +58,7 @@ async function reload() {
 }
 function present(s, day) { return s.llegada <= day && day < s.salida; }
 async function publishPublicBoard() {
-  const days = new Set([$('day').value,today()]);
-  const cursor = dateUTC(today());
-  for (let i=0; i<14; i++) {
-    days.add(cursor.toISOString().slice(0,10)); cursor.setUTCDate(cursor.getUTCDate()+1);
-  }
-  const data = [...days].filter(Boolean).map(day => CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day,leaders.find(l => l.fecha === day)));
-  const selectedPublished = data.some(s => s.fecha === $('day').value && s.valid);
-  if (!data.length) {
-    $('publicationStatus').textContent = 'Antes de publicar, elige y guarda los dos encargados del día: cocina y repartición y limpieza.';
-    return;
-  }
-  data.forEach(s => { s.valido=s.valid; delete s.valid; });
-  const result = await db.from('tablero_publico').upsert(data,{onConflict:'fecha'});
-  if (result.error) {
-    $('publicationStatus').textContent = 'Los datos privados están guardados, pero el tablero público no se actualizó. Verifica que ejecutaste tablero-publico.sql y encargados.sql; luego pulsa Actualizar tablero público. ' + result.error.message;
-    return;
-  }
-  $('publicationStatus').textContent = selectedPublished ? 'Tablero público actualizado con los encargados. Solo se publican fechas con encargados válidos.' : 'La fecha seleccionada no se publicó: elige y guarda los encargados. Se actualizaron otras fechas configuradas.';
+  $('publicationStatus').textContent = 'El tablero calcula las tareas automáticamente. No necesitas publicar cada día. Activa turnos-automaticos.sql en Supabase si aún no lo hiciste.';
 }
 let planCache = {stays:null, shifts:null, day:null, items:[]};
 function assigned(s, day) {
@@ -109,7 +92,7 @@ function renderMovements() {
 function renderTasks() {
   const day = $('day').value; if (!day) return;
   const plan = CRARC_PLAN.plan(stays,shifts,day);
-  const leadership = leaders.find(l => l.fecha === day);
+  const leadership = [...leaders].filter(l => l.fecha <= day).sort((a,b) => b.fecha.localeCompare(a.fecha))[0];
   for (const [id,task,key] of [['feedLeader',CRARC_PLAN.FEED,'alimentacion'],['prepLeader',CRARC_PLAN.PREP,'preparacion']]) {
     const candidates = stays.filter(s => plan.some(t => t.estadia_id === s.id && !t.libre));
     $(id).innerHTML = '<option value="">'+(candidates.length ? 'Selecciona un encargado' : 'Sin personas disponibles')+'</option>' + candidates.map(s => `<option value="${s.id}">${esc(s.nombre)}</option>`).join('');

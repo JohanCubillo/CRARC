@@ -28,5 +28,5 @@ publicData.personas.forEach((p,i)=>assert.notEqual(p.tarde,next.personas[i].tard
 assert.equal(CRARC_PUBLIC_BOARD.snapshot(people,[],'2026-10-20').personas.length,0);
 const source=fs.readFileSync(require('node:path').join(__dirname,'../turnos.js'),'utf8');
 assert.ok(!source.includes('signIn'));assert.ok(!source.includes("rows('estadias')"));
-assert.ok(source.includes('tablero_publico?select=personas,actualizado_at'));
+assert.ok(source.includes('rpc/tablero_del_dia'));
 console.log('PASS: tablero sin login, reparto 3/3 y copia sin datos privados.');

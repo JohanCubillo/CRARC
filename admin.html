@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Administración · CRARC</title>
-<link rel="stylesheet" href="admin.css?v=20261013-6">
-<script src="supabase-client.js?v=20261013-6"></script>
-<script src="daily-plan.js?v=20261013-6"></script>
-<script src="public-board-data.js?v=20261013-6"></script>
+<link rel="stylesheet" href="admin.css?v=20261013-7">
+<script src="supabase-client.js?v=20261013-7"></script>
+<script src="daily-plan.js?v=20261013-7"></script>
+<script src="public-board-data.js?v=20261013-7"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" defer></script>
-<script src="admin.js?v=20261013-6" defer></script>
+<script src="admin.js?v=20261013-7" defer></script>
 </head>
 <body>
 <aside><a class="brand" href="index.html">CRARC <small>Centro de rescate</small></a><div class="side-title">ADMINISTRACIÓN</div><nav aria-label="Panel"><button data-view="resumen" class="active">Resumen financiero</button><button data-view="personas">Personas y estadías</button><button data-view="tareas">Organización del día</button><button data-view="finanzas">Ingresos y gastos</button><button data-view="formularios">Formularios recibidos</button></nav><a href="index.html" class="back">← Volver al sitio</a></aside>
@@ -31,7 +31,7 @@
 <section id="tareas" class="view" hidden>
 <article class="card"><div class="task-day-toolbar"><div><h2>Plan de trabajo</h2><p>Selecciona la fecha para organizar las tareas y los encargados.</p></div><div class="task-day-controls"><label>Fecha<input id="day" type="date" required></label><button class="primary" id="distribute">Repartir tareas de la tarde</button></div></div><p class="hint">Las tareas alternan según la última jornada trabajada. Con 6 personas disponibles, alimentan 3 y preparan alimentos 3. Se respetan los días libres. Los cambios manuales guardados se conservan hasta que vuelvas a repartir.</p></article>
 <article class="card"><h2>Los dos encargados del día</h2><p>Elige dos personas distintas disponibles: una de cocina y otra de repartición y limpieza. Son las personas a quienes consultar dudas, independientemente de su tarea de la tarde.</p><form id="leadersForm"><div class="form-grid"><label>Encargado de cocina<select id="prepLeader" required></select></label><label>Encargado de repartición y limpieza<select id="feedLeader" required></select></label></div><div class="leaders-actions"><p id="leadersStatus" role="status"></p><button class="primary">Guardar encargados</button></div></form></article>
-<article class="card"><div class="task-publication"><div><h2>Tablero público</h2><p>Comparte con el centro las tareas y los encargados de la fecha elegida.</p></div><div class="task-publication-actions"><a class="button-link" href="turnos.html" target="_blank" rel="noopener">Ver tablero ↗</a><button class="primary" id="publishBoard" type="button">Actualizar tablero público</button></div></div><p id="publicationStatus" role="status">El tablero público muestra solo nombres, tareas y encargados.</p></article><div id="taskCards" class="task-grid"></div>
+<article class="card"><div class="task-publication"><div><h2>Tablero público</h2><p>Las tareas se calculan automáticamente en el tablero. Los cambios guardados se reflejan al consultarlo.</p></div><div class="task-publication-actions"><a class="button-link" href="turnos.html" target="_blank" rel="noopener">Ver tablero ↗</a><button class="primary" id="publishBoard" type="button">Actualizar datos</button></div></div><p id="publicationStatus" role="status">El tablero público muestra solo nombres, tareas y encargados.</p></article><div id="taskCards" class="task-grid"></div>
 </section>
 <section id="finanzas" class="view" hidden>
 <div class="toolbar"><p>Registra los pagos recibidos y los gastos del centro.</p><button class="primary" id="newMovement">+ Registrar movimiento</button></div>
