@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Administración · CRARC</title>
-<link rel="stylesheet" href="admin.css?v=20261013-4">
-<script src="supabase-client.js?v=20261013-4"></script>
-<script src="daily-plan.js?v=20261013-4"></script>
-<script src="public-board-data.js?v=20261013-4"></script>
+<link rel="stylesheet" href="admin.css?v=20261013-5">
+<script src="supabase-client.js?v=20261013-5"></script>
+<script src="daily-plan.js?v=20261013-5"></script>
+<script src="public-board-data.js?v=20261013-5"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" defer></script>
-<script src="admin.js?v=20261013-4" defer></script>
+<script src="admin.js?v=20261013-5" defer></script>
 </head>
 <body>
-<aside><a class="brand" href="index.html">CRARC <small>Centro de rescate</small></a><div class="side-title">ADMINISTRACIÓN</div><nav aria-label="Panel"><button data-view="resumen" class="active">Resumen financiero</button><button data-view="personas">Personas y estadías</button><button data-view="tareas">Organización del día</button><button data-view="finanzas">Ingresos y gastos</button></nav><a href="index.html" class="back">← Volver al sitio</a></aside>
+<aside><a class="brand" href="index.html">CRARC <small>Centro de rescate</small></a><div class="side-title">ADMINISTRACIÓN</div><nav aria-label="Panel"><button data-view="resumen" class="active">Resumen financiero</button><button data-view="personas">Personas y estadías</button><button data-view="tareas">Organización del día</button><button data-view="finanzas">Ingresos y gastos</button><button data-view="formularios">Formularios recibidos</button></nav><a href="index.html" class="back">← Volver al sitio</a></aside>
 <main>
 <header><div><span class="eyebrow">COSTA RICA ANIMAL RESCUE CENTER</span><h1 id="title">Administración</h1></div><button id="logout" hidden>Cerrar sesión</button></header>
 <p id="status" role="status" aria-live="polite"></p>
@@ -37,6 +37,12 @@
 <div class="toolbar"><p>Registra los pagos recibidos y los gastos del centro.</p><button class="primary" id="newMovement">+ Registrar movimiento</button></div>
 <div class="toolbar"><label>Desde<input id="from" type="date"></label><label>Hasta<input id="to" type="date"></label><label>Tipo<select id="typeFilter"><option value="all">Todos</option><option value="ingreso">Ingresos</option><option value="gasto">Gastos</option></select></label></div>
 <article class="card table-wrap"><table><thead><tr><th>Fecha</th><th>Concepto / persona</th><th>Categoría</th><th>Tipo</th><th>Monto</th><th>Acciones</th></tr></thead><tbody id="movementRows"></tbody></table></article>
+</section>
+<section id="formularios" class="view" hidden>
+<div class="toolbar"><p>Consultas enviadas desde el formulario del sitio. Registrar una estadía es un paso separado.</p><button id="refreshContacts" class="primary">Actualizar consultas</button></div>
+<div class="toolbar"><label>Buscar<input id="contactSearch" type="search" placeholder="Nombre, correo o WhatsApp"></label><label>Interés<select id="contactInterest"><option value="">Todos</option></select></label></div>
+<p id="contactStatus" role="status"></p>
+<article class="card table-wrap"><table><thead><tr><th>Recibido</th><th>Persona</th><th>Contacto</th><th>Interés</th><th>Detalles</th></tr></thead><tbody id="contactRows"></tbody></table></article>
 </section>
 </div>
 </main>

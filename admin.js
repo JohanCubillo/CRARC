@@ -6,7 +6,29 @@ const dateUTC = value => new Date(`${value}T12:00:00Z`);
 const nights = s => Math.round((dateUTC(s.salida) - dateUTC(s.llegada)) / 86400000);
 const weekdays = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const money = (value, currency) => new Intl.NumberFormat('es-CR', {style:'currency',currency}).format(value);
-const titles = {resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos'};
+const titles = {resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos',formularios:'Formularios recibidos'};
+let contacts=[], contactsLoading=false;
+function renderContacts() {
+  const query=$('contactSearch').value.toLowerCase(), interest=$('contactInterest').value;
+  $('contactRows').innerHTML=contacts.filter(c=>`${c.nombre} ${c.email} ${c.whatsapp}`.toLowerCase().includes(query) && (!interest || c.interes===interest)).map(c=>{
+    const timestamp=new Date(c.created_at);
+    const received=Number.isNaN(timestamp.getTime()) ? '' : new Intl.DateTimeFormat('es-CR',{dateStyle:'short',timeStyle:'short',timeZone:'America/Costa_Rica'}).format(timestamp);
+    return `<tr><td>${esc(received)}</td><td><strong>${esc(c.nombre)}</strong></td><td>${esc(c.email)}<small>${esc(c.whatsapp)}</small></td><td>${esc(c.interes)}</td><td><details><summary>Ver detalles</summary><p>Personas: ${esc(c.personas)}<br>Dieta: ${esc(c.dieta)}<br>Alergias: ${esc(c.alergias)}<br>Idioma: ${esc(c.idioma)}<br>Página: ${esc(c.pagina)}</p></details></td></tr>`;
+  }).join('') || '<tr><td colspan="5" class="empty">No hay consultas para este filtro.</td></tr>';
+}
+async function loadContacts() {
+  if (!userId || contactsLoading) return;
+  contactsLoading=true; const owner=userId; $('refreshContacts').disabled=true; $('contactStatus').textContent='Cargando consultas…';
+  try {
+    const data=await allRows('contactos'); if (userId!==owner) return;
+    contacts=data.sort((a,b)=>b.created_at.localeCompare(a.created_at));
+    const interest=$('contactInterest').value;
+    $('contactInterest').innerHTML='<option value="">Todos</option>'+[...new Set(contacts.map(c=>c.interes))].filter(Boolean).sort().map(i=>`<option value="${esc(i)}">${esc(i)}</option>`).join('');
+    $('contactInterest').value=interest; renderContacts(); $('contactStatus').textContent=`${contacts.length} consultas recibidas.`;
+  } catch(e) {
+    $('contactStatus').textContent='No se pudieron consultar los formularios. Ejecuta formularios-admin.sql en Supabase y vuelve a actualizar. '+e.message;
+  } finally { contactsLoading=false; $('refreshContacts').disabled=false; }
+}
 let db, stays = [], movements = [], shifts = [], userId = null, loading = false;
 let leaders = [];
 function status(message, error = false) { $('status').textContent = message; $('status').className = error ? 'error' : 'success'; }
@@ -142,6 +164,7 @@ async function saveForm(form, operation) {
   try { await operation(); await reload(); form.closest('dialog')?.close(); status('Guardado correctamente.'); } catch(e) { fail(e); } finally { btn.disabled = false; }
 }
 function hideWorkspace() {
+  contacts=[]; $('contactRows').replaceChildren(); $('contactStatus').textContent='';
   userId = null; stays = []; movements = []; shifts = [];
   $('workspace').hidden = true; $('login').hidden = false; $('logout').hidden = true;
   document.querySelectorAll('dialog[open]').forEach(d => d.close());
@@ -167,9 +190,12 @@ async function init() {
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
     document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== b.dataset.view);
     document.querySelectorAll('[data-view]').forEach(x => x.classList.toggle('active',x === b)); $('title').textContent = titles[b.dataset.view];
+    if (b.dataset.view==='formularios') loadContacts();
   });
   document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   $('newStay').onclick = () => openStay(); $('newMovement').onclick = () => openMovement();
+  $('refreshContacts').onclick=loadContacts;
+  ['contactSearch','contactInterest'].forEach(id=>$(id).addEventListener('input',renderContacts));
   const stayForm = $('stayForm');
   stayForm.elements.tarea_tarde.onchange = () => { stayForm.elements.tarea_manana.value = CRARC_PLAN.opposite(stayForm.elements.tarea_tarde.value); };
   stayForm.elements.tarea_manana.onchange = () => { stayForm.elements.tarea_tarde.value = CRARC_PLAN.opposite(stayForm.elements.tarea_manana.value); };

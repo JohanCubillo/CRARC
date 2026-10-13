@@ -30,6 +30,12 @@ assert.ok(document.getElementById('feedLeader').innerHTML.includes('Ana &lt;test
 assert.equal(document.getElementById('feedLeader').disabled,false);
 assert.equal(document.getElementById('prepLeader').disabled,false);
 assert.ok(document.getElementById('prepLeader').innerHTML.includes('Ana &lt;test&gt;'));
+contacts=[{nombre:'Consulta <script>',email:'persona@example.com',whatsapp:'123',interes:'voluntariado',created_at:'2026-10-13T12:00:00Z',personas:'2',dieta:'Vegana',alergias:'<img>',idioma:'es',pagina:'/conocenos.html'}];
+renderContacts();
+assert.ok(document.getElementById('contactRows').innerHTML.includes('Consulta &lt;script&gt;'));
+assert.ok(document.getElementById('contactRows').innerHTML.includes('&lt;img&gt;'));
+document.getElementById('contactSearch').value='ausente';renderContacts();
+assert.ok(document.getElementById('contactRows').innerHTML.includes('No hay consultas'));
 `;
 const context = vm.createContext({document:{getElementById:id => el[id]},Intl,Date,assert});
 vm.runInContext(fs.readFileSync(path.join(root,'daily-plan.js'),'utf8'),context);
