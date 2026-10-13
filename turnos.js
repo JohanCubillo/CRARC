@@ -14,8 +14,8 @@ function renderBoard(active) {
   el('boardCounts').innerHTML=[['Presentes',active.length],['Alimentar animales',feeding.length],['Preparar alimentos',prep.length],['Día libre',free.length]].map(([label,n])=>`<div class="stat"><small>${label}</small><b>${n}</b></div>`).join('');
   const groups=[['Alimentar animales','',feeding],['Cortar frutas y preparar alimentos','prep',prep],['Día libre','free',free]];
   if(other.length)groups.push(['Otras tareas','',other]);
-  el('boardGroups').innerHTML=groups.map(([title,css,list])=>`<article class="card board-group ${css}"><h2>${title}</h2><span class="group-count">${list.length} personas</span>${list.map(p=>`<div class="person-tile"><strong>${safe(p.nombre)}</strong><small>Habitación ${safe(p.habitacion)}</small>${!p.libre?`<small>Mañana: ${safe(p.manana)}</small>`:''}</div>`).join('')||'<p class="empty">Sin personas en este grupo.</p>'}</article>`).join('');
-  el('boardRows').innerHTML=active.map(p=>`<tr><td><strong>${safe(p.nombre)}</strong></td><td>${safe(p.habitacion)}</td><td>${p.libre?'Día libre':safe(p.manana)}</td><td>${p.libre?'Día libre':safe(p.tarde)}</td><td>${p.saved?'Guardada':'Automática'}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No hay personas presentes en esta fecha.</td></tr>';
+  el('boardGroups').innerHTML=groups.map(([title,css,list])=>`<article class="card board-group ${css}"><h2>${title}</h2><span class="group-count">${list.length} personas</span>${list.sort((a,b)=>Number(!!b.encargado)-Number(!!a.encargado)).map(p=>`<div class="person-tile"><strong>${safe(p.nombre)}</strong>${p.encargado?'<small class="leader-badge">★ Encargado del equipo</small>':''}${!p.libre?`<small>Mañana: ${safe(p.manana)}</small>`:''}</div>`).join('')||'<p class="empty">Sin personas en este grupo.</p>'}</article>`).join('');
+  el('boardRows').innerHTML=active.map(p=>`<tr><td><strong>${safe(p.nombre)}</strong>${p.encargado?'<small>★ Encargado</small>':''}</td><td>${p.libre?'Día libre':safe(p.manana)}</td><td>${p.libre?'Día libre':safe(p.tarde)}</td><td>${p.saved?'Guardada':'Automática'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">No hay personas presentes en esta fecha.</td></tr>';
 }
 async function refreshBoard() {
   const day=el('boardDay').value;if(!day)return;
@@ -35,7 +35,7 @@ async function refreshBoard() {
 function startBoard() {
   el('boardDay').value=localDay();el('boardDay').onchange=refreshBoard;
   el('boardToday').onclick=()=>{el('boardDay').value=localDay();refreshBoard();};
-  el('boardRefresh').onclick=refreshBoard;el('boardPrint').onclick=()=>window.print();
+  el('boardRefresh').onclick=refreshBoard;
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshBoard();});
   setInterval(()=>{if(!document.hidden && !busy)refreshBoard();},60000);
   refreshBoard();

@@ -8,6 +8,7 @@ const weekdays = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','S�
 const money = (value, currency) => new Intl.NumberFormat('es-CR', {style:'currency',currency}).format(value);
 const titles = {resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos'};
 let db, stays = [], movements = [], shifts = [], userId = null, loading = false;
+let leaders = [];
 function status(message, error = false) { $('status').textContent = message; $('status').className = error ? 'error' : 'success'; }
 function fail(error) { status(error.message || 'No se pudo completar la operación.', true); }
 function unwrap(result) { if (result.error) throw result.error; return result.data; }
@@ -24,6 +25,9 @@ async function reload() {
   try {
     const data = await Promise.all([allRows('estadias'),allRows('movimientos'),allRows('turnos')]);
     [stays,movements,shifts] = data;
+    const leadership = await db.from('encargados').select('*');
+    leaders = leadership.error ? [] : leadership.data;
+    $('leadersStatus').textContent = leadership.error ? 'Ejecuta encargados.sql en Supabase para activar la elección de encargados.' : '';
     stays.sort((a,b) => a.llegada.localeCompare(b.llegada));
     movements.sort((a,b) => b.fecha.localeCompare(a.fecha));
     render();
@@ -37,13 +41,19 @@ async function publishPublicBoard() {
   for (let i=0; i<14; i++) {
     days.add(cursor.toISOString().slice(0,10)); cursor.setUTCDate(cursor.getUTCDate()+1);
   }
-  const data = [...days].filter(Boolean).map(day => CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day));
-  const result = await db.from('tablero_publico').upsert(data,{onConflict:'fecha'});
-  if (result.error) {
-    $('publicationStatus').textContent = 'Los datos privados están guardados, pero el tablero público no se actualizó. Ejecuta tablero-publico.sql si aún no lo hiciste y pulsa Actualizar tablero público. ' + result.error.message;
+  const data = [...days].filter(Boolean).map(day => CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day,leaders.find(l => l.fecha === day)));
+  const selectedPublished = data.some(s => s.fecha === $('day').value && s.valid);
+  if (!data.length) {
+    $('publicationStatus').textContent = 'Antes de publicar, elige y guarda un encargado para cada equipo con personas. Si cambias sus tareas o su día libre, revisa los encargados.';
     return;
   }
-  $('publicationStatus').textContent = 'Tablero público actualizado para la fecha seleccionada y los próximos 14 días.';
+  data.forEach(s => { s.valido=s.valid; delete s.valid; });
+  const result = await db.from('tablero_publico').upsert(data,{onConflict:'fecha'});
+  if (result.error) {
+    $('publicationStatus').textContent = 'Los datos privados están guardados, pero el tablero público no se actualizó. Verifica que ejecutaste tablero-publico.sql y encargados.sql; luego pulsa Actualizar tablero público. ' + result.error.message;
+    return;
+  }
+  $('publicationStatus').textContent = selectedPublished ? 'Tablero público actualizado con los encargados. Solo se publican fechas con encargados válidos.' : 'La fecha seleccionada no se publicó: elige y guarda los encargados. Se actualizaron otras fechas configuradas.';
 }
 let planCache = {stays:null, shifts:null, day:null, items:[]};
 function assigned(s, day) {
@@ -76,6 +86,14 @@ function renderMovements() {
 }
 function renderTasks() {
   const day = $('day').value; if (!day) return;
+  const plan = CRARC_PLAN.plan(stays,shifts,day);
+  const leadership = leaders.find(l => l.fecha === day);
+  for (const [id,task,key] of [['feedLeader',CRARC_PLAN.FEED,'alimentacion'],['prepLeader',CRARC_PLAN.PREP,'preparacion']]) {
+    const candidates = stays.filter(s => plan.some(t => t.estadia_id === s.id && !t.libre && t.tarde === task));
+    $(id).innerHTML = '<option value="">'+(candidates.length ? 'Selecciona un encargado' : 'Sin personas en este equipo')+'</option>' + candidates.map(s => `<option value="${s.id}">${esc(s.nombre)}</option>`).join('');
+    $(id).disabled = !candidates.length; $(id).required = !!candidates.length;
+    $(id).value = leadership?.[key] || '';
+  }
   $('taskCards').innerHTML = stays.filter(s => present(s,day)).map(s => {
     const t = assigned(s,day);
     return `<form class="card task-form" data-person="${s.id}"><h2>${esc(s.nombre)}</h2><p>${esc(s.habitacion)} · ${t.saved ? 'Guardado' : 'Reparto automático'}</p><label>Estado<select name="libre"><option value="false" ${!t.libre ? 'selected' : ''}>Disponible</option><option value="true" ${t.libre ? 'selected' : ''}>Día libre</option></select></label><label>Mañana<input name="manana" value="${esc(t.manana)}" ${t.libre ? 'disabled' : ''}></label><label>Tarde<input name="tarde" value="${esc(t.tarde)}" ${t.libre ? 'disabled' : ''}></label><button class="primary">Guardar día</button></form>`;
@@ -150,6 +168,14 @@ async function init() {
   });
   document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   $('newStay').onclick = () => openStay(); $('newMovement').onclick = () => openMovement();
+  $('leadersForm').onsubmit = e => {
+    e.preventDefault(); const day = $('day').value;
+    const data = {fecha:day,alimentacion:$('feedLeader').value || null,preparacion:$('prepLeader').value || null};
+    if (!day) return;
+    const candidate = CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day,data);
+    if (!candidate.valid) { fail(new Error('Selecciona un encargado disponible de cada equipo.')); return; }
+    saveForm(e.target,async () => { unwrap(await db.from('encargados').upsert(data,{onConflict:'fecha'})); });
+  };
   $('publishBoard').onclick = async () => {
     $('publishBoard').disabled = true;
     try { await reload(); } catch(e) { fail(e); } finally { $('publishBoard').disabled = false; }
