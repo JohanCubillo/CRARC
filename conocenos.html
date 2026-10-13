@@ -540,6 +540,8 @@ const VISIT_COPY={
  it:{visitPlanningTitle:'Organizza la tua visita',visitPlanningHelp:'Visite al santuario, volontariato e gite educative. Raccontaci cosa ti interessa e organizziamo insieme la tua esperienza.',fEnviar:'Invia richiesta',formHint:'La richiesta viene salvata per consentire al centro di consultarla e contattarti.'}
 };
 Object.keys(VISIT_COPY).forEach(code=>Object.assign(I18N[code],VISIT_COPY[code]));
+const CONTACT_ERRORS={es:'No se pudo guardar la consulta. Inténtalo de nuevo o escríbenos al correo del centro.',en:'Your inquiry could not be saved. Try again or email the center.',fr:'Votre demande n’a pas pu être enregistrée. Réessayez ou contactez le centre par e-mail.',it:'Non è stato possibile salvare la richiesta. Riprova o scrivi al centro via email.'};
+Object.keys(CONTACT_ERRORS).forEach(code=>I18N[code].sendErr=CONTACT_ERRORS[code]);
 const langSelect = document.getElementById("langSelect");
 Object.keys(I18N).forEach(code => {
   const opt = document.createElement("option");
@@ -588,7 +590,7 @@ navLinks.querySelectorAll("a").forEach(a =>
   })
 );
 
-/* ---------- Formulario: Supabase + opción WhatsApp ---------- */
+/* ---------- Formulario: envío directo a Supabase ---------- */
 function collectForm(){
   const dict = I18N[document.documentElement.lang] || I18N.es;
   const v = id => document.getElementById(id).value.trim();
