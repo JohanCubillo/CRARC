@@ -16,6 +16,8 @@ Solo los usuarios incluidos en `administradores` pueden consultar o modificar es
 
 ## Uso
 
+Las tareas se eligen con desplegables, tanto en la ficha como en Organización del día. Solo hay dos opciones: alimentar animales y cortar frutas/preparar alimentos. Al elegir una para la tarde, la mañana recibe la otra; cambiar la mañana también ajusta la tarde. Los días libres no tienen tareas. Las asignaciones anteriores se interpretan con esta regla al mostrar y publicar; no requiere nueva migración SQL. Actualiza el tablero público para reflejarla en las copias ya publicadas.
+
 - **Personas y estadías:** nombre, habitación o cama, llegada, salida, día libre semanal, dos tareas habituales y notas. Una persona puede tener múltiples estadías. El día de salida no cuenta como noche ni como jornada de trabajo. Usa notas para aclaraciones sobre las habitaciones.
 - **Pagos:** registra cada pago con su fecha y moneda. La ficha suma todos los pagos asociados a esa estadía, incluidos pagos parciales. No representa deuda pendiente ni facturación: registra dinero efectivamente recibido.
 - **Organización del día:** selecciona una fecha. Puedes marcar un día libre excepcional, ajustar ambas tareas y guardar. Sin asignación guardada, el reparto automático alterna las tareas según la última jornada trabajada. Con seis disponibles, alimentan tres y preparan alimentos tres; al día siguiente se intercambian. Si cambian los integrantes, se prioriza alternar y mantener grupos equilibrados. Con número impar, la persona adicional alterna entre grupos según la fecha. Las asignaciones guardadas tienen prioridad; pulsa **Repartir tareas de la tarde** para reemplazarlas por un reparto equilibrado. Si necesitas fijar el plan antes de cambiar estadías, guarda el reparto del día.

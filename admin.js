@@ -96,7 +96,8 @@ function renderTasks() {
   }
   $('taskCards').innerHTML = stays.filter(s => present(s,day)).map(s => {
     const t = assigned(s,day);
-    return `<form class="card task-form" data-person="${s.id}"><h2>${esc(s.nombre)}</h2><p>${esc(s.habitacion)} · ${t.saved ? 'Guardado' : 'Reparto automático'}</p><label>Estado<select name="libre"><option value="false" ${!t.libre ? 'selected' : ''}>Disponible</option><option value="true" ${t.libre ? 'selected' : ''}>Día libre</option></select></label><label>Mañana<input name="manana" value="${esc(t.manana)}" ${t.libre ? 'disabled' : ''}></label><label>Tarde<input name="tarde" value="${esc(t.tarde)}" ${t.libre ? 'disabled' : ''}></label><button class="primary">Guardar día</button></form>`;
+    const options = selected => [CRARC_PLAN.FEED,CRARC_PLAN.PREP].map(task => `<option ${task===selected?'selected':''}>${task}</option>`).join('');
+    return `<form class="card task-form" data-person="${s.id}"><h2>${esc(s.nombre)}</h2><p>${esc(s.habitacion)} · ${t.saved ? 'Guardado' : 'Reparto automático'}</p><label>Estado<select name="libre"><option value="false" ${!t.libre ? 'selected' : ''}>Disponible</option><option value="true" ${t.libre ? 'selected' : ''}>Día libre</option></select></label><label>Mañana<select name="manana" ${t.libre ? 'disabled' : ''}>${options(t.manana)}</select></label><label>Tarde<select name="tarde" ${t.libre ? 'disabled' : ''}>${options(t.tarde)}</select></label><p class="hint">Al cambiar una tarea, la otra se asigna automáticamente.</p><button class="primary">Guardar día</button></form>`;
   }).join('') || '<div class="card empty">No hay personas hospedadas en esta fecha.</div>';
 }
 function totals(rows, type) { return rows.filter(m => m.tipo === type).reduce((n,m) => n + Number(m.monto),0); }
@@ -125,6 +126,7 @@ function openStay(id) {
   const s = stays.find(s => s.id === id);
   if (s) Object.entries(s).forEach(([k,v]) => { if (f.elements[k]) f.elements[k].value = v ?? ''; });
   else f.elements.llegada.value = today();
+  f.elements.tarea_manana.value = CRARC_PLAN.opposite(f.elements.tarea_tarde.value);
   $('stayHeading').textContent = s ? 'Editar estadía' : 'Agregar persona'; $('stayDialog').showModal();
 }
 function openMovement(id, personId) {
@@ -168,6 +170,9 @@ async function init() {
   });
   document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   $('newStay').onclick = () => openStay(); $('newMovement').onclick = () => openMovement();
+  const stayForm = $('stayForm');
+  stayForm.elements.tarea_tarde.onchange = () => { stayForm.elements.tarea_manana.value = CRARC_PLAN.opposite(stayForm.elements.tarea_tarde.value); };
+  stayForm.elements.tarea_manana.onchange = () => { stayForm.elements.tarea_tarde.value = CRARC_PLAN.opposite(stayForm.elements.tarea_manana.value); };
   $('leadersForm').onsubmit = e => {
     e.preventDefault(); const day = $('day').value;
     const data = {fecha:day,alimentacion:$('feedLeader').value || null,preparacion:$('prepLeader').value || null};
@@ -187,6 +192,7 @@ async function init() {
   $('stayForm').onsubmit = e => {
     e.preventDefault(); const f = e.target, data = Object.fromEntries(new FormData(f)), id = data.id; delete data.id;
     data.dia_libre = data.dia_libre === '' ? null : Number(data.dia_libre);
+    data.tarea_manana = CRARC_PLAN.opposite(data.tarea_tarde);
     if (data.salida <= data.llegada) { fail(new Error('La salida debe ser posterior a la llegada.')); return; }
     saveForm(f, async () => { unwrap(await (id ? db.from('estadias').update(data).eq('id',id) : db.from('estadias').insert(data))); });
   };
@@ -203,10 +209,16 @@ async function init() {
       b.disabled = true; try { unwrap(await db.from('movimientos').delete().eq('id',b.dataset.deleteMovement)); await reload(); status('Movimiento eliminado.'); } catch(err) { fail(err); b.disabled = false; }
     }
   };
-  $('taskCards').onchange = e => { if (e.target.name === 'libre') { const f = e.target.form; ['manana','tarde'].forEach(n => f.elements[n].disabled = e.target.value === 'true'); } };
+  $('taskCards').onchange = e => {
+    const f=e.target.form;
+    if (e.target.name === 'libre') ['manana','tarde'].forEach(n => f.elements[n].disabled = e.target.value === 'true');
+    if (e.target.name === 'manana') f.elements.tarde.value=CRARC_PLAN.opposite(e.target.value);
+    if (e.target.name === 'tarde') f.elements.manana.value=CRARC_PLAN.opposite(e.target.value);
+  };
   $('taskCards').onsubmit = e => {
     e.preventDefault(); const f = e.target;
-    const data = {estadia_id:f.dataset.person,fecha:$('day').value,libre:f.elements.libre.value === 'true',manana:f.elements.manana.value,tarde:f.elements.tarde.value};
+    const libre=f.elements.libre.value === 'true';
+    const data = {estadia_id:f.dataset.person,fecha:$('day').value,libre,manana:libre?'':CRARC_PLAN.opposite(f.elements.tarde.value),tarde:libre?'':f.elements.tarde.value};
     saveForm(f, async () => { unwrap(await db.from('turnos').upsert(data,{onConflict:'estadia_id,fecha'})); });
   };
   $('distribute').onclick = async () => {

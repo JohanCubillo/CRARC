@@ -20,9 +20,10 @@ assert.ok(document.getElementById('stayRows').innerHTML.includes('&lt;test&gt;')
 assert.ok(document.getElementById('stats').innerHTML.includes('100'));
 assert.ok(!document.getElementById('stats').innerHTML.includes('5.000'));
 assert.ok(document.getElementById('taskCards').innerHTML.includes('disabled'));
-shifts = [{estadia_id:'a',fecha:'2026-10-13',libre:false,manana:'Otra',tarde:'Frutas'}];
+shifts = [{estadia_id:'a',fecha:'2026-10-13',libre:false,manana:'Otra',tarde:'Cortar frutas y preparar alimentos'}];
 assert.equal(assigned(stays[0],'2026-10-13').libre,false);
-assert.equal(assigned(stays[0],'2026-10-13').tarde,'Frutas');
+assert.equal(assigned(stays[0],'2026-10-13').tarde,'Cortar frutas y preparar alimentos');
+assert.equal(assigned(stays[0],'2026-10-13').manana,'Alimentar animales');
 shifts = [{estadia_id:'a',fecha:'2026-10-13',libre:false,manana:'Limpieza',tarde:'Alimentar animales'}];
 renderTasks();
 assert.ok(document.getElementById('feedLeader').innerHTML.includes('Ana &lt;test&gt;'));

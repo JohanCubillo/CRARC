@@ -2,6 +2,7 @@
 (function (root) {
   const FEED = 'Alimentar animales';
   const PREP = 'Cortar frutas y preparar alimentos';
+  const opposite = task => task === FEED ? PREP : FEED;
   const date = d => new Date(`${d}T12:00:00Z`);
   function plan(stays, shifts, target, replace = false) {
     const candidates = stays.filter(s => s.llegada <= target);
@@ -30,16 +31,18 @@
       const ids = available.map(t => t.estadia_id).sort();
       const offset = ids.length ? ordinal % ids.length : 0;
       const tie = t => (ids.indexOf(t.estadia_id) - offset + ids.length) % ids.length;
-      const fixed = available.filter(t => t.saved && !(replace && day === target));
-      const changing = available.filter(t => !t.saved || replace && day === target).sort((a,b) => rank(a)-rank(b) || tie(a)-tie(b));
+      const isFixed = t => t.saved && [FEED,PREP].includes(t.tarde) && !(replace && day === target);
+      const fixed = available.filter(isFixed);
+      const changing = available.filter(t => !isFixed(t)).sort((a,b) => rank(a)-rank(b) || tie(a)-tie(b));
       // Un número impar alterna cuál grupo recibe la persona adicional.
       const feedingTarget = ordinal % 2 ? Math.floor(available.length/2) : Math.ceil(available.length/2);
       const slots = Math.max(0,feedingTarget-fixed.filter(t => t.tarde === FEED).length);
       changing.forEach((t,i) => { t.tarde = i < slots ? FEED : PREP; });
-      available.forEach(t => { if (t.tarde === FEED || t.tarde === PREP) lastTask.set(t.estadia_id,t.tarde); });
+      available.forEach(t => { t.manana=opposite(t.tarde); lastTask.set(t.estadia_id,t.tarde); });
+      items.filter(t=>t.libre).forEach(t=>{t.manana='';t.tarde='';});
       result = items;
     }
     return result;
   }
-  root.CRARC_PLAN = {plan, FEED, PREP};
+  root.CRARC_PLAN = {plan, FEED, PREP, opposite};
 })(typeof window === 'undefined' ? globalThis : window);

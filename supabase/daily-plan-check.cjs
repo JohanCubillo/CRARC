@@ -7,6 +7,7 @@ const first=plan(people,[],'2026-10-13');
 const second=plan(people,[],'2026-10-14');
 const third=plan(people,[],'2026-10-15');
 for(const day of [first,second,third]){assert.equal(count(day,FEED),3);assert.equal(count(day,PREP),3);}
+for(const day of [first,second,third])day.forEach(t=>{assert.notEqual(t.manana,t.tarde);assert.ok([FEED,PREP].includes(t.manana));assert.ok([FEED,PREP].includes(t.tarde));});
 first.forEach(t=>{assert.notEqual(t.tarde,second.find(x=>x.estadia_id===t.estadia_id).tarde);assert.equal(t.tarde,third.find(x=>x.estadia_id===t.estadia_id).tarde);});
 const saved=first.map(({saved,...t})=>t);
 assert.deepEqual(plan(people,saved,'2026-10-14'),second);
