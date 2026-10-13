@@ -24,5 +24,7 @@ shifts = [{estadia_id:'a',fecha:'2026-10-13',libre:false,manana:'Otra',tarde:'Fr
 assert.equal(assigned(stays[0],'2026-10-13').libre,false);
 assert.equal(assigned(stays[0],'2026-10-13').tarde,'Frutas');
 `;
-vm.runInNewContext(js.replace(/init\(\);\s*$/, '') + assertions, {document:{getElementById:id => el[id]},Intl,Date,assert});
+const context = vm.createContext({document:{getElementById:id => el[id]},Intl,Date,assert});
+vm.runInContext(fs.readFileSync(path.join(root,'daily-plan.js'),'utf8'),context);
+vm.runInContext(js.replace(/init\(\);\s*$/, '') + assertions, context);
 console.log('PASS: DOM, fechas, monedas separadas, escape HTML y turnos con excepciones.');

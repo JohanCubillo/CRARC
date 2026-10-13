@@ -5,6 +5,7 @@
 <meta name="robots" content="noindex,nofollow"><title>Administración · CRARC</title>
 <link rel="stylesheet" href="admin.css">
 <script src="supabase-client.js"></script>
+<script src="daily-plan.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" defer></script>
 <script src="admin.js" defer></script>
 </head>
@@ -28,7 +29,7 @@
 </section>
 <section id="tareas" class="view" hidden>
 <div class="toolbar"><p>Dos tareas por persona; respeta los días libres.</p><label>Fecha<input id="day" type="date" required></label><button class="primary" id="distribute">Repartir tareas de la tarde</button></div>
-<p class="hint">El reparto divide a las personas disponibles entre alimentar animales y cortar frutas / preparar alimentos. Cuando el grupo es impar, una tarea tendrá una persona más.</p><div id="taskCards" class="task-grid"></div>
+<p class="hint">Las tareas alternan según la última jornada trabajada. Se divide a las personas disponibles en dos grupos: con 6, alimentan 3 y preparan alimentos 3. Los días libres no participan; si el grupo es impar, la persona adicional cambia de grupo según la fecha. Los cambios manuales guardados se respetan hasta que vuelvas a repartir.</p><p><a href="turnos.html" target="_blank" rel="noopener">Abrir tablero del día →</a></p><div id="taskCards" class="task-grid"></div>
 </section>
 <section id="finanzas" class="view" hidden>
 <div class="toolbar"><p>Registra los pagos recibidos y los gastos del centro.</p><button class="primary" id="newMovement">+ Registrar movimiento</button></div>

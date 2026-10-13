@@ -30,8 +30,12 @@ async function reload() {
   } finally { loading = false; }
 }
 function present(s, day) { return s.llegada <= day && day < s.salida; }
+let planCache = {stays:null, shifts:null, day:null, items:[]};
 function assigned(s, day) {
-  return shifts.find(t => t.estadia_id === s.id && t.fecha === day) || {
+  if (planCache.stays !== stays || planCache.shifts !== shifts || planCache.day !== day) {
+    planCache = {stays, shifts, day, items:CRARC_PLAN.plan(stays,shifts,day)};
+  }
+  return planCache.items.find(t => t.estadia_id === s.id) || {
     estadia_id:s.id, fecha:day, libre:s.dia_libre !== null && s.dia_libre === dateUTC(day).getUTCDay(),
     manana:s.tarea_manana, tarde:s.tarea_tarde
   };
@@ -59,7 +63,7 @@ function renderTasks() {
   const day = $('day').value; if (!day) return;
   $('taskCards').innerHTML = stays.filter(s => present(s,day)).map(s => {
     const t = assigned(s,day);
-    return `<form class="card task-form" data-person="${s.id}"><h2>${esc(s.nombre)}</h2><p>${esc(s.habitacion)}</p><label>Estado<select name="libre"><option value="false" ${!t.libre ? 'selected' : ''}>Disponible</option><option value="true" ${t.libre ? 'selected' : ''}>Día libre</option></select></label><label>Mañana<input name="manana" value="${esc(t.manana)}" ${t.libre ? 'disabled' : ''}></label><label>Tarde<input name="tarde" value="${esc(t.tarde)}" ${t.libre ? 'disabled' : ''}></label><button class="primary">Guardar día</button></form>`;
+    return `<form class="card task-form" data-person="${s.id}"><h2>${esc(s.nombre)}</h2><p>${esc(s.habitacion)} · ${t.saved ? 'Guardado' : 'Reparto automático'}</p><label>Estado<select name="libre"><option value="false" ${!t.libre ? 'selected' : ''}>Disponible</option><option value="true" ${t.libre ? 'selected' : ''}>Día libre</option></select></label><label>Mañana<input name="manana" value="${esc(t.manana)}" ${t.libre ? 'disabled' : ''}></label><label>Tarde<input name="tarde" value="${esc(t.tarde)}" ${t.libre ? 'disabled' : ''}></label><button class="primary">Guardar día</button></form>`;
   }).join('') || '<div class="card empty">No hay personas hospedadas en esta fecha.</div>';
 }
 function totals(rows, type) { return rows.filter(m => m.tipo === type).reduce((n,m) => n + Number(m.monto),0); }
@@ -165,9 +169,7 @@ async function init() {
     const available = stays.filter(s => present(s,day) && !assigned(s,day).libre).sort((a,b) => a.id.localeCompare(b.id));
     if (!available.length) { status('No hay personas disponibles para repartir tareas.'); return; }
     if (shifts.some(t => t.fecha === day && !t.libre) && !confirm('¿Reemplazar las tareas de la tarde de esta fecha?')) return;
-    const offset = Math.floor(dateUTC(day).getTime()/86400000) % available.length;
-    const ordered = [...available.slice(offset),...available.slice(0,offset)];
-    const data = ordered.map((s,i) => ({estadia_id:s.id,fecha:day,libre:false,manana:assigned(s,day).manana,tarde:i < Math.ceil(available.length/2) ? 'Alimentar animales' : 'Cortar frutas y preparar alimentos'}));
+    const data = CRARC_PLAN.plan(stays,shifts,day,true).filter(t => !t.libre).map(({saved,...t}) => t);
     $('distribute').disabled = true;
     try { unwrap(await db.from('turnos').upsert(data,{onConflict:'estadia_id,fecha'})); await reload(); status('Tareas repartidas y guardadas.'); } catch(e) { fail(e); } finally { $('distribute').disabled = false; }
   };
