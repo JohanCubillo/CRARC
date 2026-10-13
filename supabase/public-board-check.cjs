@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+require('../daily-plan.js');require('../public-board-data.js');
+const people=Array.from({length:6},(_,i)=>({id:String(i),nombre:`Persona ${i}`,habitacion:'1',llegada:'2026-10-13',salida:'2026-10-20',dia_libre:null,tarea_manana:'Limpieza',email:'privado@example.com',notas:'privado',pagos:100}));
+const publicData=CRARC_PUBLIC_BOARD.snapshot(people,[],'2026-10-13');
+assert.equal(publicData.personas.length,6);
+assert.equal(publicData.personas.filter(p=>p.tarde===CRARC_PLAN.FEED).length,3);
+for(const p of publicData.personas)assert.deepEqual(Object.keys(p).sort(),['habitacion','libre','manana','nombre','saved','tarde']);
+assert.ok(!JSON.stringify(publicData).includes('privado'));
+const next=CRARC_PUBLIC_BOARD.snapshot(people,[],'2026-10-14');
+publicData.personas.forEach((p,i)=>assert.notEqual(p.tarde,next.personas[i].tarde));
+assert.equal(CRARC_PUBLIC_BOARD.snapshot(people,[],'2026-10-20').personas.length,0);
+const source=fs.readFileSync(require('node:path').join(__dirname,'../turnos.js'),'utf8');
+assert.ok(!source.includes('signIn'));assert.ok(!source.includes("rows('estadias')"));
+assert.ok(source.includes('tablero_publico?select=personas,actualizado_at'));
+console.log('PASS: tablero sin login, reparto 3/3 y copia sin datos privados.');

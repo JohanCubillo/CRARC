@@ -27,9 +27,24 @@ async function reload() {
     stays.sort((a,b) => a.llegada.localeCompare(b.llegada));
     movements.sort((a,b) => b.fecha.localeCompare(a.fecha));
     render();
+    await publishPublicBoard();
   } finally { loading = false; }
 }
 function present(s, day) { return s.llegada <= day && day < s.salida; }
+async function publishPublicBoard() {
+  const days = new Set([$('day').value,today()]);
+  const cursor = dateUTC(today());
+  for (let i=0; i<14; i++) {
+    days.add(cursor.toISOString().slice(0,10)); cursor.setUTCDate(cursor.getUTCDate()+1);
+  }
+  const data = [...days].filter(Boolean).map(day => CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day));
+  const result = await db.from('tablero_publico').upsert(data,{onConflict:'fecha'});
+  if (result.error) {
+    $('publicationStatus').textContent = 'Los datos privados están guardados, pero el tablero público no se actualizó. Ejecuta tablero-publico.sql si aún no lo hiciste y pulsa Actualizar tablero público. ' + result.error.message;
+    return;
+  }
+  $('publicationStatus').textContent = 'Tablero público actualizado para la fecha seleccionada y los próximos 14 días.';
+}
 let planCache = {stays:null, shifts:null, day:null, items:[]};
 function assigned(s, day) {
   if (planCache.stays !== stays || planCache.shifts !== shifts || planCache.day !== day) {
@@ -135,6 +150,10 @@ async function init() {
   });
   document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   $('newStay').onclick = () => openStay(); $('newMovement').onclick = () => openMovement();
+  $('publishBoard').onclick = async () => {
+    $('publishBoard').disabled = true;
+    try { await reload(); } catch(e) { fail(e); } finally { $('publishBoard').disabled = false; }
+  };
   ['search','stayFilter'].forEach(id => $(id).addEventListener('input',renderStays));
   ['from','to','typeFilter'].forEach(id => $(id).addEventListener('input',renderMovements));
   ['month','chartCurrency'].forEach(id => $(id).addEventListener('input',renderSummary)); $('day').onchange = renderTasks;
