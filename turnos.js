@@ -4,9 +4,13 @@ const safe = v => String(v ?? '').replace(/[&<>"']/g,c => ({'&':'&amp;','<':'&lt
 const localDay = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Costa_Rica',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 let busy=false, requestVersion=0, viewedDay='';
 function note(text) { el('boardStatus').textContent=text; }
-function clearBoard() { ['boardGroups','boardRows','boardCounts'].forEach(id=>el(id).replaceChildren()); }
+function clearBoard() { ['boardLeaders','boardGroups','boardRows','boardCounts'].forEach(id=>el(id).replaceChildren()); }
 function renderBoard(active) {
   active=[...active].sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  el('boardLeaders').innerHTML = `<h2>¿Tienes dudas? Consulta a los encargados</h2><div class="two">${['Cocina','Repartición y limpieza'].map(role => {
+    const leader = active.find(p => p.encargado && p.rol_encargado === role);
+    return `<div class="stat"><small>Encargado de ${role.toLowerCase()}</small><b>${leader ? safe(leader.nombre) : 'Pendiente de asignar'}</b></div>`;
+  }).join('')}</div>`;
   const feeding=active.filter(p=>!p.libre && p.tarde==='Alimentar animales');
   const prep=active.filter(p=>!p.libre && p.tarde==='Cortar frutas y preparar alimentos');
   const free=active.filter(p=>p.libre);
@@ -14,7 +18,7 @@ function renderBoard(active) {
   el('boardCounts').innerHTML=[['Presentes',active.length],['Alimentar animales',feeding.length],['Preparar alimentos',prep.length],['Día libre',free.length]].map(([label,n])=>`<div class="stat"><small>${label}</small><b>${n}</b></div>`).join('');
   const groups=[['Alimentar animales','',feeding],['Cortar frutas y preparar alimentos','prep',prep],['Día libre','free',free]];
   if(other.length)groups.push(['Otras tareas','',other]);
-  el('boardGroups').innerHTML=groups.map(([title,css,list])=>`<article class="card board-group ${css}"><h2>${title}</h2><span class="group-count">${list.length} personas</span>${list.sort((a,b)=>Number(!!b.encargado)-Number(!!a.encargado)).map(p=>`<div class="person-tile"><strong>${safe(p.nombre)}</strong>${p.encargado?'<small class="leader-badge">★ Encargado del equipo</small>':''}${!p.libre?`<small>Mañana: ${safe(p.manana)}</small>`:''}</div>`).join('')||'<p class="empty">Sin personas en este grupo.</p>'}</article>`).join('');
+  el('boardGroups').innerHTML=groups.map(([title,css,list])=>`<article class="card board-group ${css}"><h2>${title}</h2><span class="group-count">${list.length} personas</span>${list.sort((a,b)=>Number(!!b.encargado)-Number(!!a.encargado)).map(p=>`<div class="person-tile"><strong>${safe(p.nombre)}</strong>${p.encargado?`<small class="leader-badge">★ Encargado de ${safe(p.rol_encargado || 'día')}</small>`:''}${!p.libre?`<small>Mañana: ${safe(p.manana)}</small>`:''}</div>`).join('')||'<p class="empty">Sin personas en este grupo.</p>'}</article>`).join('');
   el('boardRows').innerHTML=active.map(p=>`<tr><td><strong>${safe(p.nombre)}</strong>${p.encargado?'<small>★ Encargado</small>':''}</td><td>${p.libre?'Día libre':safe(p.manana)}</td><td>${p.libre?'Día libre':safe(p.tarde)}</td><td>${p.saved?'Guardada':'Automática'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">No hay personas presentes en esta fecha.</td></tr>';
 }
 async function refreshBoard() {

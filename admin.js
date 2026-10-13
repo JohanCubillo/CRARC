@@ -44,7 +44,7 @@ async function publishPublicBoard() {
   const data = [...days].filter(Boolean).map(day => CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day,leaders.find(l => l.fecha === day)));
   const selectedPublished = data.some(s => s.fecha === $('day').value && s.valid);
   if (!data.length) {
-    $('publicationStatus').textContent = 'Antes de publicar, elige y guarda un encargado para cada equipo con personas. Si cambias sus tareas o su día libre, revisa los encargados.';
+    $('publicationStatus').textContent = 'Antes de publicar, elige y guarda los dos encargados del día: cocina y repartición y limpieza.';
     return;
   }
   data.forEach(s => { s.valido=s.valid; delete s.valid; });
@@ -89,9 +89,9 @@ function renderTasks() {
   const plan = CRARC_PLAN.plan(stays,shifts,day);
   const leadership = leaders.find(l => l.fecha === day);
   for (const [id,task,key] of [['feedLeader',CRARC_PLAN.FEED,'alimentacion'],['prepLeader',CRARC_PLAN.PREP,'preparacion']]) {
-    const candidates = stays.filter(s => plan.some(t => t.estadia_id === s.id && !t.libre && t.tarde === task));
-    $(id).innerHTML = '<option value="">'+(candidates.length ? 'Selecciona un encargado' : 'Sin personas en este equipo')+'</option>' + candidates.map(s => `<option value="${s.id}">${esc(s.nombre)}</option>`).join('');
-    $(id).disabled = !candidates.length; $(id).required = !!candidates.length;
+    const candidates = stays.filter(s => plan.some(t => t.estadia_id === s.id && !t.libre));
+    $(id).innerHTML = '<option value="">'+(candidates.length ? 'Selecciona un encargado' : 'Sin personas disponibles')+'</option>' + candidates.map(s => `<option value="${s.id}">${esc(s.nombre)}</option>`).join('');
+    $(id).disabled = !candidates.length; $(id).required = true;
     $(id).value = leadership?.[key] || '';
   }
   $('taskCards').innerHTML = stays.filter(s => present(s,day)).map(s => {
@@ -173,7 +173,7 @@ async function init() {
     const data = {fecha:day,alimentacion:$('feedLeader').value || null,preparacion:$('prepLeader').value || null};
     if (!day) return;
     const candidate = CRARC_PUBLIC_BOARD.snapshot(stays,shifts,day,data);
-    if (!candidate.valid) { fail(new Error('Selecciona un encargado disponible de cada equipo.')); return; }
+    if (!candidate.valid) { fail(new Error('Elige dos personas distintas y disponibles: una de cocina y otra de repartición y limpieza.')); return; }
     saveForm(e.target,async () => { unwrap(await db.from('encargados').upsert(data,{onConflict:'fecha'})); });
   };
   $('publishBoard').onclick = async () => {

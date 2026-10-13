@@ -27,8 +27,8 @@ shifts = [{estadia_id:'a',fecha:'2026-10-13',libre:false,manana:'Limpieza',tarde
 renderTasks();
 assert.ok(document.getElementById('feedLeader').innerHTML.includes('Ana &lt;test&gt;'));
 assert.equal(document.getElementById('feedLeader').disabled,false);
-assert.equal(document.getElementById('prepLeader').disabled,true);
-assert.ok(document.getElementById('prepLeader').innerHTML.includes('Sin personas en este equipo'));
+assert.equal(document.getElementById('prepLeader').disabled,false);
+assert.ok(document.getElementById('prepLeader').innerHTML.includes('Ana &lt;test&gt;'));
 `;
 const context = vm.createContext({document:{getElementById:id => el[id]},Intl,Date,assert});
 vm.runInContext(fs.readFileSync(path.join(root,'daily-plan.js'),'utf8'),context);
