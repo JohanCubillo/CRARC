@@ -227,7 +227,7 @@ footer a:hover{color:var(--sun)}
   .form-grid{grid-template-columns:1fr}
 }
 </style>
-<link rel="stylesheet" href="about-redesign.css?v=20261013-1">
+<link rel="stylesheet" href="about-redesign.css?v=20261013-2">
 </head>
 <body>
 
@@ -390,7 +390,7 @@ footer a:hover{color:var(--sun)}
   <!-- VISÍTANOS + GIRAS -->
   <section class="historia" id="visitanos">
     <div class="wrap split rev">
-      <div class="pic"><img id="imgVis" src="" alt="" loading="lazy"></div>
+      <aside class="visit-summary"><svg width="56" height="56" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 42s14-14 14-25a14 14 0 0 0-28 0c0 11 14 25 14 25Z" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="17" r="5" stroke="currentColor" stroke-width="2"/></svg><p class="visit-location">Cebadilla · Turrúcares</p><h3 data-i18n="visitPlanningTitle"></h3><p data-i18n="visHoursVal"></p><p data-i18n="visitPlanningHelp"></p><a class="btn btn-green" href="#contacto" data-i18n="aboutContact"></a></aside>
       <div>
         <p class="kicker" data-i18n="kickVis"></p>
         <h2 data-i18n="visTitle"></h2>
@@ -447,7 +447,6 @@ footer a:hover{color:var(--sun)}
       </div>
       <div class="btn-row">
         <button class="btn btn-green" id="sendBtn" type="submit" data-i18n="fEnviar"></button>
-        <button class="btn btn-ghost" id="waBtn" type="button" data-i18n="fEnviarWa"></button>
       </div>
       <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
       <p class="form-hint" data-i18n="formHint"></p>
@@ -501,7 +500,6 @@ document.getElementById("imgQuienes").src = IMG.quienes;
 document.getElementById("imgHist").src = IMG.familia;
 document.getElementById("imgVol").src = IMG.voluntariados;
 document.getElementById("imgHosp").src = IMG.hospital;
-document.getElementById("imgVis").src = IMG.visitanos;
 document.getElementById("imgGiras").src = IMG.giras;
 
 /* ---------- Animales ---------- */
@@ -535,6 +533,13 @@ const ABOUT_COPY={
 Object.keys(ABOUT_COPY).forEach(code=>Object.assign(I18N[code],ABOUT_COPY[code]));
 const ABOUT_HINTS={es:{formHint:'Enviar guarda tu consulta para que el centro pueda revisarla. WhatsApp abre el chat con tu mensaje preparado.',aniSub:'Conoce a los animales y las historias que nos inspiran a cuidarlos.'},en:{formHint:'Send saves your inquiry for the center to review. WhatsApp opens a chat with your prepared message.',aniSub:'Meet the animals and the stories that inspire us to care for them.'},fr:{formHint:'Envoyer enregistre votre demande pour le centre. WhatsApp ouvre un chat avec votre message préparé.',aniSub:'Découvrez les animaux et les histoires qui nous inspirent à prendre soin d’eux.'},it:{formHint:'Invia salva la richiesta per il centro. WhatsApp apre la chat con il messaggio preparato.',aniSub:'Conosci gli animali e le storie che ci ispirano a prenderci cura di loro.'}};
 Object.keys(ABOUT_HINTS).forEach(code=>Object.assign(I18N[code],ABOUT_HINTS[code]));
+const VISIT_COPY={
+ es:{visitPlanningTitle:'Planea tu visita',visitPlanningHelp:'Visitas al santuario, voluntariado y giras educativas. Cuéntanos qué te interesa y coordinamos contigo.',fEnviar:'Enviar consulta',fEmail:'Correo electrónico',formHint:'Tu consulta se guarda para que el equipo del centro pueda revisarla y contactarte.'},
+ en:{visitPlanningTitle:'Plan your visit',visitPlanningHelp:'Sanctuary visits, volunteering and educational tours. Tell us what interests you and we will help you plan.',fEnviar:'Send inquiry',formHint:'Your inquiry is saved for the center’s team to review and contact you.'},
+ fr:{visitPlanningTitle:'Préparez votre visite',visitPlanningHelp:'Visites du sanctuaire, bénévolat et sorties éducatives. Dites-nous ce qui vous intéresse et nous vous aiderons à organiser votre visite.',fEnviar:'Envoyer la demande',formHint:'Votre demande est enregistrée pour que l’équipe puisse la consulter et vous contacter.'},
+ it:{visitPlanningTitle:'Organizza la tua visita',visitPlanningHelp:'Visite al santuario, volontariato e gite educative. Raccontaci cosa ti interessa e organizziamo insieme la tua esperienza.',fEnviar:'Invia richiesta',formHint:'La richiesta viene salvata per consentire al centro di consultarla e contattarti.'}
+};
+Object.keys(VISIT_COPY).forEach(code=>Object.assign(I18N[code],VISIT_COPY[code]));
 const langSelect = document.getElementById("langSelect");
 Object.keys(I18N).forEach(code => {
   const opt = document.createElement("option");
@@ -612,17 +617,6 @@ function guardarEnHoja(data){
   return CRARC_DB.saveContact(data);
 }
 
-document.getElementById("waBtn").addEventListener("click", () => {
-  if (document.getElementById('sendBtn').disabled) return;
-  if (!document.getElementById('aboutContactForm').reportValidity()) return;
-  const { data, texto } = collectForm();
-  /* Se registra también cuando escriben por WhatsApp, para no perder el dato */
-  const status=document.getElementById('formStatus');
-  document.getElementById('sendBtn').disabled=true;document.getElementById('waBtn').disabled=true;
-  guardarEnHoja(data).then(()=>{status.textContent=(I18N[document.documentElement.lang]||I18N.es).sendOk;}).catch(()=>{status.textContent=(I18N[document.documentElement.lang]||I18N.es).sendErr;}).finally(()=>{document.getElementById('sendBtn').disabled=false;document.getElementById('waBtn').disabled=false;});
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`, "_blank",'noopener,noreferrer');
-});
-
 document.getElementById("aboutContactForm").addEventListener("submit", async (event) => {
   event.preventDefault();
   const fields = document.querySelectorAll('.form-grid input, .form-grid select, .form-grid textarea');
@@ -635,7 +629,6 @@ document.getElementById("aboutContactForm").addEventListener("submit", async (ev
 
   if(btn.disabled) return;
   btn.disabled = true;
-  document.getElementById('waBtn').disabled=true;
   status.textContent = dict.sendSending;
   try {
     await guardarEnHoja(data);
@@ -645,7 +638,6 @@ document.getElementById("aboutContactForm").addEventListener("submit", async (ev
     status.textContent = dict.sendErr;
   } finally {
     btn.disabled = false;
-    document.getElementById('waBtn').disabled=false;
   }
 });
 
