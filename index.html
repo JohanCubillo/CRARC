@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script src="supabase-client.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Costa Rica Animal Rescue Center</title>
@@ -1130,6 +1131,7 @@ footer a:hover{color:var(--sun)}
     <span id="footCopy"></span>
     <span data-i18n="footMotto"></span>
   </div>
+  <div class="wrap" style="margin-top:20px"><a href="admin.html">Administración</a></div>
 </footer>
 
 <script>
@@ -1276,11 +1278,11 @@ function buildSponsors(dict){
 
 /* Cargar la configuración de padrinos desde la hoja de cálculo */
 function cargarPadrinosRemotos(){
-  if (!CONFIG_ENDPOINT) return;
+  if (!window.CRARC_DB) return;
   const porDefecto = Object.fromEntries(SPONSORS.map(s => [s.id, s]));
   const indices = { a1: 1, a2: 2, a3: 3, a4: 4, a5: 5, a6: 6 };
-  fetch(`${CONFIG_ENDPOINT}?config=1`)
-    .then(r => r.json())
+  CRARC_DB.getSponsors()
+    .then(padrinos => ({ ok: true, padrinos }))
     .then(cfg => {
       if (!cfg.ok || !Array.isArray(cfg.padrinos) || !cfg.padrinos.length) return;
       SPONSOR_DATA = cfg.padrinos.map(p => ({

@@ -1,0 +1,28 @@
+const fs = require('node:fs');
+const vm = require('node:vm');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+const root = path.join(__dirname, '..');
+const html = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+const js = fs.readFileSync(path.join(root, 'admin.js'), 'utf8');
+const ids = new Set([...html.matchAll(/id="([^"]+)"/g)].map(x => x[1]));
+for (const match of js.matchAll(/\$\('([^']+)'\)/g)) assert.ok(ids.has(match[1]), match[1]);
+const el = new Proxy({}, {get: (o,k) => o[k] || (o[k] = {value:'',innerHTML:'',setAttribute(){}})});
+el.month.value = '2026-10'; el.day.value = '2026-10-13'; el.chartCurrency.value = 'USD';
+el.stayFilter.value = 'all'; el.typeFilter.value = 'all';
+const assertions = `
+stays = [{id:'a',nombre:'Ana <test>',email:'',habitacion:'1',llegada:'2026-10-10',salida:'2026-10-20',dia_libre:2,tarea_manana:'Limpieza',tarea_tarde:'Alimentar animales'}];
+movements = [{id:'m',tipo:'ingreso',estadia_id:'a',moneda:'USD',monto:100,fecha:'2026-10-13',concepto:'Pago',categoria:'Estadías'}, {id:'n',tipo:'ingreso',estadia_id:'a',moneda:'CRC',monto:5000,fecha:'2026-10-13',concepto:'Pago',categoria:'Estadías'}];
+assert.equal(nights(stays[0]),10);
+assert.equal(present(stays[0],'2026-10-20'),false);
+render();
+assert.ok(document.getElementById('stayRows').innerHTML.includes('&lt;test&gt;'));
+assert.ok(document.getElementById('stats').innerHTML.includes('100'));
+assert.ok(!document.getElementById('stats').innerHTML.includes('5.000'));
+assert.ok(document.getElementById('taskCards').innerHTML.includes('disabled'));
+shifts = [{estadia_id:'a',fecha:'2026-10-13',libre:false,manana:'Otra',tarde:'Frutas'}];
+assert.equal(assigned(stays[0],'2026-10-13').libre,false);
+assert.equal(assigned(stays[0],'2026-10-13').tarde,'Frutas');
+`;
+vm.runInNewContext(js.replace(/init\(\);\s*$/, '') + assertions, {document:{getElementById:id => el[id]},Intl,Date,assert});
+console.log('PASS: DOM, fechas, monedas separadas, escape HTML y turnos con excepciones.');

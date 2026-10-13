@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script src="supabase-client.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Conócenos — Costa Rica Animal Rescue Center</title>
@@ -586,18 +587,9 @@ function collectForm(){
   return { dict, data, texto };
 }
 
-/* Guarda en la hoja de Google (silencioso, no bloquea al usuario) */
+/* Guarda en Supabase y verifica la respuesta antes de confirmar el envío. */
 function guardarEnHoja(data){
-  if (!SHEETS_ENDPOINT) return Promise.resolve();
-  /* Content-Type text/plain evita el preflight CORS; Apps Script responde
-     con redirección, así que no intentamos leer el cuerpo de la respuesta:
-     si el fetch se resuelve, el POST llegó. */
-  return fetch(SHEETS_ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(data),
-    redirect: "follow"
-  });
+  return CRARC_DB.saveContact(data);
 }
 
 document.getElementById("waBtn").addEventListener("click", () => {
@@ -608,12 +600,16 @@ document.getElementById("waBtn").addEventListener("click", () => {
 });
 
 document.getElementById("sendBtn").addEventListener("click", async () => {
+  const fields = document.querySelectorAll('.form-grid input, .form-grid select, .form-grid textarea');
+  for (const field of fields) {
+    if (!field.reportValidity()) return;
+  }
   const { dict, data, texto } = collectForm();
   const status = document.getElementById("formStatus");
   const btn = document.getElementById("sendBtn");
 
   /* Sin endpoint configurado: respaldo por correo */
-  if (!SHEETS_ENDPOINT){
+  if (!window.CRARC_DB){
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(dict.formSubject)}&body=${encodeURIComponent(texto)}`;
     return;
   }
