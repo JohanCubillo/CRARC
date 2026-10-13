@@ -227,6 +227,7 @@ footer a:hover{color:var(--sun)}
   .form-grid{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="about-redesign.css?v=20261013-1">
 </head>
 <body>
 
@@ -254,12 +255,19 @@ footer a:hover{color:var(--sun)}
 
 <main>
   <!-- HERO -->
-  <section class="hero" style="padding:0">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="wrap hero-content">
+  <section class="hero about-hero">
+    <div class="wrap hero-content about-hero-grid">
+      <div class="about-hero-copy">
       <p class="kicker" data-i18n="kickHero"></p>
-      <h1 data-i18n="heroTitle"></h1>
-      <p data-i18n="heroSub"></p>
+      <h1 data-i18n="heroSub"></h1>
+      <p class="about-intro" data-i18n="aboutIntro"></p>
+      <div class="about-hero-actions"><a class="btn btn-green" href="#contacto" data-i18n="aboutContact"></a><a class="about-text-link" href="#quienes" data-i18n="aboutMission"></a></div>
+      </div>
+      <nav class="about-paths" aria-label="Explorar el centro">
+        <a href="#quienes"><span class="path-number">01</span><span><strong data-i18n="quienesTitle"></strong><small data-i18n="aboutRescue"></small></span><span aria-hidden="true">↗</span></a>
+        <a href="#voluntariado"><span class="path-number">02</span><span><strong data-i18n="volTitle"></strong><small data-i18n="aboutVolunteer"></small></span><span aria-hidden="true">↗</span></a>
+        <a href="#visitanos"><span class="path-number">03</span><span><strong data-i18n="visTitle"></strong><small data-i18n="aboutVisit"></small></span><span aria-hidden="true">↗</span></a>
+      </nav>
     </div>
   </section>
 
@@ -407,23 +415,26 @@ footer a:hover{color:var(--sun)}
 
   <!-- FORMULARIO -->
   <section class="contact" id="contacto">
-    <div class="wrap">
+    <div class="wrap contact-layout">
       <div class="section-head">
         <p class="kicker" data-i18n="formTitle"></p>
         <h2 data-i18n="formSub"></h2>
+        <p data-i18n="aboutFormHelp"></p>
+        <div class="contact-note"><strong data-i18n="aboutContact"></strong><p>volunteering@costaricaanimalrescuecenter.org</p><a href="#faq" data-i18n="navFaq"></a></div>
       </div>
+      <form id="aboutContactForm" class="about-form">
       <div class="form-grid">
-        <div class="field"><label for="fNombre" data-i18n="fNombre"></label><input id="fNombre" type="text" autocomplete="name"></div>
-        <div class="field"><label for="fEmail" data-i18n="fEmail"></label><input id="fEmail" type="email" autocomplete="email"></div>
-        <div class="field full"><label for="fWhats" data-i18n="fWhats"></label><input id="fWhats" type="tel" placeholder="+506 8888 8888"></div>
-        <div class="field"><label for="fInteres" data-i18n="formSub"></label>
+        <div class="field"><label for="fNombre" data-i18n="fNombre"></label><input id="fNombre" type="text" autocomplete="name" required maxlength="200"></div>
+        <div class="field"><label for="fEmail" data-i18n="fEmail"></label><input id="fEmail" type="email" autocomplete="email" required maxlength="320"></div>
+        <div class="field full"><label for="fWhats" data-i18n="fWhats"></label><input id="fWhats" type="tel" autocomplete="tel" placeholder="+506 8888 8888" maxlength="50"></div>
+        <div class="field"><label for="fInteres" data-i18n="fInteresLabel"></label>
           <select id="fInteres">
             <option value="visitar" data-i18n="fVisitar"></option>
             <option value="voluntario" data-i18n="fVol"></option>
             <option value="donar" data-i18n="fDonar"></option>
           </select>
         </div>
-        <div class="field"><label for="fPersonas" data-i18n="fPersonas"></label><input id="fPersonas" type="number" min="1" value="1"></div>
+        <div class="field"><label for="fPersonas" data-i18n="fPersonas"></label><input id="fPersonas" type="number" min="1" max="9999" value="1" required></div>
         <div class="field"><label for="fDieta" data-i18n="fDieta"></label>
           <select id="fDieta">
             <option value="regular" data-i18n="fDR"></option>
@@ -432,14 +443,15 @@ footer a:hover{color:var(--sun)}
             <option value="sin-gluten" data-i18n="fDG"></option>
           </select>
         </div>
-        <div class="field"><label for="fAlergias" data-i18n="fAlergias"></label><input id="fAlergias" type="text"></div>
+        <div class="field"><label for="fAlergias" data-i18n="fAlergias"></label><input id="fAlergias" type="text" maxlength="2000"></div>
       </div>
       <div class="btn-row">
-        <button class="btn btn-sun" id="waBtn" type="button" data-i18n="fEnviarWa"></button>
-        <button class="btn btn-ghost" id="sendBtn" type="button" data-i18n="fEnviar"></button>
+        <button class="btn btn-green" id="sendBtn" type="submit" data-i18n="fEnviar"></button>
+        <button class="btn btn-ghost" id="waBtn" type="button" data-i18n="fEnviarWa"></button>
       </div>
-      <p class="form-status" id="formStatus" role="status"></p>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
       <p class="form-hint" data-i18n="formHint"></p>
+      </form>
     </div>
   </section>
 
@@ -485,7 +497,6 @@ footer a:hover{color:var(--sun)}
 <script>
 document.getElementById("logo").src = IMG.logo;
 document.getElementById("logoFoot").src = IMG.logo;
-document.getElementById("heroBg").style.backgroundImage = `url("${IMG.hero}")`;
 document.getElementById("imgQuienes").src = IMG.quienes;
 document.getElementById("imgHist").src = IMG.familia;
 document.getElementById("imgVol").src = IMG.voluntariados;
@@ -515,6 +526,15 @@ function buildAnimals(dict){
 }
 
 /* ---------- I18N ---------- */
+const ABOUT_COPY={
+ es:{aboutIntro:'Un refugio para la vida silvestre. Un lugar para aprender, cuidar y formar parte del cambio.',aboutContact:'Hablemos de tu visita',aboutMission:'Conoce nuestra misión →',aboutRescue:'Rescate, rehabilitación y conservación',aboutVolunteer:'Vive la experiencia de cuidar',aboutVisit:'Planea tu visita al santuario',aboutFormHelp:'¿Quieres visitarnos, hacer voluntariado o apoyar al centro? Completa el formulario y te contactaremos.',fInteresLabel:'¿Qué te interesa?'},
+ en:{aboutIntro:'A refuge for wildlife. A place to learn, care and be part of the change.',aboutContact:'Let’s plan your visit',aboutMission:'Discover our mission →',aboutRescue:'Rescue, rehabilitation and conservation',aboutVolunteer:'Experience caring for wildlife',aboutVisit:'Plan your visit to the sanctuary',aboutFormHelp:'Would you like to visit, volunteer or support the center? Fill out the form and we will contact you.',fInteresLabel:'What are you interested in?'},
+ fr:{aboutIntro:'Un refuge pour la faune. Un lieu pour apprendre, prendre soin et participer au changement.',aboutContact:'Parlons de votre visite',aboutMission:'Découvrez notre mission →',aboutRescue:'Sauvetage, réhabilitation et conservation',aboutVolunteer:'Vivez une expérience de bénévolat',aboutVisit:'Préparez votre visite au sanctuaire',aboutFormHelp:'Vous souhaitez visiter, devenir bénévole ou soutenir le centre ? Remplissez le formulaire et nous vous contacterons.',fInteresLabel:'Que souhaitez-vous faire ?'},
+ it:{aboutIntro:'Un rifugio per la fauna selvatica. Un luogo per imparare, prendersi cura e contribuire al cambiamento.',aboutContact:'Organizziamo la tua visita',aboutMission:'Scopri la nostra missione →',aboutRescue:'Recupero, riabilitazione e conservazione',aboutVolunteer:'Vivi l’esperienza del volontariato',aboutVisit:'Organizza la visita al santuario',aboutFormHelp:'Vuoi visitarci, fare volontariato o sostenere il centro? Compila il modulo e ti contatteremo.',fInteresLabel:'Cosa ti interessa?'}
+};
+Object.keys(ABOUT_COPY).forEach(code=>Object.assign(I18N[code],ABOUT_COPY[code]));
+const ABOUT_HINTS={es:{formHint:'Enviar guarda tu consulta para que el centro pueda revisarla. WhatsApp abre el chat con tu mensaje preparado.',aniSub:'Conoce a los animales y las historias que nos inspiran a cuidarlos.'},en:{formHint:'Send saves your inquiry for the center to review. WhatsApp opens a chat with your prepared message.',aniSub:'Meet the animals and the stories that inspire us to care for them.'},fr:{formHint:'Envoyer enregistre votre demande pour le centre. WhatsApp ouvre un chat avec votre message préparé.',aniSub:'Découvrez les animaux et les histoires qui nous inspirent à prendre soin d’eux.'},it:{formHint:'Invia salva la richiesta per il centro. WhatsApp apre la chat con il messaggio preparato.',aniSub:'Conosci gli animali e le storie che ci ispirano a prenderci cura di loro.'}};
+Object.keys(ABOUT_HINTS).forEach(code=>Object.assign(I18N[code],ABOUT_HINTS[code]));
 const langSelect = document.getElementById("langSelect");
 Object.keys(I18N).forEach(code => {
   const opt = document.createElement("option");
@@ -563,7 +583,7 @@ navLinks.querySelectorAll("a").forEach(a =>
   })
 );
 
-/* ---------- Formulario: WhatsApp + Google Sheets ---------- */
+/* ---------- Formulario: Supabase + opción WhatsApp ---------- */
 function collectForm(){
   const dict = I18N[document.documentElement.lang] || I18N.es;
   const v = id => document.getElementById(id).value.trim();
@@ -593,13 +613,18 @@ function guardarEnHoja(data){
 }
 
 document.getElementById("waBtn").addEventListener("click", () => {
+  if (document.getElementById('sendBtn').disabled) return;
+  if (!document.getElementById('aboutContactForm').reportValidity()) return;
   const { data, texto } = collectForm();
   /* Se registra también cuando escriben por WhatsApp, para no perder el dato */
-  guardarEnHoja(data).catch(() => {});
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`, "_blank");
+  const status=document.getElementById('formStatus');
+  document.getElementById('sendBtn').disabled=true;document.getElementById('waBtn').disabled=true;
+  guardarEnHoja(data).then(()=>{status.textContent=(I18N[document.documentElement.lang]||I18N.es).sendOk;}).catch(()=>{status.textContent=(I18N[document.documentElement.lang]||I18N.es).sendErr;}).finally(()=>{document.getElementById('sendBtn').disabled=false;document.getElementById('waBtn').disabled=false;});
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`, "_blank",'noopener,noreferrer');
 });
 
-document.getElementById("sendBtn").addEventListener("click", async () => {
+document.getElementById("aboutContactForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
   const fields = document.querySelectorAll('.form-grid input, .form-grid select, .form-grid textarea');
   for (const field of fields) {
     if (!field.reportValidity()) return;
@@ -608,21 +633,19 @@ document.getElementById("sendBtn").addEventListener("click", async () => {
   const status = document.getElementById("formStatus");
   const btn = document.getElementById("sendBtn");
 
-  /* Sin endpoint configurado: respaldo por correo */
-  if (!window.CRARC_DB){
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(dict.formSubject)}&body=${encodeURIComponent(texto)}`;
-    return;
-  }
-
+  if(btn.disabled) return;
   btn.disabled = true;
+  document.getElementById('waBtn').disabled=true;
   status.textContent = dict.sendSending;
   try {
     await guardarEnHoja(data);
     status.textContent = dict.sendOk;
+    document.getElementById('aboutContactForm').reset();
   } catch(e){
     status.textContent = dict.sendErr;
   } finally {
     btn.disabled = false;
+    document.getElementById('waBtn').disabled=false;
   }
 });
 
