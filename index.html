@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <script src="supabase-client.js"></script>
+<script src="sponsor-payments.js?v=20261013-1"></script>
+<link rel="stylesheet" href="sponsor-payments.css?v=20261013-1">
 <link rel="stylesheet" href="home-contact.css?v=20261013-1">
 <script src="home-contact.js?v=20261013-1" defer></script>
 <meta charset="UTF-8">
@@ -1252,11 +1254,9 @@ function buildSponsors(dict){
 
     const body = document.createElement("div");
     body.className = "spon-body";
-    body.innerHTML = `
-      <h3>${animal.name}</h3>
-      <p class="species">${especie}</p>
-      <p class="desc">${historia}</p>
-    `;
+    for(const [tag,text,cls] of [['h3',animal.name,''],['p',especie,'species'],['p',historia,'desc']]){
+      const el=document.createElement(tag);el.textContent=text;el.className=cls;body.appendChild(el);
+    }
 
     const tiers = document.createElement("div");
     tiers.className = "spon-tiers";
@@ -1274,22 +1274,25 @@ function buildSponsors(dict){
     });
     body.appendChild(tiers);
 
-    const cta = document.createElement("a");
+    const paymentButtons = document.createElement('div');
+    paymentButtons.className = 'spon-payment-buttons';
+    const cta = document.createElement("button");
+    cta.type='button';
     cta.className = "btn btn-green";
-    cta.href = "#";
-    cta.textContent = `${dict.sponBtn} ${animal.name}`;
-    cta.addEventListener("click", (ev) => {
-      ev.preventDefault();
+    cta.textContent = 'PayPal';
+    cta.disabled = !CRARC_SPONSOR_PAYMENTS.paypalLink(animal.paypal,animal.amounts[0]);
+    cta.setAttribute('aria-label',`${dict.sponBtn} ${animal.name} · PayPal`);
+    cta.addEventListener("click", () => {
       const selTier = tiers.querySelector(".spon-tier.sel b");
       const amount = selTier ? selTier.textContent.replace("$", "") : animal.amounts[0];
-      if (animal.boton === "paypal" && animal.paypal) {
-        window.open(paypalUrl(animal, amount), "_blank");
-      } else {
-        const msg = dict.sponWa.replace("{name}", animal.name).replace("{amount}", amount);
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
-      }
+      const url=CRARC_SPONSOR_PAYMENTS.paypalLink(animal.paypal,amount);
+      if(url)window.open(url,'_blank','noopener,noreferrer');
     });
-    body.appendChild(cta);
+    paymentButtons.appendChild(cta);
+    const sinpe=document.createElement('button');sinpe.type='button';sinpe.className='btn btn-green';sinpe.textContent='SINPE Móvil';
+    sinpe.setAttribute('aria-label',`${dict.sponBtn} ${animal.name} · SINPE Móvil`);
+    sinpe.onclick=()=>CRARC_SPONSOR_PAYMENTS.openSinpe(animal,PAYMENT.sinpe.number,PAYMENT.sinpe.holder);
+    paymentButtons.appendChild(sinpe);body.appendChild(paymentButtons);
 
     card.appendChild(body);
     grid.appendChild(card);

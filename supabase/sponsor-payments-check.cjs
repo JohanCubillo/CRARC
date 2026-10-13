@@ -1,0 +1,14 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
+const root=path.join(__dirname,'..');
+const context=vm.createContext({window:{},URL});
+vm.runInContext(fs.readFileSync(path.join(root,'sponsor-payments.js'),'utf8'),context);
+const link=context.window.CRARC_SPONSOR_PAYMENTS.paypalLink;
+assert.equal(link('https://paypal.me/animal',25),'https://paypal.me/animal/25USD');
+assert.equal(link('https://paypal.me/animal/10USD',25),'https://paypal.me/animal/10USD');
+assert.equal(link('https://www.paypal.com/donate/?hosted_button_id=ANIMAL',25),'https://www.paypal.com/donate/?hosted_button_id=ANIMAL');
+for(const invalid of ['','javascript:alert(1)','http://paypal.com','https://paypal.com.evil.test','https://paypal.com@evil.test','https://evil.test/paypal.me','https://user:pass@paypal.com'])assert.equal(link(invalid,25),null);
+const html=fs.readFileSync(path.join(root,'admin.html'),'utf8');
+const ids=new Set([...html.matchAll(/id="([^"]+)"/g)].map(m=>m[1]));
+const admin=fs.readFileSync(path.join(root,'admin-sponsors.js'),'utf8');
+for(const match of admin.matchAll(/el\('([^']+)'\)/g))assert.ok(ids.has(match[1]),match[1]);
+console.log('PASS: enlaces PayPal válidos, dominios falsos bloqueados y controles de administración.');

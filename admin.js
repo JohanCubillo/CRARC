@@ -6,7 +6,7 @@ const dateUTC = value => new Date(`${value}T12:00:00Z`);
 const nights = s => Math.round((dateUTC(s.salida) - dateUTC(s.llegada)) / 86400000);
 const weekdays = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const money = (value, currency) => new Intl.NumberFormat('es-CR', {style:'currency',currency}).format(value);
-const titles = {resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos',formularios:'Formularios recibidos'};
+const titles = {resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos',formularios:'Formularios recibidos',animales:'Animales y PayPal',sinpe:'Verificar SINPE'};
 let contacts=[], contactsLoading=false;
 function renderContacts() {
   const query=$('contactSearch').value.toLowerCase(), interest=$('contactInterest').value;
@@ -147,6 +147,7 @@ async function saveForm(form, operation) {
   try { await operation(); await reload(); form.closest('dialog')?.close(); status('Guardado correctamente.'); } catch(e) { fail(e); } finally { btn.disabled = false; }
 }
 function hideWorkspace() {
+  CRARC_SPONSOR_ADMIN.clear();
   contacts=[]; $('contactRows').replaceChildren(); $('contactStatus').textContent='';
   userId = null; stays = []; movements = []; shifts = [];
   $('workspace').hidden = true; $('login').hidden = false; $('logout').hidden = true;
@@ -161,6 +162,7 @@ async function authorize(session) {
   $('workspace').hidden = false; $('login').hidden = true; $('logout').hidden = false; $('title').textContent = titles.resumen;
 }
 async function init() {
+  CRARC_SPONSOR_ADMIN.init();
   $('month').value = today().slice(0,7); $('day').value = today();
   if (!window.supabase) { fail(new Error('No se pudo cargar el acceso a Supabase. Revisa tu conexión y recarga.')); return; }
   db = window.supabase.createClient(CRARC_DB.url,CRARC_DB.key);
@@ -174,6 +176,7 @@ async function init() {
     document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== b.dataset.view);
     document.querySelectorAll('[data-view]').forEach(x => x.classList.toggle('active',x === b)); $('title').textContent = titles[b.dataset.view];
     if (b.dataset.view==='formularios') loadContacts();
+    if (['animales','sinpe'].includes(b.dataset.view)) CRARC_SPONSOR_ADMIN.load(b.dataset.view);
   });
   document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('dialog').close());
   $('newStay').onclick = () => openStay(); $('newMovement').onclick = () => openMovement();
