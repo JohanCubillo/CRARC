@@ -4,7 +4,7 @@
 <script src="supabase-client.js"></script>
 <script src="sponsor-payments.js?v=20261013-2"></script>
 <link rel="stylesheet" href="sponsor-payments.css?v=20261013-2">
-<link rel="stylesheet" href="home-contact.css?v=20261013-1">
+<link rel="stylesheet" href="home-contact.css?v=20261013-2">
 <script src="home-contact.js?v=20261013-1" defer></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -908,7 +908,7 @@ footer a:hover{color:var(--sun)}
   .bar span{font-size:.62rem}
 }
 </style>
-<link rel="stylesheet" href="mobile-experience.css?v=20261013-1"><script src="mobile-experience.js?v=20261013-1" defer></script><link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="chatbot.css?v=5"><script src="chatbot.js?v=5" defer></script><link rel="stylesheet" href="home-history.css?v=1"></head>
+<link rel="stylesheet" href="mobile-experience.css?v=20261013-1"><script src="mobile-experience.js?v=20261013-1" defer></script><link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="chatbot.css?v=5"><script src="chatbot.js?v=5" defer></script><link rel="stylesheet" href="home-history.css?v=2"></head>
 <body>
 
 <header id="header">
@@ -995,7 +995,7 @@ footer a:hover{color:var(--sun)}
   </figure>
 
   <!-- ===================== STATS ===================== -->
-<section id="historia" class="home-history" aria-labelledby="historyTitle"><div class="wrap"><div class="section-head"><p class="kicker" data-i18n="histKicker">De Moín a Turrúcares</p><h2 id="historyTitle" data-i18n="histTitle">Nuestra historia</h2></div><div class="home-history-layout"><figure><img src="images/familia.jpeg" alt="Familia y equipo del Costa Rica Animal Rescue Center" loading="lazy" width="1200" height="800"></figure><div class="home-history-copy"><p data-i18n-html="histP1"></p><p data-i18n-html="histP2"></p><p data-i18n-html="histP3"></p><p data-i18n-html="histP4"></p><p data-i18n-html="histP5"></p><a class="btn btn-green" href="voluntariado.html">Forma parte de nuestra historia →</a></div></div></div></section>
+<section id="historia" class="home-history" aria-labelledby="historyTitle"><div class="wrap"><div class="section-head"><p class="kicker" data-i18n="histKicker">De Moín a Turrúcares</p><h2 id="historyTitle" data-i18n="histTitle">Nuestra historia</h2></div><div class="home-history-layout"><div class="home-history-copy"><p data-i18n-html="histP1"></p><p data-i18n-html="histP2"></p><p data-i18n-html="histP3"></p><p data-i18n-html="histP4"></p><p data-i18n-html="histP5"></p><a class="btn btn-green" href="voluntariado.html">Forma parte de nuestra historia →</a></div></div></div></section>
   <section class="stats" id="impact">
     <div class="wrap stats-grid" id="statsGrid">
       <div class="stat"><b data-count="17">0</b><span data-i18n="stat1"></span></div>
@@ -1086,7 +1086,7 @@ footer a:hover{color:var(--sun)}
 <section id="contacto" class="home-contact">
   <div class="wrap">
     <div class="section-head"><p class="kicker" data-home-i18n="title">Visitas y voluntariado</p><h2 data-home-i18n="intro">Cuéntanos cómo quieres participar</h2><p data-home-i18n="description">Envíanos tus datos y te contactaremos para coordinar tu experiencia en el centro.</p></div>
-    <form id="homeContactForm">
+    <div class="home-contact-layout"><figure class="home-contact-photo"><img src="images/contacto-conservacion.png" alt="Trabajo de conservación de tortugas junto a personas voluntarias" loading="lazy" width="3072" height="2304"></figure><form id="homeContactForm">
       <div class="home-contact-grid">
         <label><span data-home-i18n="name">Nombre</span><input name="nombre" autocomplete="name" maxlength="200" required></label>
         <label><span data-home-i18n="email">Correo</span><input name="email" type="email" autocomplete="email" maxlength="320" required></label>
@@ -1098,7 +1098,7 @@ footer a:hover{color:var(--sun)}
       </div>
       <button class="btn btn-sun" type="submit" id="homeContactSend" data-home-i18n="send">Enviar consulta</button>
       <p id="homeContactStatus" role="status" aria-live="polite"></p>
-    </form>
+    </form></div>
   </div>
 </section>
 </main>
