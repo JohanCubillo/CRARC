@@ -1,41 +1,48 @@
 'use strict';
-const el = id => document.getElementById(id);
-const safe = v => String(v ?? '').replace(/[&<>"']/g,c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const localDay = () => new Intl.DateTimeFormat('en-CA',{timeZone:'America/Costa_Rica',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-let busy=false, requestVersion=0, viewedDay='';
-function note(text) { el('boardStatus').textContent=text; }
-function clearBoard() { ['boardLeaders','boardRows','boardCounts'].forEach(id=>el(id).replaceChildren()); }
-function renderBoard(active) {
-  active=[...active].sort((a,b)=>a.nombre.localeCompare(b.nombre));
-  el('boardLeaders').innerHTML=`<span class="board-leader-caption">¿Dudas? Consulta a:</span>${['Cocina','Repartición y limpieza'].map(role=>{
-    const leader=active.find(p=>p.encargado && p.rol_encargado===role);
-    return `<div><span>${role}</span><strong>${leader?safe(leader.nombre):'Pendiente de asignar'}</strong></div>`;
-  }).join('')}`;
-  const free=active.filter(p=>p.libre).length;
-  el('boardCounts').textContent=`${active.length} ${active.length===1?'persona presente':'personas presentes'}${free?' · '+free+' en día libre':''}`;
-  function task(value){const text=value==='Alimentar animales'?'Alimentar animales':value==='Cortar frutas y preparar alimentos'?'Preparar alimentos':value||'Sin asignar';return `<span class="board-task ${value==='Alimentar animales'?'feed':value==='Cortar frutas y preparar alimentos'?'prep':''}">${safe(text)}</span>`;}
-  el('boardRows').innerHTML=active.map(p=>`<tr><td class="board-person"><strong>${safe(p.nombre)}</strong>${p.encargado?`<small>★ ${safe(p.rol_encargado||'Encargado')}</small>`:''}</td><td data-label="Mañana">${p.libre?'<span class="board-task free">Día libre</span>':task(p.manana)}</td><td data-label="Tarde">${p.libre?'<span class="board-task free">Día libre</span>':task(p.tarde)}</td></tr>`).join('')||'<tr><td colspan="3" class="empty">No hay personas presentes en esta fecha.</td></tr>';
+const BOARD_I18N={"es": {"title": "Turnos del día", "eyebrow": "CRARC · ORGANIZACIÓN DEL CENTRO", "date": "Ver fecha", "today": "Volver a hoy", "person": "Persona", "morning": "Mañana", "afternoon": "Tarde", "ask": "¿Dudas? Consulta a:", "kitchen": "Cocina", "distribution": "Repartición y limpieza", "pending": "Pendiente de asignar", "singular": "persona presente", "plural": "personas presentes", "offCount": "en día libre", "feed": "Alimentar animales", "prep": "Preparar alimentos", "unassigned": "Sin asignar", "off": "Día libre", "empty": "No hay personas presentes en esta fecha.", "updated": "Se actualiza cada minuto · Última actualización: ", "error": "No se pudo actualizar el tablero. Los datos visibles pueden estar desactualizados.", "leader": "Encargado"}, "en": {"title": "Daily tasks", "eyebrow": "CRARC · DAILY ORGANIZATION", "date": "View date", "today": "Back to today", "person": "Person", "morning": "Morning", "afternoon": "Afternoon", "ask": "Questions? Ask:", "kitchen": "Kitchen", "distribution": "Distribution and cleaning", "pending": "Not assigned yet", "singular": "person present", "plural": "people present", "offCount": "on a day off", "feed": "Feed animals", "prep": "Prepare food", "unassigned": "Not assigned", "off": "Day off", "empty": "No people are present on this date.", "updated": "Updates every minute · Last update: ", "error": "The board could not be updated. The displayed information may be outdated.", "leader": "Team lead"}, "fr": {"title": "Tâches du jour", "eyebrow": "CRARC · ORGANISATION DU CENTRE", "date": "Voir la date", "today": "Revenir à aujourd’hui", "person": "Personne", "morning": "Matin", "afternoon": "Après-midi", "ask": "Des questions ? Contactez :", "kitchen": "Cuisine", "distribution": "Distribution et nettoyage", "pending": "À attribuer", "singular": "personne présente", "plural": "personnes présentes", "offCount": "en jour de repos", "feed": "Nourrir les animaux", "prep": "Préparer les aliments", "unassigned": "Non attribué", "off": "Jour de repos", "empty": "Aucune personne présente à cette date.", "updated": "Actualisation chaque minute · Dernière mise à jour : ", "error": "Le tableau n’a pas pu être actualisé. Les informations affichées peuvent être anciennes.", "leader": "Responsable"}, "it": {"title": "Attività del giorno", "eyebrow": "CRARC · ORGANIZZAZIONE DEL CENTRO", "date": "Vedi data", "today": "Torna a oggi", "person": "Persona", "morning": "Mattina", "afternoon": "Pomeriggio", "ask": "Domande? Rivolgiti a:", "kitchen": "Cucina", "distribution": "Distribuzione e pulizia", "pending": "Da assegnare", "singular": "persona presente", "plural": "persone presenti", "offCount": "in giorno libero", "feed": "Alimentare gli animali", "prep": "Preparare il cibo", "unassigned": "Non assegnato", "off": "Giorno libero", "empty": "Nessuna persona presente in questa data.", "updated": "Aggiornamento ogni minuto · Ultimo aggiornamento: ", "error": "Impossibile aggiornare il tabellone. Le informazioni potrebbero non essere aggiornate.", "leader": "Responsabile"}};
+const BOARD_QUOTES={"es": ["Cada cuidado cuenta.", "En equipo, hacemos más por la vida silvestre.", "Tu tiempo puede cambiar el día de un animal.", "Cuidar también es aprender.", "Pequeñas acciones, grandes oportunidades para la vida.", "La paciencia y el cariño dejan huella.", "Hoy podemos hacer del centro un lugar mejor."], "en": ["Every act of care matters.", "Together, we do more for wildlife.", "Your time can change an animal’s day.", "Caring is also learning.", "Small actions create great opportunities for life.", "Patience and kindness leave a lasting mark.", "Today we can make the center a better place."], "fr": ["Chaque geste de soin compte.", "Ensemble, nous faisons davantage pour la vie sauvage.", "Votre temps peut changer la journée d’un animal.", "Prendre soin, c’est aussi apprendre.", "De petits gestes ouvrent de grandes possibilités pour la vie.", "La patience et la bienveillance laissent une empreinte.", "Aujourd’hui, nous pouvons améliorer la vie au centre."], "it": ["Ogni gesto di cura conta.", "Insieme facciamo di più per la fauna selvatica.", "Il tuo tempo può cambiare la giornata di un animale.", "Prendersi cura significa anche imparare.", "Piccole azioni creano grandi opportunità per la vita.", "La pazienza e la gentilezza lasciano il segno.", "Oggi possiamo rendere il centro un posto migliore."]};
+
+const el=id=>document.getElementById(id);
+const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const localDay=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Costa_Rica',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+let language='es',busy=false,requestVersion=0,viewedDay='',lastPeople=[],lastUpdated=null,hasError=false;
+const words=()=>BOARD_I18N[language];
+const roleName=role=>role==='Cocina'?words().kitchen:role==='Repartición y limpieza'?words().distribution:role||words().leader;
+function clearBoard(){['boardLeaders','boardRows','boardCounts'].forEach(id=>el(id).replaceChildren());lastPeople=[];lastUpdated=null;}
+function renderBoard(active){
+ lastPeople=active;active=[...active].sort((a,b)=>a.nombre.localeCompare(b.nombre,language));const w=words();
+ el('boardLeaders').innerHTML=`<span class="board-leader-caption">${safe(w.ask)}</span>${['Cocina','Repartición y limpieza'].map(role=>{const leader=active.find(p=>p.encargado&&p.rol_encargado===role);return `<div><span>${safe(roleName(role))}</span><strong>${leader?safe(leader.nombre):safe(w.pending)}</strong></div>`;}).join('')}`;
+ const free=active.filter(p=>p.libre).length;
+ el('boardCounts').textContent=`${active.length} ${active.length===1?w.singular:w.plural}${free?' · '+free+' '+w.offCount:''}`;
+ function task(value){const text=value==='Alimentar animales'?w.feed:value==='Cortar frutas y preparar alimentos'?w.prep:value||w.unassigned;return `<span class="board-task ${value==='Alimentar animales'?'feed':value==='Cortar frutas y preparar alimentos'?'prep':''}">${safe(text)}</span>`;}
+ el('boardRows').innerHTML=active.map(p=>`<tr><td class="board-person"><strong>${safe(p.nombre)}</strong>${p.encargado?`<small>★ ${safe(roleName(p.rol_encargado))}</small>`:''}</td><td data-label="${safe(w.morning)}">${p.libre?`<span class="board-task free">${safe(w.off)}</span>`:task(p.manana)}</td><td data-label="${safe(w.afternoon)}">${p.libre?`<span class="board-task free">${safe(w.off)}</span>`:task(p.tarde)}</td></tr>`).join('')||`<tr><td colspan="3" class="empty">${safe(w.empty)}</td></tr>`;
 }
-async function refreshBoard() {
-  const day=el('boardDay').value;if(!day)return;
-  const version=++requestVersion;busy=true;el('boardToday').hidden=day===localDay();
-  if(viewedDay!==day){clearBoard();viewedDay=day;}
-  el('boardDate').textContent=new Intl.DateTimeFormat('es-CR',{dateStyle:'full',timeZone:'UTC'}).format(new Date(`${day}T12:00:00Z`));
-  try {
-    // Lectura anónima de la copia pública, sin utilizar la sesión administrativa.
-    const data=await CRARC_DB.request('rpc/tablero_del_dia',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify({p_fecha:day})});
-    if(version!==requestVersion)return;
-    renderBoard(data.personas);
-    note('Se actualiza automáticamente cada minuto · Última actualización: '+new Intl.DateTimeFormat('es-CR',{timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(data.calculado_at)));
-  }catch(e){if(version===requestVersion)note('No se pudo actualizar el tablero. Los datos visibles pueden estar desactualizados.');}
-  finally{if(version===requestVersion){busy=false;}}
+function renderLabels(){
+ const w=words();document.documentElement.lang=language;document.title=w.title+' · CRARC';
+ const fields={boardTitle:'title',boardEyebrow:'eyebrow',boardDateLabel:'date',boardToday:'today',boardPersonLabel:'person',boardMorningLabel:'morning',boardAfternoonLabel:'afternoon'};
+ Object.entries(fields).forEach(([id,key])=>el(id).textContent=w[key]);
+ const day=el('boardDay').value||localDay();
+ el('boardDate').textContent=new Intl.DateTimeFormat(language==='es'?'es-CR':language,{dateStyle:'full',timeZone:'UTC'}).format(new Date(`${day}T12:00:00Z`));
+ const quoteIndex=Math.abs(Math.floor(Date.parse(day+'T12:00:00Z')/86400000))%BOARD_QUOTES[language].length;
+ el('boardQuote').textContent=BOARD_QUOTES[language][quoteIndex];
+ el('boardStatus').textContent=hasError?w.error:lastUpdated?w.updated+new Intl.DateTimeFormat(language==='es'?'es-CR':language,{timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(lastUpdated)):'';
 }
-function startBoard() {
-  let followingToday=true;
-  el('boardDay').value=localDay();el('boardDay').onchange=()=>{followingToday=false;refreshBoard();};
-  el('boardToday').onclick=()=>{followingToday=true;el('boardDay').value=localDay();refreshBoard();};
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshBoard();});
-  setInterval(()=>{if(!document.hidden && !busy){if(followingToday)el('boardDay').value=localDay();refreshBoard();}},60000);
-  refreshBoard();
+async function refreshBoard(){
+ const day=el('boardDay').value;if(!day)return;
+ const version=++requestVersion;busy=true;el('boardToday').hidden=day===localDay();
+ if(viewedDay!==day){clearBoard();viewedDay=day;}renderLabels();
+ try{const data=await CRARC_DB.request('rpc/tablero_del_dia',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify({p_fecha:day})});if(version!==requestVersion)return;hasError=false;lastUpdated=data.calculado_at;renderBoard(data.personas);renderLabels();}
+ catch(e){if(version===requestVersion){hasError=true;renderLabels();}}
+ finally{if(version===requestVersion)busy=false;}
+}
+function startBoard(){
+ let followingToday=true;try{const stored=localStorage.getItem('crarc-lang');if(BOARD_I18N[stored])language=stored;}catch{}
+ el('boardLanguage').value=language;
+ el('boardLanguage').onchange=()=>{language=el('boardLanguage').value;try{localStorage.setItem('crarc-lang',language);}catch{}renderBoard(lastPeople);renderLabels();};
+ el('boardDay').value=localDay();el('boardDay').onchange=()=>{followingToday=false;refreshBoard();};
+ el('boardToday').onclick=()=>{followingToday=true;el('boardDay').value=localDay();refreshBoard();};
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshBoard();});
+ setInterval(()=>{if(!document.hidden&&!busy){if(followingToday)el('boardDay').value=localDay();refreshBoard();}},60000);
+ refreshBoard();
 }
 startBoard();
