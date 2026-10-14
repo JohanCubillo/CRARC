@@ -1,6 +1,6 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'../conocenos.html'),'utf8');
-for(const [i,match] of [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].entries())new vm.Script(match[1],{filename:`inline-${i}.js`});
+for(const [i,match] of [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].entries()){if(match[0].includes('application/ld+json'))JSON.parse(match[1]);else new vm.Script(match[1],{filename:`inline-${i}.js`});}
 assert.ok(!html.includes('id="heroBg"'));
 assert.ok(!html.includes('id="imgVis"'));assert.ok(!html.includes('id="waBtn"'));
 assert.ok(html.includes('about-redesign.css'));

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta charset="UTF-8">
 <script src="supabase-client.js"></script>
 <script src="sponsor-payments.js?v=20261013-2"></script>
 <link rel="stylesheet" href="sponsor-payments.css?v=20261013-2">
 <link rel="stylesheet" href="home-contact.css?v=20261013-3">
 <script src="home-contact.js?v=20261013-1" defer></script>
-<meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Costa Rica Animal Rescue Center</title>
-<meta name="description" content="El Costa Rica Animal Rescue Center es una organización sin fines de lucro que le da a la vida silvestre una segunda oportunidad: rescate, rehabilitación y liberación.">
+<title>Voluntariado con animales en Costa Rica | CRARC</title>
+<meta name="description" content="Conoce CRARC, centro de rescate de vida silvestre en Turrúcares, Costa Rica. Descubre el voluntariado, las visitas y cómo apadrinar animales.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Karla:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -908,7 +909,17 @@ footer a:hover{color:var(--sun)}
   .bar span{font-size:.62rem}
 }
 </style>
-<link rel="stylesheet" href="mobile-experience.css?v=20261013-2"><script src="mobile-experience.js?v=20261013-2" defer></script><link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="chatbot.css?v=5"><script src="chatbot.js?v=5" defer></script><link rel="stylesheet" href="home-history.css?v=3"></head>
+<link rel="stylesheet" href="mobile-experience.css?v=20261013-2"><script src="mobile-experience.js?v=20261013-2" defer></script><link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="chatbot.css?v=5"><script src="chatbot.js?v=6" defer></script><link rel="stylesheet" href="home-history.css?v=3"><link rel="canonical" href="https://johancubillo.github.io/CRARC/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Voluntariado con animales en Costa Rica | CRARC">
+<meta property="og:description" content="Conoce CRARC, centro de rescate de vida silvestre en Turrúcares, Costa Rica. Descubre el voluntariado, las visitas y cómo apadrinar animales.">
+<meta property="og:url" content="https://johancubillo.github.io/CRARC/">
+<meta property="og:site_name" content="Costa Rica Animal Rescue Center">
+<meta property="og:locale" content="es_CR">
+<meta property="og:image" content="https://johancubillo.github.io/CRARC/images/voluntariados.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://johancubillo.github.io/CRARC/#organization", "name": "Costa Rica Animal Rescue Center", "alternateName": "CRARC", "url": "https://johancubillo.github.io/CRARC/", "address": {"@type": "PostalAddress", "addressLocality": "Cebadilla de Turrúcares", "addressRegion": "Alajuela", "addressCountry": "CR"}, "sameAs": ["https://www.facebook.com/costaricaanimalrescuecenter/", "https://www.instagram.com/costaricaanimalrescuecenter_/"]}, {"@type": "WebSite", "@id": "https://johancubillo.github.io/CRARC/#website", "url": "https://johancubillo.github.io/CRARC/", "name": "Costa Rica Animal Rescue Center", "publisher": {"@id": "https://johancubillo.github.io/CRARC/#organization"}, "inLanguage": "es"}, {"@type": "WebPage", "@id": "https://johancubillo.github.io/CRARC/#webpage", "url": "https://johancubillo.github.io/CRARC/", "name": "Voluntariado con animales en Costa Rica | CRARC", "description": "Conoce CRARC, centro de rescate de vida silvestre en Turrúcares, Costa Rica. Descubre el voluntariado, las visitas y cómo apadrinar animales.", "isPartOf": {"@id": "https://johancubillo.github.io/CRARC/#website"}, "about": {"@id": "https://johancubillo.github.io/CRARC/#organization"}, "inLanguage": "es"}]}</script>
+</head>
 <body>
 
 <header id="header">
@@ -923,14 +934,14 @@ footer a:hover{color:var(--sun)}
     </button>
 
     <ul class="nav-links" id="navLinks">
-      <li><a href="#sponsor" data-i18n="navSponsor"></a></li>
-      <li><a href="conocenos.html" data-i18n="navKnow"></a></li>
-      <li><a href="voluntariado.html" data-i18n="navVolunteer"></a></li>
-      <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="navContact"></a></li>
+      <li><a href="#sponsor" data-i18n="navSponsor">Padrinos</a></li>
+      <li><a href="conocenos.html" data-i18n="navKnow">Conócenos</a></li>
+      <li><a href="voluntariado.html" data-i18n="navVolunteer">Voluntariado</a></li>
+      <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="navContact">Contacto</a></li>
       <li class="lang">
         <select id="langSelect" aria-label="Idioma / Language"></select>
       </li>
-      <li><a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="navDonate"></a></li>
+      <li><a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="navDonate">Donar</a></li>
     </ul>
   </div>
 </header>
@@ -943,15 +954,15 @@ footer a:hover{color:var(--sun)}
     <div class="hero-yt" id="heroYt" aria-hidden="true"></div>
     <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata"></video>
     <div class="wrap hero-content">
-      <p class="kicker" data-i18n="heroKicker"></p>
-      <h1 data-i18n-html="heroTitle"></h1>
-      <p data-i18n="heroLead"></p>
+      <p class="kicker" data-i18n="heroKicker">Santuario sin fines de lucro en Turrúcares, Costa Rica</p>
+      <h1 data-i18n-html="heroTitle">Más de 17 años de experiencia <em>ayudando a la vida silvestre</em></h1>
+      <p data-i18n="heroLead">Le damos a perezosos, monos, aves y otra fauna costarricense una segunda oportunidad de vida: rescatamos, rehabilitamos y los liberamos de nuevo en su hábitat natural.</p>
       <div class="hero-cta">
-        <a class="btn btn-sun" href="voluntariado.html" data-i18n="heroCtaVol"></a>
-        <a class="btn btn-ghost" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="heroCtaDon"></a>
+        <a class="btn btn-sun" href="voluntariado.html" data-i18n="heroCtaVol">Ser voluntario</a>
+        <a class="btn btn-ghost" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="heroCtaDon">Donar</a>
       </div>
     </div>
-    <a class="scroll-hint" href="#how" data-i18n="scroll"></a>
+    <a class="scroll-hint" href="#how" data-i18n="scroll">Bajar</a>
   </section>
 
   <!-- ===================== HOW WE WORK ===================== -->
@@ -961,25 +972,25 @@ footer a:hover{color:var(--sun)}
     </svg>
     <div class="wrap" style="padding-top:60px">
       <div class="section-head">
-        <p class="kicker" data-i18n="howKicker"></p>
-        <h2 data-i18n="howTitle"></h2>
+        <p class="kicker" data-i18n="howKicker">Cómo trabajamos</p>
+        <h2 data-i18n="howTitle">Rescate, cuidado y una comunidad que mantiene todo en marcha</h2>
       </div>
 
       <div class="how-grid" id="howGrid">
         <article class="how-card">
-          <h3 data-i18n="how1h"></h3>
-          <p data-i18n="how1p1"></p>
-          <p data-i18n="how1p2"></p>
+          <h3 data-i18n="how1h">Rescate y rehabilitación</h3>
+          <p data-i18n="how1p1">A veces los animales son traídos por personas locales, turistas o incluso voluntarios, que los encuentran heridos o abandonados en las calles y en la naturaleza. Estos animales rescatados suelen ser pequeños, jóvenes o crías que perdieron a su madre y no tendrían ninguna posibilidad de sobrevivir por sí solos.</p>
+          <p data-i18n="how1p2">En el centro buscamos rehabilitar a los animales y darles las mejores condiciones posibles para recuperarse de sus lesiones físicas y, a veces, también mentales. Cuando llegan animales nuevos, son examinados por veterinarios que determinan qué acciones se necesitan para cada situación individual. El cuidado, los tratamientos y el reentrenamiento son responsabilidad del personal permanente, y los voluntarios a menudo asumen partes de estas tareas según sus calificaciones.</p>
         </article>
         <article class="how-card">
-          <h3 data-i18n="how2h"></h3>
-          <p data-i18n="how2p1"></p>
-          <p data-i18n="how2p2"></p>
+          <h3 data-i18n="how2h">Equipo</h3>
+          <p data-i18n="how2p1">Nuestro equipo de trabajo está formado por voluntarios y nuestro veterinario en sitio, quienes cumplen un papel importante para mantener el centro funcionando.</p>
+          <p data-i18n="how2p2">Para manejar todas las tareas y deberes que requiere nuestro centro dependemos de la ayuda de voluntarios motivados y responsables. Las tareas generales incluyen preparación de comida, limpieza y mantenimiento de recintos, construcción de juguetes de actividad y enriquecimiento para los animales. Además de las tareas diarias, también necesitamos ayuda con cualquier proyecto adicional que surja durante el día.</p>
         </article>
         <article class="how-card">
-          <h3 data-i18n="how3h"></h3>
-          <p data-i18n="how3p1"></p>
-          <p data-i18n="how3p2"></p>
+          <h3 data-i18n="how3h">Ubicación</h3>
+          <p data-i18n="how3p1">Por suerte, a poca distancia por la carretera, en Cebadilla, encontramos un sitio fantástico con pequeños ríos, praderas, colinas y grandes árboles frutales. Se adapta perfectamente a nuestros animales y voluntarios, y comenzamos la mudanza en junio de 2016, con muchos voluntarios ayudando en el proceso, a quienes estamos eternamente agradecidos.</p>
+          <p data-i18n="how3p2">Seguimos trabajando todos los días para mejorar el lugar y los recintos, pero hasta ahora construimos un hospital de animales, un enorme aviario, dos jardines de perezosos y varias jaulas grandes para monos, equipadas con muchos elementos de enriquecimiento para mantener a nuestros rescatados activos, física y cognitivamente.</p>
         </article>
       </div>
     </div>
@@ -990,18 +1001,18 @@ footer a:hover{color:var(--sun)}
 
   <!-- ===================== QUOTE ===================== -->
   <figure class="quote" id="quoteBg">
-    <blockquote data-i18n="quoteText"></blockquote>
-    <figcaption data-i18n="quoteCaption"></figcaption>
+    <blockquote data-i18n="quoteText">“Rescate, rehabilitación, liberación.”</blockquote>
+    <figcaption data-i18n="quoteCaption">Nuestro lema — desde 2005</figcaption>
   </figure>
 
   <!-- ===================== STATS ===================== -->
-<section id="historia" class="home-history" aria-labelledby="historyTitle"><div class="wrap"><div class="section-head"><p class="kicker" data-i18n="histKicker">De Moín a Turrúcares</p><h2 id="historyTitle" data-i18n="histTitle">Nuestra historia</h2></div><div class="home-history-layout"><figure><img src="images/historia-moin-turrucares.png" alt="Mapa del traslado del centro desde Moín, en Limón, hasta San Miguel de Turrúcares, en Alajuela" loading="lazy" width="1536" height="1024"></figure><div class="home-history-copy"><p data-i18n-html="histP1"></p><p data-i18n-html="histP2"></p><p data-i18n-html="histP3"></p><p data-i18n-html="histP4"></p><p data-i18n-html="histP5"></p><a class="btn btn-green" href="voluntariado.html">Forma parte de nuestra historia →</a></div></div></div></section>
+<section id="historia" class="home-history" aria-labelledby="historyTitle"><div class="wrap"><div class="section-head"><p class="kicker" data-i18n="histKicker">De Moín a Turrúcares</p><h2 id="historyTitle" data-i18n="histTitle">Nuestra historia</h2></div><div class="home-history-layout"><figure><img src="images/historia-moin-turrucares.png" alt="Mapa del traslado del centro desde Moín, en Limón, hasta San Miguel de Turrúcares, en Alajuela" loading="lazy" width="1536" height="1024"></figure><div class="home-history-copy"><p data-i18n-html="histP1">En 2009, el centro de rescate fue fundado en la costa caribeña de Costa Rica, en Moín. Su primer rescate fue Buda, un animal salvado del tráfico ilegal de fauna silvestre justo antes de ser vendido como mascota.</p><p data-i18n-html="histP2">El centro, ubicado en Moín, también se dedicaba a patrullar las playas para proteger los nidos de una especie en peligro de extinción: la tortuga baula <i>(Dermochelys coriacea)</i>.</p><p data-i18n-html="histP3">En Moín, el conservacionista <a class="history-jairo" href="https://www.nacion.com/revista-dominical/patrullando-moin-con-jairo-mora/USAGLPP7R5EN7K264TCEOPQMDQ/story/" target="_blank" rel="noopener noreferrer">Jairo Mora Sandoval</a> dedicó su trabajo a proteger los nidos de tortuga baula frente al saqueo de huevos. Colaboraba con WIDECAST y patrullaba la playa junto a personas voluntarias. Fue asesinado el 31 de mayo de 2013, mientras participaba en estas labores de conservación. Su compromiso sigue siendo un ejemplo de defensa de la vida silvestre.</p><p data-i18n-html="histP4">Debido a la creciente presión y a la pérdida de acceso a la propiedad original, el centro se vio obligado a trasladarse a San Miguel de Turrúcares. Allí, se les prestó generosamente una propiedad temporal para que los animales pudieran ser alojados mientras se buscaba una solución permanente.</p><p data-i18n-html="histP5">La propiedad original en Moín fue ocupada y, en 2016, después de vender dos propiedades personales, la propietaria del centro de rescate pudo adquirir el terreno donde actualmente funciona el centro, una propiedad que todavía se está pagando por lo que buscamos personas voluntarias como vos, para que formés parte del cuidado y protección de nuestra vida silvestre.</p><a class="btn btn-green" href="voluntariado.html">Forma parte de nuestra historia →</a></div></div></div></section>
   <section class="stats" id="impact">
     <div class="wrap stats-grid" id="statsGrid">
-      <div class="stat"><b data-count="17">0</b><span data-i18n="stat1"></span></div>
-      <div class="stat"><b data-count="100" data-suffix="+">0</b><span data-i18n="stat2"></span></div>
-      <div class="stat"><b data-count="20" data-suffix="+">0</b><span data-i18n="stat3"></span></div>
-      <div class="stat"><b data-count="96500" data-format="thousands">0</b><span data-i18n="stat4"></span></div>
+      <div class="stat"><b data-count="17">0</b><span data-i18n="stat1">Años de experiencia</span></div>
+      <div class="stat"><b data-count="100" data-suffix="+">0</b><span data-i18n="stat2">Animales rescatados</span></div>
+      <div class="stat"><b data-count="20" data-suffix="+">0</b><span data-i18n="stat3">Entrevistas</span></div>
+      <div class="stat"><b data-count="96500" data-format="thousands">0</b><span data-i18n="stat4">Seguidores</span></div>
     </div>
   </section>
 
@@ -1010,12 +1021,12 @@ footer a:hover{color:var(--sun)}
     <div class="wrap cols">
       <div>
         <span class="years">2005 – 2025</span>
-        <h2 data-i18n="growthTitle"></h2>
-        <p data-i18n="growthP1"></p>
-        <p data-i18n="growthP2"></p>
+        <h2 data-i18n="growthTitle">Crecimiento año a año</h2>
+        <p data-i18n="growthP1">Cada año nos esforzamos por mejorar nuestras instalaciones y recursos para poder salvar más animales. Tus donaciones nos ayudan a conseguir los fondos necesarios para contratar más profesionales, aumentar el tamaño de nuestras instalaciones y obtener mejor equipo.</p>
+        <p data-i18n="growthP2">Trabajamos con un modelo de crecimiento año a año: cuando ampliamos algo, necesitamos adaptarnos rápida y suavemente para asegurar que los animales sean trasladados de forma segura y sin estrés.</p>
       </div>
       <div class="chart" id="chart">
-        <h3 data-i18n="chartTitle"></h3>
+        <h3 data-i18n="chartTitle">Animales salvados por año</h3>
         <div class="bars" id="bars"></div>
       </div>
     </div>
@@ -1025,12 +1036,12 @@ footer a:hover{color:var(--sun)}
   <section class="sponsor" id="sponsor">
     <div class="wrap">
       <div class="intro">
-        <p class="kicker" data-i18n="sponKicker"></p>
-        <h2 data-i18n="sponTitle"></h2>
-        <p style="margin-top:.8rem;color:#3E4F43" data-i18n="sponIntro"></p>
+        <p class="kicker" data-i18n="sponKicker">Apadriná un animal</p>
+        <h2 data-i18n="sponTitle">Sé el padrino de un rescatado</h2>
+        <p style="margin-top:.8rem;color:#3E4F43" data-i18n="sponIntro">Con un aporte mensual ayudás directamente a un animal del centro: su comida, atención veterinaria y enriquecimiento. Elegí a quién querés apadrinar y el monto con el que querés colaborar.</p>
       </div>
       <div class="sponsor-grid" id="sponsorGrid"></div>
-      <p class="spon-note" data-i18n="sponNote"></p>
+      <p class="spon-note" data-i18n="sponNote">El 100% de tu aporte se destina al cuidado de los animales. Al donar, indicá el nombre del animal que querés apadrinar.</p>
     </div>
   </section>
 
@@ -1041,8 +1052,8 @@ footer a:hover{color:var(--sun)}
     </svg>
     <div class="wrap" style="padding-top:60px">
       <div class="section-head">
-        <p class="kicker" data-i18n="galleryKicker"></p>
-        <h2 data-i18n="galleryTitle"></h2>
+        <p class="kicker" data-i18n="galleryKicker">La vida en el santuario</p>
+        <h2 data-i18n="galleryTitle">Galería</h2>
       </div>
       <div class="masonry" id="masonry"></div>
     </div>
@@ -1059,26 +1070,26 @@ footer a:hover{color:var(--sun)}
     <div class="wrap">
       <div class="join-grid">
         <div class="join-col">
-          <small data-i18n="joinReady"></small>
-          <h2 data-i18n="joinVol"></h2>
-          <a class="btn btn-sun" href="voluntariado.html" data-i18n="joinVolBtn"></a>
+          <small data-i18n="joinReady">¿Listo para ayudar?</small>
+          <h2 data-i18n="joinVol">Voluntariado</h2>
+          <a class="btn btn-sun" href="voluntariado.html" data-i18n="joinVolBtn">Únete hoy</a>
         </div>
         <div class="join-col">
-          <small data-i18n="joinEvery"></small>
-          <h2 data-i18n="joinDon"></h2>
-          <a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="joinDonBtn"></a>
+          <small data-i18n="joinEvery">Cada colón cuenta</small>
+          <h2 data-i18n="joinDon">Donar</h2>
+          <a class="btn btn-sun" href="https://www.costaricaanimalrescuecenter.org/donate" data-i18n="joinDonBtn">Dona hoy</a>
         </div>
       </div>
 
       <div class="paybox" id="pay">
-        <h3 data-i18n="payTitle"></h3>
-        <p data-i18n="payIntro"></p>
+        <h3 data-i18n="payTitle">Formas de donar</h3>
+        <p data-i18n="payIntro">Podés donar o pagar tu apadrinamiento por SINPE Móvil o transferencia bancaria:</p>
         <div class="pay-grid" id="payGrid"></div>
       </div>
 
       <div class="wishlist">
-        <p data-i18n-html="wishlist"></p>
-        <a class="btn btn-ghost" href="https://www.amazon.com/hz/wishlist/dl/invite/3pFuUDF?ref_=wl_share" data-i18n="wishlistBtn"></a>
+        <p data-i18n-html="wishlist"><strong>Lista de deseos de Amazon:</strong> ¡comprá un artículo de nuestra lista! Tu donación nos ayuda a continuar nuestra misión de rescatar y rehabilitar la vida silvestre en Costa Rica.</p>
+        <a class="btn btn-ghost" href="https://www.amazon.com/hz/wishlist/dl/invite/3pFuUDF?ref_=wl_share" data-i18n="wishlistBtn">Abrir la lista</a>
       </div>
     </div>
   </section>
@@ -1108,7 +1119,7 @@ footer a:hover{color:var(--sun)}
   <div class="wrap foot-grid">
     <div class="foot-brand">
       <img id="logoFoot" src="" alt="Logo Costa Rica Animal Rescue Center">
-      <p data-i18n-html="footAddr"></p>
+      <p data-i18n-html="footAddr">Costa Rica Animal Rescue Center<br>Turrúcares, Costa Rica</p>
       <ul style="margin-top:14px">
         <li><a href="tel:+50688926771">(506) 8892-6771</a></li>
         <li><a href="mailto:tourscrarc@gmail.com">tourscrarc@gmail.com</a></li>
@@ -1117,29 +1128,29 @@ footer a:hover{color:var(--sun)}
     </div>
 
     <div>
-      <h4 data-i18n="footHours"></h4>
+      <h4 data-i18n="footHours">Horario</h4>
       <ul class="hours">
-        <li><span data-i18n="footMonFri"></span><span>8am – 5pm</span></li>
-        <li><span data-i18n="footSat"></span><span>8am – 5pm</span></li>
-        <li><span data-i18n="footSun"></span><span>8am – 5pm</span></li>
+        <li><span data-i18n="footMonFri">Lun – Vie</span><span>8am – 5pm</span></li>
+        <li><span data-i18n="footSat">Sábado</span><span>8am – 5pm</span></li>
+        <li><span data-i18n="footSun">Domingo</span><span>8am – 5pm</span></li>
       </ul>
     </div>
 
     <div>
-      <h4 data-i18n="footExplore"></h4>
+      <h4 data-i18n="footExplore">Explorar</h4>
       <ul>
-        <li><a href="https://www.costaricaanimalrescuecenter.org/tours" data-i18n="footTours"></a></li>
-        <li><a href="https://www.costaricaanimalrescuecenter.org/about-us" data-i18n="footAbout"></a></li>
-        <li><a href="https://www.costaricaanimalrescuecenter.org/founders" data-i18n="footFounders"></a></li>
-        <li><a href="https://www.costaricaanimalrescuecenter.org/faq-" data-i18n="footFaq"></a></li>
-        <li><a href="https://www.costaricaanimalrescuecenter.org/internships" data-i18n="footInternships"></a></li>
-        <li><a href="voluntariado.html" data-i18n="footVolunteer"></a></li>
-        <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="footContact"></a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/tours" data-i18n="footTours">Tours</a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/about-us" data-i18n="footAbout">Sobre nosotros</a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/founders" data-i18n="footFounders">Fundadores</a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/faq-" data-i18n="footFaq">Preguntas frecuentes</a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/internships" data-i18n="footInternships">Pasantías</a></li>
+        <li><a href="voluntariado.html" data-i18n="footVolunteer">Voluntariado</a></li>
+        <li><a href="https://www.costaricaanimalrescuecenter.org/contact-us" data-i18n="footContact">Contacto</a></li>
       </ul>
     </div>
 
     <div>
-      <h4 data-i18n="footFollow"></h4>
+      <h4 data-i18n="footFollow">Seguinos</h4>
       <ul>
         <li><a href="https://instagram.com/costaricaanimalrescuecenter_?igshid=1n3zkhhkk0ti1">Instagram</a></li>
         <li><a href="https://www.facebook.com/costaricaanimalrescuecenter/">Facebook</a></li>
@@ -1152,7 +1163,7 @@ footer a:hover{color:var(--sun)}
 
   <div class="wrap copyright">
     <span id="footCopy"></span>
-    <span data-i18n="footMotto"></span>
+    <span data-i18n="footMotto">Rescate · Rehabilitación · Liberación</span>
   </div>
   <div class="wrap" style="margin-top:20px"><a href="admin.html">Administración</a></div>
 </footer>
