@@ -30,3 +30,13 @@ body.sinpe-open{overflow:hidden}.sinpe-dialog{position:fixed;inset:0;margin:auto
 .sinpe-dialog [role=status]{font-size:13px;padding:12px;border-radius:10px;background:#edf4e5;color:#234c35;margin:12px 0}
 .sinpe-dialog [role=status]:empty{display:none}
 @media(max-width:600px){.sinpe-dialog{height:auto;max-height:calc(100dvh - 16px);border-radius:20px}.sinpe-header{padding:18px 16px}.sinpe-header h2{font-size:21px}.sinpe-scroll{padding:16px 16px 10px}.sinpe-transfer{padding:16px}.sinpe-transfer>strong{font-size:27px}.sinpe-grid{gap:14px}.sinpe-actions{bottom:-10px;padding-bottom:10px}.sinpe-actions .btn{padding:12px 10px;font-size:13px}}
+
+.sponsor-payment-brands{display:flex;align-items:center;gap:16px;margin:24px 0 32px;flex-wrap:wrap}
+.sponsor-payment-brands>div{display:flex;align-items:center;justify-content:center;background:white;border:1px solid #d8e0d2;border-radius:14px;width:164px;height:96px;overflow:hidden}
+.sponsor-payment-brands .payment-paypal-logo{width:138px;height:56px;object-fit:cover;display:block}
+.sponsor-payment-brands .payment-sinpe-logo{width:104px;height:84px;object-fit:contain;display:block}
+.spon-payment-buttons .btn{display:flex;align-items:center;justify-content:center;background:white!important;border:1px solid #cbd7cc!important;padding:10px 12px!important;min-height:62px;overflow:hidden}
+.spon-payment-buttons .payment-paypal-logo{display:block;width:104px!important;height:38px!important;object-fit:cover;flex:none}
+.spon-payment-buttons .payment-sinpe-logo{display:block;width:72px!important;height:48px!important;object-fit:contain;flex:none}
+.spon-payment-buttons .btn:hover:not(:disabled){border-color:#315f43!important;box-shadow:0 3px 12px #234c3515}
+@media(max-width:600px){.sponsor-payment-brands{gap:12px}.sponsor-payment-brands>div{width:140px;height:84px}}

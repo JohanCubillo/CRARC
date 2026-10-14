@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="page-loader.css?v=1"><script src="page-loader.js?v=1"></script>
 <script src="supabase-client.js"></script>
 <script src="sponsor-payments.js?v=20261014-1"></script>
-<link rel="stylesheet" href="sponsor-payments.css?v=20261014-1">
+<link rel="stylesheet" href="sponsor-payments.css?v=20261014-2">
 <link rel="stylesheet" href="home-contact.css?v=20261013-3">
 <script src="home-contact.js?v=20261013-1" defer></script>
 
@@ -1020,7 +1020,7 @@ footer a:hover{color:var(--sun)}
         <h2 data-i18n="sponTitle">Sé el padrino de un rescatado</h2>
         <p style="margin-top:.8rem;color:#3E4F43" data-i18n="sponIntro">Con un aporte mensual ayudás directamente a un animal del centro: su comida, atención veterinaria y enriquecimiento. Elegí a quién querés apadrinar y el monto con el que querés colaborar.</p>
       </div>
-      <div class="sponsor-grid" id="sponsorGrid"></div>
+      <div class="sponsor-payment-brands" aria-label="Opciones de pago"><div><img class="payment-paypal-logo" src="images/paypal-logo.png" alt="PayPal" loading="lazy"></div><div><img class="payment-sinpe-logo" src="images/sinpe-logo.png" alt="SINPE Móvil" loading="lazy"></div></div><div class="sponsor-grid" id="sponsorGrid"></div>
       <p class="spon-note" data-i18n="sponNote">El 100% de tu aporte se destina al cuidado de los animales. Al donar, indicá el nombre del animal que querés apadrinar.</p>
     </div>
   </section>
@@ -1258,7 +1258,7 @@ function buildSponsors(dict){
     const cta = document.createElement("button");
     cta.type='button';
     cta.className = "btn btn-green";
-    cta.textContent = 'PayPal';
+    const paypalLogo=document.createElement('img');paypalLogo.src='images/paypal-logo.png';paypalLogo.alt='PayPal';paypalLogo.className='payment-paypal-logo';cta.appendChild(paypalLogo);
     cta.disabled = !CRARC_SPONSOR_PAYMENTS.paypalLink(animal.paypal,animal.amounts[0]);
     cta.setAttribute('aria-label',`${dict.sponBtn} ${animal.name} · PayPal`);
     cta.addEventListener("click", () => {
@@ -1268,7 +1268,7 @@ function buildSponsors(dict){
       if(url)window.open(url,'_blank','noopener,noreferrer');
     });
     paymentButtons.appendChild(cta);
-    const sinpe=document.createElement('button');sinpe.type='button';sinpe.className='btn btn-green';sinpe.textContent='SINPE Móvil';
+    const sinpe=document.createElement('button');sinpe.type='button';sinpe.className='btn btn-green';const sinpeLogo=document.createElement('img');sinpeLogo.src='images/sinpe-logo.png';sinpeLogo.alt='SINPE Móvil';sinpeLogo.className='payment-sinpe-logo';sinpe.appendChild(sinpeLogo);
     sinpe.setAttribute('aria-label',`${dict.sponBtn} ${animal.name} · SINPE Móvil`);
     sinpe.onclick=()=>CRARC_SPONSOR_PAYMENTS.openSinpe(animal,PAYMENT.sinpe.number,PAYMENT.sinpe.holder);
     paymentButtons.appendChild(sinpe);body.appendChild(paymentButtons);
