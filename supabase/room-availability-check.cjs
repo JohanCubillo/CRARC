@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+require('../room-availability.js');
+const room={id:'r',nombre:'Compartida'},peak=global.CRARC_ROOMS_DATA.peak;
+const stays=[{id:'a',habitacion_id:'r',llegada:'2026-10-13',salida:'2026-10-15'},{id:'b',habitacion_id:'r',llegada:'2026-10-15',salida:'2026-10-17'}];
+assert.equal(peak(stays,room,'2026-10-13','2026-10-17'),1,'salida y llegada el mismo día no se superponen');
+stays.push({id:'c',habitacion:'Compartida',llegada:'2026-10-14',salida:'2026-10-16'});
+assert.equal(peak(stays,room,'2026-10-13','2026-10-17'),2,'incluye estadías anteriores sin vínculo');
+assert.equal(peak(stays,room,'2026-10-13','2026-10-17','c'),1,'editar no cuenta a la persona dos veces');
+assert.equal(peak(stays,room,'2026-10-17','2026-10-18'),0);
+assert.equal(peak(stays,{id:'x',nombre:'Otro'},'2026-10-13','2026-10-17'),0);
+console.log('PASS: ocupación simultánea, salida, edición, cuartos y estadías anteriores.');

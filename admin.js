@@ -6,7 +6,7 @@ const dateUTC = value => new Date(`${value}T12:00:00Z`);
 const nights = s => Math.round((dateUTC(s.salida) - dateUTC(s.llegada)) / 86400000);
 const weekdays = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 const money = (value, currency) => new Intl.NumberFormat('es-CR', {style:'currency',currency}).format(value);
-const titles = {resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos',formularios:'Formularios recibidos',animales:'Animales y PayPal',sinpe:'Verificar SINPE'};
+const titles = {habitaciones:'Habitaciones y disponibilidad',resumen:'Resumen financiero',personas:'Personas y estadías',tareas:'Organización del día',finanzas:'Ingresos y gastos',formularios:'Formularios recibidos',animales:'Animales y PayPal',sinpe:'Verificar SINPE'};
 let contacts=[], contactsLoading=false;
 function renderContacts() {
   const query=$('contactSearch').value.toLowerCase(), interest=$('contactInterest').value;
@@ -53,6 +53,7 @@ async function reload() {
     stays.sort((a,b) => a.llegada.localeCompare(b.llegada));
     movements.sort((a,b) => b.fecha.localeCompare(a.fecha));
     render();
+    await loadRooms();
     await publishPublicBoard();
   } finally { loading = false; }
 }
@@ -132,7 +133,7 @@ function openStay(id) {
   if (s) Object.entries(s).forEach(([k,v]) => { if (f.elements[k]) f.elements[k].value = v ?? ''; });
   else f.elements.llegada.value = today();
   f.elements.tarea_manana.value = CRARC_PLAN.opposite(f.elements.tarea_tarde.value);
-  $('stayHeading').textContent = s ? 'Editar estadía' : 'Agregar persona'; $('stayDialog').showModal();
+  $('stayHeading').textContent = s ? 'Editar estadía' : 'Agregar persona'; refreshStayRooms(); $('stayDialog').showModal();
 }
 function openMovement(id, personId) {
   const f = $('movementForm'); f.reset(); f.elements.id.value = ''; f.elements.fecha.value = today();
@@ -148,6 +149,7 @@ async function saveForm(form, operation) {
 }
 function hideWorkspace() {
   CRARC_SPONSOR_ADMIN.clear();
+  rooms=[]; roomsReady=false; $('roomRows').replaceChildren();
   contacts=[]; $('contactRows').replaceChildren(); $('contactStatus').textContent='';
   userId = null; stays = []; movements = []; shifts = [];
   $('workspace').hidden = true; $('login').hidden = false; $('logout').hidden = true;
@@ -163,6 +165,7 @@ async function authorize(session) {
 }
 async function init() {
   CRARC_SPONSOR_ADMIN.init();
+  initRooms();
   $('month').value = today().slice(0,7); $('day').value = today();
   if (!window.supabase) { fail(new Error('No se pudo cargar el acceso a Supabase. Revisa tu conexión y recarga.')); return; }
   db = window.supabase.createClient(CRARC_DB.url,CRARC_DB.key);
@@ -203,6 +206,10 @@ async function init() {
   $('movementForm').elements.tipo.onchange = e => { $('paymentPerson').hidden = e.target.value === 'gasto'; };
   $('stayForm').onsubmit = e => {
     e.preventDefault(); const f = e.target, data = Object.fromEntries(new FormData(f)), id = data.id; delete data.id;
+    const room=rooms.find(r=>r.id===data.habitacion_id), original=stays.find(s=>s.id===id);
+    if(data.habitacion_id==='legacy' && original && !original.habitacion_id){data.habitacion_id=null;data.habitacion=original.habitacion;}
+    else if(room){data.habitacion=room.nombre;}
+    else {fail(new Error('Crea y selecciona una habitación disponible.'));return;}
     data.dia_libre = data.dia_libre === '' ? null : Number(data.dia_libre);
     data.tarea_manana = CRARC_PLAN.opposite(data.tarea_tarde);
     if (data.salida <= data.llegada) { fail(new Error('La salida debe ser posterior a la llegada.')); return; }
