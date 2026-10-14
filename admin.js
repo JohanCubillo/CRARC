@@ -148,6 +148,7 @@ async function saveForm(form, operation) {
   try { await operation(); await reload(); form.closest('dialog')?.close(); status('Guardado correctamente.'); } catch(e) { fail(e); } finally { btn.disabled = false; }
 }
 function hideWorkspace() {
+  $('adminSidebar').hidden=true; document.body.classList.remove('admin-authorized');
   CRARC_SPONSOR_ADMIN.clear();
   rooms=[]; roomsReady=false; $('roomRows').replaceChildren();
   contacts=[]; $('contactRows').replaceChildren(); $('contactStatus').textContent='';
@@ -161,6 +162,9 @@ async function authorize(session) {
   const access = unwrap(await db.from('administradores').select('user_id').eq('user_id',session.user.id).maybeSingle());
   if (!access) throw new Error('Este usuario no tiene acceso al panel. Autorízalo en la tabla administradores.');
   userId = session.user.id; await reload();
+  document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!=='resumen');
+  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view==='resumen'));
+  $('adminSidebar').hidden=false; document.body.classList.add('admin-authorized');
   $('workspace').hidden = false; $('login').hidden = true; $('logout').hidden = false; $('title').textContent = titles.resumen;
 }
 async function init() {
@@ -176,6 +180,7 @@ async function init() {
   $('logout').onclick = async () => { try { unwrap(await db.auth.signOut()); hideWorkspace(); status('Sesión cerrada.'); } catch(e) { fail(e); } };
   db.auth.onAuthStateChange(event => { if (event === 'SIGNED_OUT') hideWorkspace(); });
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
+    if(!userId || $('workspace').hidden)return;
     document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== b.dataset.view);
     document.querySelectorAll('[data-view]').forEach(x => x.classList.toggle('active',x === b)); $('title').textContent = titles[b.dataset.view];
     if (b.dataset.view==='formularios') loadContacts();
