@@ -18,7 +18,7 @@
      let data;try{data=await response.json();}catch{throw new Error('El asistente todavía no está disponible. Usa Contactar.');}
      if(!response.ok)throw new Error(data.error||'El asistente todavía no está disponible. Usa Contactar.');
      add(data.answer);if(Array.isArray(data.rooms)){data.rooms.forEach(r=>add(`${r.nombre}: ${r.cupos} cupos de ${r.capacidad}. ${r.disponible?'Disponible para el grupo.':'No disponible para todo el grupo.'}`));if(!data.rooms.length)add('No hay habitaciones configuradas. Consulta con el equipo.');}
-     history.push({role:'user',content:message},{role:'assistant',content:data.answer});while(history.length>10)history.shift();status.textContent='';
+     history.push({role:'user',content:message},{role:'assistant',content:data.answer.slice(0,1200)});while(history.length>10)history.shift();status.textContent='';
    }catch(e){status.textContent=e.name==='TimeoutError'?'La consulta tardó demasiado. Intenta nuevamente.':e instanceof TypeError?'No pudimos conectar con el asistente. Usa Contactar mientras el equipo activa el servicio.':e.message;}
    finally{busy=false;panel.querySelectorAll('form button').forEach(b=>b.disabled=false);}
  }
