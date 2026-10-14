@@ -33,3 +33,8 @@
 #boardLanguage{width:auto;max-width:150px;font-size:12px;padding:8px 12px;border-radius:999px;flex:none}
 .board-quote{font-size:13px;color:#456044;margin:14px 0 4px;padding:10px 14px;border-left:3px solid #e9b44c;background:#f1f5ea;border-radius:0 8px 8px 0}
 @media(max-width:650px){.board header{flex-wrap:wrap;gap:12px}#boardLanguage{margin-left:auto}}
+
+.board-activities{border:1px solid #d8e0d2;border-radius:10px;background:white;margin:14px 0;padding:10px 14px;font-size:13px}
+.board-activities summary{cursor:pointer;font-weight:600;color:#315f43}
+.board-activities ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px;padding:0}
+.board-activities li strong,.board-activities li span{display:block}.board-activities li span{color:#64735e;font-size:12px;margin-top:3px}

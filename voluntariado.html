@@ -239,7 +239,7 @@ footer a:hover{color:var(--sun)}
 .cta-band .btn-row{justify-content:center}
 @media (max-width:960px){.info-grid{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="volunteer-refresh.css?v=1"><link rel="stylesheet" href="chatbot.css?v=5"><script src="supabase-client.js"></script><script src="chatbot.js?v=6" defer></script><link rel="canonical" href="https://johancubillo.github.io/CRARC/voluntariado.html">
+<link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="volunteer-refresh.css?v=2"><link rel="stylesheet" href="chatbot.css?v=5"><script src="supabase-client.js"></script><script src="chatbot.js?v=6" defer></script><link rel="canonical" href="https://johancubillo.github.io/CRARC/voluntariado.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Voluntariado con animales en Costa Rica: precios y guía | CRARC">
 <meta property="og:description" content="Haz voluntariado en CRARC, Turrúcares: alojamiento compartido $50, privado $70 u hotel $95 por noche, con tres comidas. Horario, piscina y qué traer.">
@@ -363,6 +363,7 @@ footer a:hover{color:var(--sun)}
     </div>
   </section>
 
+<section class="volunteer-leisure" id="actividades"><div class="wrap"><div class="section-head"><h2 data-i18n="activitiesTitle">Tiempo libre y actividades</h2><p data-i18n="activitiesIntro">Después de las tareas, también hay tiempo para compartir y descansar.</p></div><div class="volunteer-leisure-grid"><article><h3 data-i18n="movieTitle">Noches de película</h3><p data-i18n="movieText">Cuando quieran, con el proyector del centro.</p></article><article><h3 data-i18n="karaokeTitle">Noches de karaoke</h3><p data-i18n="karaokeText">Los jueves.</p></article><article><h3 data-i18n="barTitle">Noches de bar</h3><p data-i18n="barText">Los sábados.</p></article><article><h3 data-i18n="poolTitle">Piscina</h3><p data-i18n="poolText">Siempre que estén en su tiempo libre.</p></article></div></div></section>
   <!-- CTA -->
   <section class="cta-band" id="aplicar">
     <div class="wrap">
@@ -412,6 +413,7 @@ Object.keys(I18N).forEach(code => {
   langSelect.appendChild(opt);
 });
 
+Object.entries({"es": {"activitiesTitle": "Tiempo libre y actividades", "activitiesIntro": "Después de las tareas, también hay tiempo para compartir y descansar.", "movieTitle": "Noches de película", "movieText": "Cuando quieran, con el proyector del centro.", "karaokeTitle": "Noches de karaoke", "karaokeText": "Los jueves.", "barTitle": "Noches de bar", "barText": "Los sábados.", "poolTitle": "Piscina", "poolText": "Siempre que estén en su tiempo libre."}, "en": {"activitiesTitle": "Free time and activities", "activitiesIntro": "After your tasks, there is also time to spend together and relax.", "movieTitle": "Movie nights", "movieText": "Whenever you like, using the center’s projector.", "karaokeTitle": "Karaoke nights", "karaokeText": "On Thursdays.", "barTitle": "Bar nights", "barText": "On Saturdays.", "poolTitle": "Swimming pool", "poolText": "Whenever you are on your free time."}, "fr": {"activitiesTitle": "Temps libre et activités", "activitiesIntro": "Après les tâches, il y a aussi du temps pour partager et se reposer.", "movieTitle": "Soirées cinéma", "movieText": "Quand vous le souhaitez, avec le projecteur du centre.", "karaokeTitle": "Soirées karaoké", "karaokeText": "Les jeudis.", "barTitle": "Soirées au bar", "barText": "Les samedis.", "poolTitle": "Piscine", "poolText": "Pendant votre temps libre."}, "it": {"activitiesTitle": "Tempo libero e attività", "activitiesIntro": "Dopo le attività, c’è anche tempo per stare insieme e riposare.", "movieTitle": "Serate cinema", "movieText": "Quando volete, con il proiettore del centro.", "karaokeTitle": "Serate karaoke", "karaokeText": "Il giovedì.", "barTitle": "Serate al bar", "barText": "Il sabato.", "poolTitle": "Piscina", "poolText": "Durante il vostro tempo libero."}}).forEach(([lang,values])=>Object.assign(I18N[lang],values));
 function applyLang(code){
   const dict = I18N[code] || I18N.es;
   document.documentElement.lang = code;
