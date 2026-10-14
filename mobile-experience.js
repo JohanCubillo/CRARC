@@ -1,7 +1,7 @@
 'use strict';
 (function(){
   const mobile=window.matchMedia('(max-width:680px)'),reduced=window.matchMedia('(prefers-reduced-motion:reduce)');
-  const copy={es:['Anterior','Siguiente','Desliza para ver más','Animales para apadrinar','Galería'],en:['Previous','Next','Swipe to see more','Animals to sponsor','Gallery'],fr:['Précédent','Suivant','Glissez pour voir plus','Animaux à parrainer','Galerie'],it:['Precedente','Successivo','Scorri per vedere altro','Animali da adottare','Galleria']};
+  const copy={es:['Anterior','Siguiente','Desliza para ver más','Animales para apadrinar','Galería','Cómo trabajamos'],en:['Previous','Next','Swipe to see more','Animals to sponsor','Gallery','How we work'],fr:['Précédent','Suivant','Glissez pour voir plus','Animaux à parrainer','Galerie','Notre travail'],it:['Precedente','Successivo','Scorri per vedere altro','Animali da adottare','Galleria','Come lavoriamo']};
   function install(id,random){
     const grid=document.getElementById(id);if(!grid)return;
     let index=0,started=false,activeKey='',frame;
@@ -14,7 +14,7 @@
     function refreshLabel(){
       const words=copy[document.documentElement.lang]||copy.es;
       prev.setAttribute('aria-label',words[0]);next.setAttribute('aria-label',words[1]);
-      grid.setAttribute('aria-label',words[random?3:4]);
+      grid.setAttribute('aria-label',words[id==='howGrid'?5:random?3:4]);
       label.replaceChildren(document.createTextNode(`${cards().length?index+1:0} / ${cards().length}`));const hint=document.createElement('small');hint.textContent=words[2];label.appendChild(hint);
       controls.hidden=cards().length<2;
     }
@@ -37,5 +37,5 @@
     window.addEventListener('resize',()=>{if(mobile.matches)go(index,false);});
     rebuild();
   }
-  install('sponsorGrid',true);install('masonry',false);
+  install('sponsorGrid',true);install('masonry',false);install('howGrid',false);
 })();

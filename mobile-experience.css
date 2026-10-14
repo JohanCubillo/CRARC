@@ -8,3 +8,10 @@
 }
 @media(prefers-reduced-motion:reduce){#sponsorGrid,#masonry{scroll-behavior:auto}}
  .mobile-carousel-controls[hidden]{display:none!important}
+@media(max-width:680px){
+ #howGrid{display:flex!important;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;align-items:flex-start;padding-bottom:12px;width:100%;min-width:0}
+ #howGrid::-webkit-scrollbar{display:none}
+ #howGrid>.how-card{flex:0 0 100%;width:100%;max-width:100%;min-width:0;box-sizing:border-box;scroll-snap-align:start;scroll-snap-stop:always;padding:24px}
+ #howGrid>.how-card h3{font-size:22px;line-height:1.3}
+ #howGrid>.how-card p{font-size:15px;line-height:1.75}
+}
