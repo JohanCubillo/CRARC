@@ -34,3 +34,5 @@ section[id]{scroll-margin-top:100px}
 
 .volunteer-leisure{background:#eef3e7}.volunteer-leisure-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.volunteer-leisure-grid article{background:white;border:1px solid #d8e0d2;border-radius:18px;padding:24px}.volunteer-leisure-grid h3{font-size:1.2rem;margin-bottom:12px}.volunteer-leisure-grid p{font-size:.95rem;color:#55664f}
 @media(max-width:900px){.volunteer-leisure-grid{grid-template-columns:1fr 1fr}}@media(max-width:500px){.volunteer-leisure-grid{grid-template-columns:1fr}}
+
+.volunteer-food-section{padding:40px 0}.volunteer-food-donation{background:#eef3e7;border:1px solid #d8e0d2;border-radius:18px;padding:26px}.volunteer-food-donation strong{font-family:var(--serif);font-size:1.5rem}.volunteer-food-donation p{margin:12px 0;color:#55664f}.volunteer-food-donation a{color:#234c35;font-weight:700}

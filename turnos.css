@@ -38,3 +38,5 @@
 .board-activities summary{cursor:pointer;font-weight:600;color:#315f43}
 .board-activities ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px;padding:0}
 .board-activities li strong,.board-activities li span{display:block}.board-activities li span{color:#64735e;font-size:12px;margin-top:3px}
+
+.board-food-donation{border-top:1px solid #d8e0d2;margin-top:16px;padding-top:12px}.board-food-donation p{font-size:12px;color:#64735e;margin:4px 0 8px}.board-food-donation a{color:#315f43;font-weight:600}
