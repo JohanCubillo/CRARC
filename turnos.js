@@ -5,7 +5,7 @@ const BOARD_QUOTES={"es": ["Cada cuidado cuenta.", "En equipo, hacemos más por 
 const el=id=>document.getElementById(id);
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const localDay=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Costa_Rica',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-let language='es',busy=false,requestVersion=0,viewedDay='',lastPeople=[],lastUpdated=null,hasError=false;
+let language='es',busy=false,requestVersion=0,viewedDay='',lastPeople=[],lastUpdated=null,hasError=false,quoteCollection=null;
 const words=()=>BOARD_I18N[language];
 const roleName=role=>role==='Cocina'?words().kitchen:role==='Repartición y limpieza'?words().distribution:role||words().leader;
 function clearBoard(){['boardLeaders','boardRows','boardCounts'].forEach(id=>el(id).replaceChildren());lastPeople=[];lastUpdated=null;}
@@ -23,8 +23,9 @@ function renderLabels(){
  Object.entries(fields).forEach(([id,key])=>el(id).textContent=w[key]);
  const day=el('boardDay').value||localDay();
  el('boardDate').textContent=new Intl.DateTimeFormat(language==='es'?'es-CR':language,{dateStyle:'full',timeZone:'UTC'}).format(new Date(`${day}T12:00:00Z`));
- const quoteIndex=Math.abs(Math.floor(Date.parse(day+'T12:00:00Z')/86400000))%BOARD_QUOTES[language].length;
- el('boardQuote').textContent=BOARD_QUOTES[language][quoteIndex];
+ const collection=quoteCollection||BOARD_QUOTES[language].map(text=>({text:{[language]:text}}));
+ const quoteIndex=Math.abs(Math.floor(Date.parse(day+'T12:00:00Z')/86400000))%collection.length;
+ el('boardQuote').textContent=collection[quoteIndex].text[language];
  el('boardStatus').textContent=hasError?w.error:lastUpdated?w.updated+new Intl.DateTimeFormat(language==='es'?'es-CR':language,{timeStyle:'short',timeZone:'America/Costa_Rica'}).format(new Date(lastUpdated)):'';
 }
 async function refreshBoard(){
@@ -46,3 +47,7 @@ function startBoard(){
  refreshBoard();
 }
 startBoard();
+fetch('frases.json?v=1',{signal:AbortSignal.timeout(5000)}).then(r=>{if(!r.ok)throw Error('quotes');return r.json();}).then(data=>{
+ if(!Array.isArray(data.phrases)||data.phrases.length!==50||data.phrases.some(p=>['es','en','fr','it'].some(lang=>typeof p.text?.[lang]!=='string'||!p.text[lang].trim())))return;
+ quoteCollection=data.phrases;renderLabels();
+}).catch(()=>{});

@@ -1,0 +1,461 @@
+{
+  "origin": "Frases originales preparadas para el tablero CRARC; no son citas atribuidas a autores.",
+  "languages": [
+    "es",
+    "en",
+    "fr",
+    "it"
+  ],
+  "phrases": [
+    {
+      "id": 1,
+      "text": {
+        "es": "Cada cuidado cuenta.",
+        "en": "Every act of care matters.",
+        "fr": "Chaque geste de soin compte.",
+        "it": "Ogni gesto di cura conta."
+      }
+    },
+    {
+      "id": 2,
+      "text": {
+        "es": "Juntos protegemos más vidas.",
+        "en": "Together we protect more lives.",
+        "fr": "Ensemble, nous protégeons davantage de vies.",
+        "it": "Insieme proteggiamo più vite."
+      }
+    },
+    {
+      "id": 3,
+      "text": {
+        "es": "Tu tiempo deja una huella.",
+        "en": "Your time leaves a lasting mark.",
+        "fr": "Votre temps laisse une empreinte.",
+        "it": "Il tuo tempo lascia il segno."
+      }
+    },
+    {
+      "id": 4,
+      "text": {
+        "es": "Hoy también puedes ayudar.",
+        "en": "You can help today too.",
+        "fr": "Aujourd’hui aussi, vous pouvez aider.",
+        "it": "Anche oggi puoi aiutare."
+      }
+    },
+    {
+      "id": 5,
+      "text": {
+        "es": "La paciencia forma parte del cuidado.",
+        "en": "Patience is part of caring.",
+        "fr": "La patience fait partie du soin.",
+        "it": "La pazienza fa parte della cura."
+      }
+    },
+    {
+      "id": 6,
+      "text": {
+        "es": "Aprender a cuidar es crecer.",
+        "en": "Learning to care helps us grow.",
+        "fr": "Apprendre à prendre soin nous fait grandir.",
+        "it": "Imparare a prendersi cura ci fa crescere."
+      }
+    },
+    {
+      "id": 7,
+      "text": {
+        "es": "Escuchar mejora nuestro trabajo.",
+        "en": "Listening improves our work.",
+        "fr": "Écouter améliore notre travail.",
+        "it": "Ascoltare migliora il nostro lavoro."
+      }
+    },
+    {
+      "id": 8,
+      "text": {
+        "es": "Una tarea pequeña puede ser importante.",
+        "en": "A small task can be important.",
+        "fr": "Une petite tâche peut être importante.",
+        "it": "Un piccolo compito può essere importante."
+      }
+    },
+    {
+      "id": 9,
+      "text": {
+        "es": "Cuidar el entorno también protege animales.",
+        "en": "Caring for the environment protects animals too.",
+        "fr": "Prendre soin de l’environnement protège aussi les animaux.",
+        "it": "Prendersi cura dell’ambiente protegge anche gli animali."
+      }
+    },
+    {
+      "id": 10,
+      "text": {
+        "es": "La amabilidad fortalece al equipo.",
+        "en": "Kindness strengthens the team.",
+        "fr": "La bienveillance renforce l’équipe.",
+        "it": "La gentilezza rafforza il gruppo."
+      }
+    },
+    {
+      "id": 11,
+      "text": {
+        "es": "Cada jornada es una oportunidad.",
+        "en": "Every day is an opportunity.",
+        "fr": "Chaque journée est une occasion.",
+        "it": "Ogni giornata è un’opportunità."
+      }
+    },
+    {
+      "id": 12,
+      "text": {
+        "es": "Dar lo mejor no exige hacerlo perfecto.",
+        "en": "Doing your best does not require perfection.",
+        "fr": "Faire de son mieux n’exige pas la perfection.",
+        "it": "Fare del proprio meglio non richiede perfezione."
+      }
+    },
+    {
+      "id": 13,
+      "text": {
+        "es": "Comparte lo que aprendes.",
+        "en": "Share what you learn.",
+        "fr": "Partagez ce que vous apprenez.",
+        "it": "Condividi ciò che impari."
+      }
+    },
+    {
+      "id": 14,
+      "text": {
+        "es": "Pedir ayuda también es cuidar.",
+        "en": "Asking for help is also caring.",
+        "fr": "Demander de l’aide, c’est aussi prendre soin.",
+        "it": "Chiedere aiuto significa anche prendersi cura."
+      }
+    },
+    {
+      "id": 15,
+      "text": {
+        "es": "El respeto guía nuestras acciones.",
+        "en": "Respect guides our actions.",
+        "fr": "Le respect guide nos actions.",
+        "it": "Il rispetto guida le nostre azioni."
+      }
+    },
+    {
+      "id": 16,
+      "text": {
+        "es": "La constancia sostiene el cuidado.",
+        "en": "Consistency sustains care.",
+        "fr": "La constance soutient le soin.",
+        "it": "La costanza sostiene la cura."
+      }
+    },
+    {
+      "id": 17,
+      "text": {
+        "es": "Cuida a los animales y al equipo.",
+        "en": "Care for the animals and the team.",
+        "fr": "Prenez soin des animaux et de l’équipe.",
+        "it": "Prenditi cura degli animali e del gruppo."
+      }
+    },
+    {
+      "id": 18,
+      "text": {
+        "es": "Una mano extra hace la diferencia.",
+        "en": "An extra pair of hands makes a difference.",
+        "fr": "Une aide supplémentaire fait la différence.",
+        "it": "Una mano in più fa la differenza."
+      }
+    },
+    {
+      "id": 19,
+      "text": {
+        "es": "La calma ayuda a trabajar mejor.",
+        "en": "Calm helps us work better.",
+        "fr": "Le calme aide à mieux travailler.",
+        "it": "La calma aiuta a lavorare meglio."
+      }
+    },
+    {
+      "id": 20,
+      "text": {
+        "es": "Cada animal merece atención.",
+        "en": "Every animal deserves attention.",
+        "fr": "Chaque animal mérite de l’attention.",
+        "it": "Ogni animale merita attenzione."
+      }
+    },
+    {
+      "id": 21,
+      "text": {
+        "es": "Trabajar juntos también nos enseña.",
+        "en": "Working together teaches us too.",
+        "fr": "Travailler ensemble nous apprend aussi.",
+        "it": "Lavorare insieme ci insegna anche."
+      }
+    },
+    {
+      "id": 22,
+      "text": {
+        "es": "El cuidado empieza al prestar atención.",
+        "en": "Care begins with paying attention.",
+        "fr": "Le soin commence par l’attention.",
+        "it": "La cura inizia prestando attenzione."
+      }
+    },
+    {
+      "id": 23,
+      "text": {
+        "es": "Celebra los avances del equipo.",
+        "en": "Celebrate the team’s progress.",
+        "fr": "Célébrez les progrès de l’équipe.",
+        "it": "Celebra i progressi del gruppo."
+      }
+    },
+    {
+      "id": 24,
+      "text": {
+        "es": "Una pregunta puede evitar un error.",
+        "en": "A question can prevent a mistake.",
+        "fr": "Une question peut éviter une erreur.",
+        "it": "Una domanda può evitare un errore."
+      }
+    },
+    {
+      "id": 25,
+      "text": {
+        "es": "Haz espacio para aprender algo nuevo.",
+        "en": "Make room to learn something new.",
+        "fr": "Faites place à de nouveaux apprentissages.",
+        "it": "Fai spazio per imparare qualcosa di nuovo."
+      }
+    },
+    {
+      "id": 26,
+      "text": {
+        "es": "La limpieza también es bienestar.",
+        "en": "Cleanliness supports well-being too.",
+        "fr": "La propreté contribue aussi au bien-être.",
+        "it": "Anche la pulizia contribuisce al benessere."
+      }
+    },
+    {
+      "id": 27,
+      "text": {
+        "es": "Preparar con atención es cuidar.",
+        "en": "Preparing carefully is caring.",
+        "fr": "Préparer avec attention, c’est prendre soin.",
+        "it": "Preparare con attenzione significa prendersi cura."
+      }
+    },
+    {
+      "id": 28,
+      "text": {
+        "es": "Respeta el ritmo de cada animal.",
+        "en": "Respect each animal’s pace.",
+        "fr": "Respectez le rythme de chaque animal.",
+        "it": "Rispetta il ritmo di ogni animale."
+      }
+    },
+    {
+      "id": 29,
+      "text": {
+        "es": "La colaboración vuelve más liviana la tarea.",
+        "en": "Collaboration makes the task lighter.",
+        "fr": "La collaboration rend la tâche plus légère.",
+        "it": "La collaborazione rende il compito più leggero."
+      }
+    },
+    {
+      "id": 30,
+      "text": {
+        "es": "Hoy construimos un lugar más seguro.",
+        "en": "Today we build a safer place.",
+        "fr": "Aujourd’hui, nous construisons un lieu plus sûr.",
+        "it": "Oggi costruiamo un luogo più sicuro."
+      }
+    },
+    {
+      "id": 31,
+      "text": {
+        "es": "Cuidar requiere presencia, no prisa.",
+        "en": "Caring needs presence, not haste.",
+        "fr": "Prendre soin demande de la présence, pas de la précipitation.",
+        "it": "Prendersi cura richiede presenza, non fretta."
+      }
+    },
+    {
+      "id": 32,
+      "text": {
+        "es": "Tu compromiso acompaña la recuperación.",
+        "en": "Your commitment supports recovery.",
+        "fr": "Votre engagement accompagne le rétablissement.",
+        "it": "Il tuo impegno accompagna il recupero."
+      }
+    },
+    {
+      "id": 33,
+      "text": {
+        "es": "Agradecer también une al equipo.",
+        "en": "Gratitude brings the team together too.",
+        "fr": "La gratitude rapproche aussi l’équipe.",
+        "it": "Anche la gratitudine unisce il gruppo."
+      }
+    },
+    {
+      "id": 34,
+      "text": {
+        "es": "Hay valor en el trabajo silencioso.",
+        "en": "There is value in quiet work.",
+        "fr": "Le travail discret a de la valeur.",
+        "it": "Il lavoro silenzioso ha valore."
+      }
+    },
+    {
+      "id": 35,
+      "text": {
+        "es": "Cada detalle puede mejorar el día.",
+        "en": "Every detail can improve the day.",
+        "fr": "Chaque détail peut améliorer la journée.",
+        "it": "Ogni dettaglio può migliorare la giornata."
+      }
+    },
+    {
+      "id": 36,
+      "text": {
+        "es": "Comparte las tareas y las ideas.",
+        "en": "Share the tasks and the ideas.",
+        "fr": "Partagez les tâches et les idées.",
+        "it": "Condividi i compiti e le idee."
+      }
+    },
+    {
+      "id": 37,
+      "text": {
+        "es": "El bienestar se cuida todos los días.",
+        "en": "Well-being needs daily care.",
+        "fr": "Le bien-être se cultive chaque jour.",
+        "it": "Il benessere si cura ogni giorno."
+      }
+    },
+    {
+      "id": 38,
+      "text": {
+        "es": "Un buen equipo sabe escucharse.",
+        "en": "A good team listens to one another.",
+        "fr": "Une bonne équipe sait s’écouter.",
+        "it": "Un buon gruppo sa ascoltarsi."
+      }
+    },
+    {
+      "id": 39,
+      "text": {
+        "es": "La naturaleza merece nuestro respeto.",
+        "en": "Nature deserves our respect.",
+        "fr": "La nature mérite notre respect.",
+        "it": "La natura merita il nostro rispetto."
+      }
+    },
+    {
+      "id": 40,
+      "text": {
+        "es": "Pequeños esfuerzos sostienen grandes cuidados.",
+        "en": "Small efforts sustain great care.",
+        "fr": "De petits efforts soutiennent de grands soins.",
+        "it": "Piccoli sforzi sostengono grandi cure."
+      }
+    },
+    {
+      "id": 41,
+      "text": {
+        "es": "Descansar ayuda a cuidar mejor.",
+        "en": "Rest helps us care better.",
+        "fr": "Le repos aide à mieux prendre soin.",
+        "it": "Riposare aiuta a prendersi cura meglio."
+      }
+    },
+    {
+      "id": 42,
+      "text": {
+        "es": "La responsabilidad se comparte.",
+        "en": "Responsibility is shared.",
+        "fr": "La responsabilité se partage.",
+        "it": "La responsabilità si condivide."
+      }
+    },
+    {
+      "id": 43,
+      "text": {
+        "es": "Hoy puedes aprender de alguien más.",
+        "en": "Today you can learn from someone else.",
+        "fr": "Aujourd’hui, vous pouvez apprendre de quelqu’un d’autre.",
+        "it": "Oggi puoi imparare da qualcun altro."
+      }
+    },
+    {
+      "id": 44,
+      "text": {
+        "es": "La esperanza también necesita acciones.",
+        "en": "Hope needs action too.",
+        "fr": "L’espoir a aussi besoin d’actions.",
+        "it": "Anche la speranza ha bisogno di azioni."
+      }
+    },
+    {
+      "id": 45,
+      "text": {
+        "es": "Cuidamos mejor cuando nos coordinamos.",
+        "en": "We care better when we coordinate.",
+        "fr": "Nous prenons mieux soin en nous coordonnant.",
+        "it": "Ci prendiamo cura meglio quando ci coordiniamo."
+      }
+    },
+    {
+      "id": 46,
+      "text": {
+        "es": "El cariño se demuestra con cuidado.",
+        "en": "Kindness is expressed through care.",
+        "fr": "La bienveillance se montre par le soin.",
+        "it": "La gentilezza si dimostra con la cura."
+      }
+    },
+    {
+      "id": 47,
+      "text": {
+        "es": "Siempre hay algo bueno que aportar.",
+        "en": "There is always something good to contribute.",
+        "fr": "Il y a toujours quelque chose de bon à apporter.",
+        "it": "C’è sempre qualcosa di buono da offrire."
+      }
+    },
+    {
+      "id": 48,
+      "text": {
+        "es": "Tu ayuda forma parte de esta historia.",
+        "en": "Your help is part of this story.",
+        "fr": "Votre aide fait partie de cette histoire.",
+        "it": "Il tuo aiuto fa parte di questa storia."
+      }
+    },
+    {
+      "id": 49,
+      "text": {
+        "es": "El respeto no necesita palabras grandes.",
+        "en": "Respect does not need grand words.",
+        "fr": "Le respect n’a pas besoin de grands mots.",
+        "it": "Il rispetto non ha bisogno di grandi parole."
+      }
+    },
+    {
+      "id": 50,
+      "text": {
+        "es": "Terminemos el día cuidándonos también.",
+        "en": "Let us end the day caring for ourselves too.",
+        "fr": "Terminons la journée en prenant aussi soin de nous.",
+        "it": "Concludiamo la giornata prendendoci cura anche di noi."
+      }
+    }
+  ]
+}
