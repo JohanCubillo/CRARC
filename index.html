@@ -4,7 +4,7 @@
 <script src="supabase-client.js"></script>
 <script src="sponsor-payments.js?v=20261013-2"></script>
 <link rel="stylesheet" href="sponsor-payments.css?v=20261013-2">
-<link rel="stylesheet" href="home-contact.css?v=20261013-2">
+<link rel="stylesheet" href="home-contact.css?v=20261013-3">
 <script src="home-contact.js?v=20261013-1" defer></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1086,7 +1086,7 @@ footer a:hover{color:var(--sun)}
 <section id="contacto" class="home-contact">
   <div class="wrap">
     <div class="section-head"><p class="kicker" data-home-i18n="title">Visitas y voluntariado</p><h2 data-home-i18n="intro">Cuéntanos cómo quieres participar</h2><p data-home-i18n="description">Envíanos tus datos y te contactaremos para coordinar tu experiencia en el centro.</p></div>
-    <div class="home-contact-layout"><figure class="home-contact-photo"><img src="images/contacto-conservacion.png" alt="Trabajo de conservación de tortugas junto a personas voluntarias" loading="lazy" width="3072" height="2304"></figure><form id="homeContactForm">
+    <form id="homeContactForm">
       <div class="home-contact-grid">
         <label><span data-home-i18n="name">Nombre</span><input name="nombre" autocomplete="name" maxlength="200" required></label>
         <label><span data-home-i18n="email">Correo</span><input name="email" type="email" autocomplete="email" maxlength="320" required></label>
@@ -1098,7 +1098,7 @@ footer a:hover{color:var(--sun)}
       </div>
       <button class="btn btn-sun" type="submit" id="homeContactSend" data-home-i18n="send">Enviar consulta</button>
       <p id="homeContactStatus" role="status" aria-live="polite"></p>
-    </form></div>
+    </form>
   </div>
 </section>
 </main>

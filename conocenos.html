@@ -123,7 +123,7 @@ section{padding-block:88px}
 .historia{background:var(--mist)}
 .hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
 .hist-grid .pic{position:sticky;top:110px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
-.hist-grid .pic img{width:100%;object-fit:cover;aspect-ratio:4/5}
+.hist-grid .pic img{display:block;width:100%;height:auto;object-fit:contain;aspect-ratio:auto}
 .hist-steps{display:flex;flex-direction:column;gap:26px}
 .hist-step{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;position:relative}
 .hist-step::before{content:"";position:absolute;top:0;left:26px;width:44px;height:5px;border-radius:0 0 6px 6px;background:var(--leaf)}
@@ -497,7 +497,8 @@ footer a:hover{color:var(--sun)}
 document.getElementById("logo").src = IMG.logo;
 document.getElementById("logoFoot").src = IMG.logo;
 document.getElementById("imgQuienes").src = IMG.quienes;
-document.getElementById("imgHist").src = IMG.familia;
+document.getElementById("imgHist").src = "images/contacto-conservacion.png";
+document.getElementById("imgHist").alt = "Trabajo de conservación de tortugas con personas voluntarias";
 document.getElementById("imgVol").src = IMG.voluntariados;
 document.getElementById("imgHosp").src = IMG.hospital;
 document.getElementById("imgGiras").src = IMG.giras;
