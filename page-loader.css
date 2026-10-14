@@ -12,3 +12,11 @@ html.page-loading body{overflow:hidden;animation:loader-scroll-safety 0s 5s forw
 @keyframes loader-safety{to{visibility:hidden;pointer-events:none}}
 @keyframes loader-scroll-safety{to{overflow:visible}}
 @media(prefers-reduced-motion:reduce){.site-loader-mark img,.site-loader-mark::after{animation:none}.site-loader{transition:none}}
+
+.site-loader-mark::after{display:none}
+.site-loader-mark{width:140px;height:140px}
+.site-loader-mark img{width:120px;height:120px;animation:none}
+.site-loader-base{filter:grayscale(1);opacity:.25}
+.site-loader-fill{position:absolute;inset:0;display:grid;place-items:center;clip-path:inset(100% 0 0 0);animation:loader-logo-fill .9s cubic-bezier(.25,.65,.3,1) forwards}
+@keyframes loader-logo-fill{to{clip-path:inset(0 0 0 0)}}
+@media(prefers-reduced-motion:reduce){.site-loader-fill{animation:none;clip-path:none}}
