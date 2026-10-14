@@ -22,12 +22,12 @@ window.CRARC_SPONSOR_PAYMENTS=(function(){
     }
     dialog.replaceChildren();
     const header=document.createElement('div');header.className='sinpe-header';
-    const h=document.createElement('h2');h.id='sinpeTitle';h.textContent=w[0]+' · '+animal.name;header.appendChild(h);
+    const heading=document.createElement('div');heading.className='sinpe-heading';const badge=document.createElement('p');badge.className='sinpe-eyebrow';badge.textContent=({es:'Tu apoyo para ',en:'Your support for ',fr:'Votre soutien pour ',it:'Il tuo sostegno per '})[document.documentElement.lang]||'Tu apoyo para ';badge.appendChild(document.createTextNode(animal.name));heading.appendChild(badge);const h=document.createElement('h2');h.id='sinpeTitle';h.textContent=w[0];heading.appendChild(h);header.appendChild(heading);
     dialog.setAttribute('aria-labelledby','sinpeTitle');
     const close=document.createElement('button');close.type='button';close.className='sinpe-close';close.textContent='×';
     close.setAttribute('aria-label',({es:'Cerrar formulario',en:'Close form',fr:'Fermer le formulaire',it:'Chiudi modulo'})[document.documentElement.lang]||'Cerrar formulario');close.onclick=()=>dialog.close();header.appendChild(close);dialog.appendChild(header);
     const content=document.createElement('div');content.className='sinpe-scroll';dialog.appendChild(content);
-    const info=document.createElement('p');info.textContent=`${w[9]} ${number} · ${w[10]}: ${holder}`;content.appendChild(info);
+    const info=document.createElement('div');info.className='sinpe-transfer';const transferLabel=document.createElement('span');transferLabel.textContent=w[9];const transferNumber=document.createElement('strong');transferNumber.textContent=number;const transferHolder=document.createElement('p');transferHolder.textContent=`${w[10]}: ${holder}`;info.append(transferLabel,transferNumber,transferHolder);content.appendChild(info);
     const hint=document.createElement('p');hint.className='sinpe-hint';hint.textContent=w[11];content.appendChild(hint);
     const f=document.createElement('form');
     f.innerHTML=`<div class="sinpe-grid"><label>${w[1]}<input name="nombre" maxlength="200" required autocomplete="name"></label><label>${w[2]}<input name="email" type="email" maxlength="320" required autocomplete="email"></label><label>${w[3]}<input name="monto" type="number" min="0.01" step="0.01" required></label><label>${w[4]}<input name="fecha" type="date" required></label><label>${w[5]}<input name="referencia" minlength="3" maxlength="100" required></label><label>${w[6]}<input name="archivo" type="file" accept="image/jpeg,image/png,application/pdf" required></label></div><div class="sinpe-actions"><button type="button" class="btn sinpe-cancel">${w[8]}</button><button type="submit" class="btn btn-green">${w[7]}</button></div><p role="status" aria-live="polite"></p>`;
