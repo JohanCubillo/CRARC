@@ -29,3 +29,7 @@ Fuentes: https://developers.google.com/search/docs/appearance/ai-features y http
 
 ## IndexNow
 Se añadió indexnow-key.txt como prueba de control del sitio. tools/submit-indexnow.ps1 verifica que esté publicado y notifica las cuatro URLs del sitemap a https://api.indexnow.org/indexnow. HTTP 200 confirma recepción; HTTP 202 indica recepción pendiente de verificar la clave. Ninguno garantiza indexación. Google no usa este envío.
+
+## Verificación de Google e IndexNow
+El usuario proporcionó google99851cb84d507cd4.html para publicar en la raíz. Una vez que esa URL responda HTTP 200, volver al método Archivo HTML en Search Console y pulsar Verificar. No borrar el archivo después de verificar.
+IndexNow recibió las cuatro URLs el 18 de octubre de 2026 con HTTP 202 (validación de clave pendiente); todavía no implica indexación.
