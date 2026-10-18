@@ -1,5 +1,5 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),vm=require('node:vm');
-const root=path.join(__dirname,'..'),base='https://johancubillo.github.io/CRARC/';
+const root=path.join(__dirname,'..'),base='https://fundacioncrarc.org/';
 for(const name of ['index.html','conocenos.html','voluntariado.html']){
  const html=fs.readFileSync(path.join(root,name),'utf8');
  assert.equal((html.match(/rel="canonical"/g)||[]).length,1);

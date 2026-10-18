@@ -16,3 +16,5 @@ Documentación: https://supabase.com/docs/guides/functions/secrets y https://con
 
 
 Actualización: el asistente consulta habitaciones también mediante conversación cuando cuenta con fechas y personas. Hoy se calcula en Costa Rica; pide aclaración para fechas ambiguas. Tarifas de voluntariado: compartida USD50, privada USD70, hotel USD95 por noche. Estas tarifas se distinguen de las entradas de visitantes.
+
+Dominio nuevo: https://fundacioncrarc.org/. Volver a desplegar functions/chatbot/index.ts para habilitar el origen nuevo. Los secretos no cambian.
