@@ -128,7 +128,7 @@ const I18N = {
     how1p1: "A veces los animales son traídos por personas locales, turistas o incluso voluntarios, que los encuentran heridos o abandonados en las calles y en la naturaleza. Estos animales rescatados suelen ser pequeños, jóvenes o crías que perdieron a su madre y no tendrían ninguna posibilidad de sobrevivir por sí solos.",
     how1p2: "En el centro buscamos rehabilitar a los animales y darles las mejores condiciones posibles para recuperarse de sus lesiones físicas y, a veces, también mentales. Cuando llegan animales nuevos, son examinados por veterinarios que determinan qué acciones se necesitan para cada situación individual. El cuidado, los tratamientos y el reentrenamiento son responsabilidad del personal permanente, y los voluntarios a menudo asumen partes de estas tareas según sus calificaciones.",
     how2h: "Equipo",
-    how2p1: "Nuestro equipo de trabajo está formado por voluntarios y nuestro veterinario en sitio, quienes cumplen un papel importante para mantener el centro funcionando.",
+    how2p1: "Nuestro equipo de trabajo está formado por personal fijo (dos coordinadores, dos encargadas de cocina, dos de mantenimiento y una de limpieza), voluntarios y nuestro veterinario en sitio, quienes cumplen un papel importante para mantener el centro funcionando.",
     how2p2: "Para manejar todas las tareas y deberes que requiere nuestro centro dependemos de la ayuda de voluntarios motivados y responsables. Las tareas generales incluyen preparación de comida, limpieza y mantenimiento de recintos, construcción de juguetes de actividad y enriquecimiento para los animales. Además de las tareas diarias, también necesitamos ayuda con cualquier proyecto adicional que surja durante el día.",
     how3h: "Ubicación",
     how3p1: "Por suerte, a poca distancia por la carretera, en Cebadilla, encontramos un sitio fantástico con pequeños ríos, praderas, colinas y grandes árboles frutales. Se adapta perfectamente a nuestros animales y voluntarios, y comenzamos la mudanza en junio de 2016, con muchos voluntarios ayudando en el proceso, a quienes estamos eternamente agradecidos.",
@@ -909,6 +909,23 @@ footer a:hover{color:var(--sun)}
   .bar b{font-size:.62rem}
   .bar span{font-size:.62rem}
 }
+
+/* Información para visitas (tours, pagos, hospedaje, personal) */
+.visit-info{margin-top:56px}
+.visit-info .section-head{margin-bottom:26px}
+.visit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.visit-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px 26px;position:relative}
+.visit-card::before{content:"";position:absolute;top:0;left:26px;width:56px;height:5px;border-radius:0 0 6px 6px;background:var(--sun)}
+.visit-card:nth-child(2)::before{background:var(--leaf)}
+.visit-card:nth-child(3)::before{background:var(--canopy)}
+.visit-card h3{font-size:1.3rem;margin-bottom:.6rem;color:var(--canopy-dk)}
+.visit-card p{font-size:.98rem;color:#33422F}
+.visit-card p + p{margin-top:.7rem}
+.visit-card .visit-hours{font-size:1.6rem;font-weight:700;color:var(--canopy);margin:.2rem 0 .5rem}
+.staff-list{list-style:none;padding:0;margin:.4rem 0 0;display:grid;gap:.55rem}
+.staff-list li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:.45rem;font-size:.96rem;color:#33422F}
+.staff-list li:last-child{border-bottom:0}
+.staff-list strong{color:var(--canopy-dk);text-align:right}
 </style>
 <link rel="stylesheet" href="mobile-experience.css?v=20261013-2"><script src="mobile-experience.js?v=20261013-2" defer></script><link rel="stylesheet" href="responsive-nav.css?v=1"><link rel="stylesheet" href="chatbot.css?v=5"><script src="chatbot.js?v=6" defer></script><link rel="stylesheet" href="home-history.css?v=3"><link rel="canonical" href="https://fundacioncrarc.org/">
 <meta property="og:type" content="website">
@@ -987,7 +1004,7 @@ footer a:hover{color:var(--sun)}
         </article>
         <article class="how-card">
           <h3 data-i18n="how2h">Equipo</h3>
-          <p data-i18n="how2p1">Nuestro equipo de trabajo está formado por voluntarios y nuestro veterinario en sitio, quienes cumplen un papel importante para mantener el centro funcionando.</p>
+          <p data-i18n="how2p1">Nuestro equipo de trabajo está formado por personal fijo (dos coordinadores, dos encargadas de cocina, dos de mantenimiento y una de limpieza), voluntarios y nuestro veterinario en sitio, quienes cumplen un papel importante para mantener el centro funcionando.</p>
           <p data-i18n="how2p2">Para manejar todas las tareas y deberes que requiere nuestro centro dependemos de la ayuda de voluntarios motivados y responsables. Las tareas generales incluyen preparación de comida, limpieza y mantenimiento de recintos, construcción de juguetes de actividad y enriquecimiento para los animales. Además de las tareas diarias, también necesitamos ayuda con cualquier proyecto adicional que surja durante el día.</p>
         </article>
         <article class="how-card">
@@ -995,6 +1012,39 @@ footer a:hover{color:var(--sun)}
           <p data-i18n="how3p1">Por suerte, a poca distancia por la carretera, en Cebadilla, encontramos un sitio fantástico con pequeños ríos, praderas, colinas y grandes árboles frutales. Se adapta perfectamente a nuestros animales y voluntarios, y comenzamos la mudanza en junio de 2016, con muchos voluntarios ayudando en el proceso, a quienes estamos eternamente agradecidos.</p>
           <p data-i18n="how3p2">Seguimos trabajando todos los días para mejorar el lugar y los recintos, pero hasta ahora construimos un hospital de animales, un enorme aviario, dos jardines de perezosos y varias jaulas grandes para monos, equipadas con muchos elementos de enriquecimiento para mantener a nuestros rescatados activos, física y cognitivamente.</p>
         </article>
+      </div>
+
+      <!-- ===================== INFO PARA VISITAS ===================== -->
+      <div class="visit-info" id="info-visitas">
+        <div class="section-head">
+          <p class="kicker" data-i18n="visitKicker">Información para tu visita</p>
+          <h2 data-i18n="visitTitle">Tours, pagos, hospedaje y nuestro equipo</h2>
+        </div>
+        <div class="visit-grid">
+          <article class="visit-card">
+            <h3 data-i18n="visitToursH">Horario de tours</h3>
+            <p class="visit-hours" data-i18n="visitToursHours">9:00 a. m. – 4:00 p. m.</p>
+            <p data-i18n="visitToursP">Los tours inician a las 9:00 de la mañana y terminan a las 4:00 de la tarde. Ideal para escuelas, colegios y grupos: escribinos a tourscrarc@gmail.com para reservar.</p>
+          </article>
+          <article class="visit-card">
+            <h3 data-i18n="visitPayH">Pago con tarjeta</h3>
+            <p data-i18n="visitPayP">Podés pagar con tarjeta tanto los tours como el voluntariado. También aceptamos SINPE Móvil y transferencia bancaria.</p>
+          </article>
+          <article class="visit-card">
+            <h3 data-i18n="visitStayH">Hospedaje de voluntarios</h3>
+            <p data-i18n-html="visitStayP"><strong>Las sábanas sí están incluidas.</strong> Lo que no está incluido son los paños (toallas), así que recordá traer el tuyo.</p>
+          </article>
+          <article class="visit-card">
+            <h3 data-i18n="visitStaffH">Nuestro personal</h3>
+            <p data-i18n="visitStaffP">Además de los voluntarios y el veterinario, en el centro trabaja un equipo fijo:</p>
+            <ul class="staff-list">
+              <li><span data-i18n="staffCoord">Coordinación</span><strong data-i18n="staffCoordN">2 coordinadores</strong></li>
+              <li><span data-i18n="staffKitchen">Cocina</span><strong>Delia y Rosa</strong></li>
+              <li><span data-i18n="staffMaint">Mantenimiento</span><strong>José y Jacinto</strong></li>
+              <li><span data-i18n="staffClean">Limpieza</span><strong>Daisy</strong></li>
+            </ul>
+          </article>
+        </div>
       </div>
     </div>
     <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true" style="transform:scaleY(-1) scaleX(-1);margin-top:-1px">
@@ -1137,6 +1187,7 @@ footer a:hover{color:var(--sun)}
         <li><span data-i18n="footMonFri">Lun – Vie</span><span>8am – 5pm</span></li>
         <li><span data-i18n="footSat">Sábado</span><span>8am – 5pm</span></li>
         <li><span data-i18n="footSun">Domingo</span><span>8am – 5pm</span></li>
+        <li><span data-i18n="footTours">Tours</span><span>9am – 4pm</span></li>
       </ul>
     </div>
 
@@ -1395,6 +1446,12 @@ function buildPayments(dict){
 const HOME_HISTORY_COPY={"es": {"histTitle": "Nuestra historia", "histP1": "En 2009, el centro de rescate fue fundado en la costa caribeña de Costa Rica, en Moín. Su primer rescate fue Buda, un animal salvado del tráfico ilegal de fauna silvestre justo antes de ser vendido como mascota.", "histP2": "El centro, ubicado en Moín, también se dedicaba a patrullar las playas para proteger los nidos de una especie en peligro de extinción: la tortuga baula <i>(Dermochelys coriacea)</i>.", "histP3": "En Moín, el conservacionista <a class=\"history-jairo\" href=\"https://www.nacion.com/revista-dominical/patrullando-moin-con-jairo-mora/USAGLPP7R5EN7K264TCEOPQMDQ/story/\" target=\"_blank\" rel=\"noopener noreferrer\">Jairo Mora Sandoval</a> dedicó su trabajo a proteger los nidos de tortuga baula frente al saqueo de huevos. Colaboraba con WIDECAST y patrullaba la playa junto a personas voluntarias. Fue asesinado el 31 de mayo de 2013, mientras participaba en estas labores de conservación. Su compromiso sigue siendo un ejemplo de defensa de la vida silvestre.", "histP4": "Debido a la creciente presión y a la pérdida de acceso a la propiedad original, el centro se vio obligado a trasladarse a San Miguel de Turrúcares. Allí, se les prestó generosamente una propiedad temporal para que los animales pudieran ser alojados mientras se buscaba una solución permanente.", "histP5": "La propiedad original en Moín fue ocupada y, en 2016, después de vender dos propiedades personales, la propietaria del centro de rescate pudo adquirir el terreno donde actualmente funciona el centro, una propiedad que todavía se está pagando por lo que buscamos personas voluntarias como vos, para que formés parte del cuidado y protección de nuestra vida silvestre.", "histKicker": "De Moín a Turrúcares"}, "en": {"histTitle": "Our story", "histP1": "In 2009, the rescue center was founded on the Caribbean coast of Costa Rica, in Moín. Its first rescue was Buda, an animal saved from the illegal wildlife trade just before being sold as a pet.", "histP2": "The center, located in Moín, also patrolled the beaches to protect the nests of an endangered species: the leatherback sea turtle <i>(Dermochelys coriacea)</i>.", "histP3": "In Moín, conservationist <a class=\"history-jairo\" href=\"https://www.nacion.com/revista-dominical/patrullando-moin-con-jairo-mora/USAGLPP7R5EN7K264TCEOPQMDQ/story/\" target=\"_blank\" rel=\"noopener noreferrer\">Jairo Mora Sandoval</a> worked to protect leatherback turtle nests from egg poaching. He collaborated with WIDECAST and patrolled the beach with volunteers. He was murdered on May 31, 2013, while taking part in this conservation work. His commitment remains an example of wildlife protection.", "histP4": "Due to growing pressure and the loss of access to the original property, the center was forced to relocate to San Miguel de Turrúcares. There, a temporary property was generously lent so the animals could be housed while a permanent solution was sought.", "histP5": "The original property in Moín was occupied and, in 2016, after selling two personal properties, the rescue center's owner was able to acquire the land where the center now operates, a property that is still being paid for, which is why we look for volunteers like you to be part of the care and protection of our wildlife.", "histKicker": "From Moín to Turrúcares"}, "fr": {"histTitle": "Notre histoire", "histP1": "En 2009, le centre de secours a été fondé sur la côte caraïbe du Costa Rica, à Moín. Son premier sauvetage fut Buda, un animal sauvé du trafic illégal de faune sauvage juste avant d'être vendu comme animal de compagnie.", "histP2": "Le centre, situé à Moín, patrouillait aussi les plages pour protéger les nids d'une espèce en danger d'extinction : la tortue luth <i>(Dermochelys coriacea)</i>.", "histP3": "À Moín, le défenseur de la nature <a class=\"history-jairo\" href=\"https://www.nacion.com/revista-dominical/patrullando-moin-con-jairo-mora/USAGLPP7R5EN7K264TCEOPQMDQ/story/\" target=\"_blank\" rel=\"noopener noreferrer\">Jairo Mora Sandoval</a> protégeait les nids de tortues luth contre le pillage des œufs. Il collaborait avec WIDECAST et patrouillait avec des bénévoles. Il a été assassiné le 31 mai 2013 alors qu’il participait à ce travail de conservation. Son engagement reste un exemple de protection de la vie sauvage.", "histP4": "Face à la pression croissante et à la perte d'accès à la propriété d'origine, le centre a dû déménager à San Miguel de Turrúcares. Là, une propriété temporaire lui a été généreusement prêtée pour héberger les animaux en attendant une solution permanente.", "histP5": "La propriété d'origine à Moín a été occupée et, en 2016, après avoir vendu deux propriétés personnelles, la propriétaire du centre a pu acquérir le terrain où il fonctionne aujourd'hui — une propriété encore en cours de paiement. C'est pourquoi nous cherchons des bénévoles comme vous, pour prendre part au soin et à la protection de notre faune sauvage.", "histKicker": "De Moín à Turrúcares"}, "it": {"histTitle": "La nostra storia", "histP1": "Nel 2009 il centro di recupero è stato fondato sulla costa caraibica del Costa Rica, a Moín. Il suo primo salvataggio fu Buda, un animale sottratto al traffico illegale di fauna selvatica poco prima di essere venduto come animale domestico.", "histP2": "Il centro, situato a Moín, pattugliava anche le spiagge per proteggere i nidi di una specie in pericolo di estinzione: la tartaruga liuto <i>(Dermochelys coriacea)</i>.", "histP3": "A Moín, il conservazionista <a class=\"history-jairo\" href=\"https://www.nacion.com/revista-dominical/patrullando-moin-con-jairo-mora/USAGLPP7R5EN7K264TCEOPQMDQ/story/\" target=\"_blank\" rel=\"noopener noreferrer\">Jairo Mora Sandoval</a> proteggeva i nidi delle tartarughe liuto dal furto delle uova. Collaborava con WIDECAST e pattugliava la spiaggia con i volontari. Fu assassinato il 31 maggio 2013 mentre partecipava a queste attività di conservazione. Il suo impegno resta un esempio di difesa della fauna selvatica.", "histP4": "A causa della pressione crescente e della perdita di accesso alla proprietà originale, il centro fu costretto a trasferirsi a San Miguel de Turrúcares. Lì venne generosamente prestata una proprietà temporanea per ospitare gli animali in attesa di una soluzione permanente.", "histP5": "La proprietà originale di Moín venne occupata e, nel 2016, dopo aver venduto due proprietà personali, la proprietaria del centro poté acquistare il terreno dove il centro opera oggi — una proprietà ancora in fase di pagamento. Per questo cerchiamo persone volontarie come te, perché tu faccia parte della cura e della protezione della nostra fauna selvatica.", "histKicker": "Da Moín a Turrúcares"}};
 Object.entries(HOME_HISTORY_COPY).forEach(([lang,values])=>{if(I18N[lang])Object.assign(I18N[lang],values);});
 Object.entries({"es": {"cuteKicker": "Pequeños momentos del centro", "cuteTitle": "Animalitos que nos alegran el día"}, "en": {"cuteKicker": "Little moments at the center", "cuteTitle": "Animals that brighten our day"}, "fr": {"cuteKicker": "Petits moments au centre", "cuteTitle": "Des animaux qui illuminent nos journées"}, "it": {"cuteKicker": "Piccoli momenti al centro", "cuteTitle": "Animali che rallegrano la giornata"}}).forEach(([lang,values])=>Object.assign(I18N[lang],values));
+Object.entries({
+"es":{visitKicker:"Información para tu visita",visitTitle:"Tours, pagos, hospedaje y nuestro equipo",visitToursH:"Horario de tours",visitToursHours:"9:00 a. m. – 4:00 p. m.",visitToursP:"Los tours inician a las 9:00 de la mañana y terminan a las 4:00 de la tarde. Ideal para escuelas, colegios y grupos: escribinos a tourscrarc@gmail.com para reservar.",visitPayH:"Pago con tarjeta",visitPayP:"Podés pagar con tarjeta tanto los tours como el voluntariado. También aceptamos SINPE Móvil y transferencia bancaria.",visitStayH:"Hospedaje de voluntarios",visitStayP:"<strong>Las sábanas sí están incluidas.</strong> Lo que no está incluido son los paños (toallas), así que recordá traer el tuyo.",visitStaffH:"Nuestro personal",visitStaffP:"Además de los voluntarios y el veterinario, en el centro trabaja un equipo fijo:",staffCoord:"Coordinación",staffCoordN:"2 coordinadores",staffKitchen:"Cocina",staffMaint:"Mantenimiento",staffClean:"Limpieza"},
+"en":{visitKicker:"Plan your visit",visitTitle:"Tours, payments, lodging and our team",visitToursH:"Tour hours",visitToursHours:"9:00 a.m. – 4:00 p.m.",visitToursP:"Tours start at 9:00 in the morning and end at 4:00 in the afternoon. Great for schools and groups: email tourscrarc@gmail.com to book.",visitPayH:"Card payments",visitPayP:"You can pay by card for both tours and volunteering. We also accept SINPE Móvil and bank transfer.",visitStayH:"Volunteer lodging",visitStayP:"<strong>Bed sheets are included.</strong> Towels are not included, so remember to bring your own.",visitStaffH:"Our staff",visitStaffP:"Besides our volunteers and veterinarian, a permanent team works at the center:",staffCoord:"Coordination",staffCoordN:"2 coordinators",staffKitchen:"Kitchen",staffMaint:"Maintenance",staffClean:"Cleaning",how2p1:"Our team is made up of permanent staff (two coordinators, two kitchen staff, two maintenance workers and one cleaner), volunteers and our on-site veterinarian, who all take up an important part in keeping the center running."},
+"fr":{visitKicker:"Préparer votre visite",visitTitle:"Visites, paiements, hébergement et notre équipe",visitToursH:"Horaires des visites",visitToursHours:"9h00 – 16h00",visitToursP:"Les visites commencent à 9h00 et se terminent à 16h00. Idéal pour les écoles et les groupes : écrivez à tourscrarc@gmail.com pour réserver.",visitPayH:"Paiement par carte",visitPayP:"Vous pouvez payer par carte les visites comme le bénévolat. Nous acceptons aussi SINPE Móvil et le virement bancaire.",visitStayH:"Hébergement des bénévoles",visitStayP:"<strong>Les draps sont inclus.</strong> Les serviettes ne sont pas incluses, pensez à apporter la vôtre.",visitStaffH:"Notre personnel",visitStaffP:"En plus des bénévoles et du vétérinaire, une équipe permanente travaille au centre :",staffCoord:"Coordination",staffCoordN:"2 coordinateurs",staffKitchen:"Cuisine",staffMaint:"Entretien",staffClean:"Ménage",how2p1:"Notre équipe se compose d'un personnel permanent (deux coordinateurs, deux personnes en cuisine, deux à l'entretien et une au ménage), de bénévoles et de notre vétérinaire sur place, qui jouent tous un rôle important dans le fonctionnement du centre."},
+"it":{visitKicker:"Organizza la tua visita",visitTitle:"Tour, pagamenti, alloggio e il nostro team",visitToursH:"Orari dei tour",visitToursHours:"9:00 – 16:00",visitToursP:"I tour iniziano alle 9:00 e terminano alle 16:00. Ideale per scuole e gruppi: scrivici a tourscrarc@gmail.com per prenotare.",visitPayH:"Pagamento con carta",visitPayP:"Puoi pagare con carta sia i tour sia il volontariato. Accettiamo anche SINPE Móvil e bonifico bancario.",visitStayH:"Alloggio volontari",visitStayP:"<strong>Le lenzuola sono incluse.</strong> Gli asciugamani non sono inclusi, ricordati di portare il tuo.",visitStaffH:"Il nostro personale",visitStaffP:"Oltre ai volontari e al veterinario, al centro lavora un team fisso:",staffCoord:"Coordinamento",staffCoordN:"2 coordinatori",staffKitchen:"Cucina",staffMaint:"Manutenzione",staffClean:"Pulizie",how2p1:"Il nostro team è composto da personale fisso (due coordinatori, due addette alla cucina, due alla manutenzione e una alle pulizie), volontari e il nostro veterinario in sede, che svolgono tutti un ruolo importante nel far funzionare il centro."}
+}).forEach(([lang,values])=>{if(I18N[lang])Object.assign(I18N[lang],values);});
 function applyLang(code){
   const dict = I18N[code] || I18N.es;
   document.documentElement.lang = code;
